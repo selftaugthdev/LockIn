@@ -22,6 +22,8 @@
 		E4AB29102E6F092A0024607D /* ChallengeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28FA2E6F092A0024607D /* ChallengeService.swift */; };
 		E4AB29112E6F092A0024607D /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F92E6F092A0024607D /* AuthService.swift */; };
 		E4AB29122E6F092A0024607D /* ShareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28FC2E6F092A0024607D /* ShareService.swift */; };
+		E4AB291B2E6F092A0024607D /* UserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB291D2E6F092A0024607D /* UserRow.swift */; };
+		E4AB291C2E6F092A0024607D /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB291E2E6F092A0024607D /* LeaderboardService.swift */; };
 		E4AB29132E6F092A0024607D /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F02E6F092A0024607D /* Typography.swift */; };
 		E4AB29142E6F092A0024607D /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */; };
 		E4AB29152E6F092A0024607D /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB29012E6F092A0024607D /* ProgressView.swift */; };
@@ -50,6 +52,8 @@
 		E4AB28FA2E6F092A0024607D /* ChallengeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeService.swift; sourceTree = "<group>"; };
 		E4AB28FC2E6F092A0024607D /* ShareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareService.swift; sourceTree = "<group>"; };
 		E4AB28FE2E6F092A0024607D /* DailyChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeView.swift; sourceTree = "<group>"; };
+		E4AB291D2E6F092A0024607D /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
+		E4AB291E2E6F092A0024607D /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
 		E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		E4AB29002E6F092A0024607D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		E4AB29012E6F092A0024607D /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 				E4AB28F42E6F092A0024607D /* Challenge.swift */,
 				E4AB28F52E6F092A0024607D /* Completion.swift */,
 				E4AB28F62E6F092A0024607D /* User.swift */,
+				E4AB291D2E6F092A0024607D /* UserRow.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +137,7 @@
 				E4AB28F82E6F092A0024607D /* AnalyticsService.swift */,
 				E4AB28F92E6F092A0024607D /* AuthService.swift */,
 				E4AB28FA2E6F092A0024607D /* ChallengeService.swift */,
+				E4AB291E2E6F092A0024607D /* LeaderboardService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -277,6 +283,8 @@
 				E4AB29102E6F092A0024607D /* ChallengeService.swift in Sources */,
 				E4AB29112E6F092A0024607D /* AuthService.swift in Sources */,
 				E4AB29122E6F092A0024607D /* ShareService.swift in Sources */,
+				E4AB291B2E6F092A0024607D /* UserRow.swift in Sources */,
+				E4AB291C2E6F092A0024607D /* LeaderboardService.swift in Sources */,
 				E4AB29132E6F092A0024607D /* Typography.swift in Sources */,
 				E4AB29142E6F092A0024607D /* LeaderboardView.swift in Sources */,
 				E4AB29152E6F092A0024607D /* ProgressView.swift in Sources */,

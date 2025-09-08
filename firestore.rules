@@ -4,7 +4,9 @@ service cloud.firestore {
     // Users can read their own user document, but cannot write counter fields
     match /users/{userId} {
       allow read: if request.auth != null && request.auth.uid == userId;
+      // Allow creation without counter field restrictions (for onboarding)
       allow create: if request.auth != null && request.auth.uid == userId;
+      // Allow updates but prevent counter field modifications
       allow update: if request.auth != null && request.auth.uid == userId &&
         // Anti-cheat: Prevent clients from writing counter fields
         !('totalCount' in request.resource.data.diff(resource.data).affectedKeys()) &&

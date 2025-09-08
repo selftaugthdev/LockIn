@@ -25,33 +25,63 @@ exports.onCompletionCreate = functions.firestore
   .onCreate(async (snap) => {
     const data = snap.data();
     const userId = data.userId as string;
-    if (!userId) return;
+    const challengeId = data.challengeId as string;
+    
+    // Anti-cheat: Validate required fields
+    if (!userId || !challengeId) {
+      console.error("Invalid completion data: missing userId or challengeId", { userId, challengeId });
+      return;
+    }
+
+    // Anti-cheat: Validate challengeId exists in challenges collection
+    try {
+      const challengeRef = db.collection("challenges").doc(challengeId);
+      const challengeSnap = await challengeRef.get();
+      
+      if (!challengeSnap.exists) {
+        console.error("Invalid completion: challengeId does not exist", { challengeId, userId });
+        return;
+      }
+    } catch (error) {
+      console.error("Error validating challengeId:", error);
+      return;
+    }
 
     const userRef = db.collection("users").doc(userId);
     await db.runTransaction(async (txn) => {
       const userSnap = await txn.get(userRef);
+      
+      // Anti-cheat: Ensure user document exists
+      if (!userSnap.exists) {
+        console.error("Invalid completion: user does not exist", { userId, challengeId });
+        return;
+      }
+      
       const user = userSnap.data() || {};
       const lastCompleted: admin.firestore.Timestamp | null = user.lastCompleted || null;
 
       const now = new Date();
 
-      // detect if lastCompleted is already today (prevent multi-increment abuse)
+      // Anti-cheat: One completion per day guard (prevent spamming)
       const isSameDay =
         lastCompleted?.toDate().getUTCFullYear() === now.getUTCFullYear() &&
         lastCompleted?.toDate().getUTCMonth() === now.getUTCMonth() &&
         lastCompleted?.toDate().getUTCDate() === now.getUTCDate();
 
+      // Always increment totalCount (for analytics)
       const updates: admin.firestore.UpdateData<admin.firestore.DocumentData> = {
         totalCount: admin.firestore.FieldValue.increment(1),
         lastCompleted: admin.firestore.FieldValue.serverTimestamp(),
       };
 
-      // Only increment daily/weekly once per day? (optional)
-      // For a single daily challenge, you usually want 1 increment per day:
+      // Anti-cheat: Only increment daily/weekly/streak once per day
       if (!isSameDay) {
         updates["dailyCount"] = admin.firestore.FieldValue.increment(1);
         updates["weeklyCount"] = admin.firestore.FieldValue.increment(1);
         updates["streakCount"] = admin.firestore.FieldValue.increment(1);
+        console.log("Daily completion processed for user:", userId);
+      } else {
+        console.log("Duplicate daily completion ignored for user:", userId);
       }
 
       txn.update(userRef, updates);

@@ -1,129 +1,63 @@
-import * as functions from "firebase-functions";
+import * as functions from "firebase-functions"; // Gen1 API
 import * as admin from "firebase-admin";
+if (!admin.apps.length) admin.initializeApp();
 
-admin.initializeApp();
-const db = admin.firestore();
-
-// Helper functions for date calculations (currently unused but available for future use)
-// function startOfTodayUTC(): Date {
-//   const d = new Date();
-//   d.setUTCHours(0, 0, 0, 0);
-//   return d;
-// }
-
-// function startOfWeekUTC(): Date {
-//   const d = new Date();
-//   const day = d.getUTCDay(); // 0=Sun
-//   const diff = day; // week starts Sunday
-//   d.setUTCDate(d.getUTCDate() - diff);
-//   d.setUTCHours(0, 0, 0, 0);
-//   return d;
-// }
-
-exports.onCompletionCreate = functions.firestore
+export const onCompletionCreateV5 = functions.firestore
   .document("completions/{completionId}")
-  .onCreate(async (snap) => {
-    const data = snap.data();
-    const userId = data.userId as string;
-    const challengeId = data.challengeId as string;
-    
-    // Anti-cheat: Validate required fields
-    if (!userId || !challengeId) {
-      console.error("Invalid completion data: missing userId or challengeId", { userId, challengeId });
-      return;
+  .onCreate(async (snap, ctx) => {
+    console.log("🔥 onCompletionCreateV5 (Gen1) LIVE");
+    const data = (snap.data() as { userId?: string; challengeId?: string }) || {};
+    const uid = data.userId;
+    if (!uid) { console.warn("Missing userId on completion", data); return; }
+    if (!data.challengeId || data.challengeId.trim() === "") {
+      console.warn("Empty challengeId; continuing anyway", { uid, completionId: ctx.params.completionId });
     }
 
-    // Anti-cheat: Validate challengeId exists in challenges collection
-    try {
-      const challengeRef = db.collection("challenges").doc(challengeId);
-      const challengeSnap = await challengeRef.get();
-      
-      if (!challengeSnap.exists) {
-        console.error("Invalid completion: challengeId does not exist", { challengeId, userId });
-        return;
-      }
-    } catch (error) {
-      console.error("Error validating challengeId:", error);
-      return;
-    }
+    const db = admin.firestore();
+    const userRef = db.collection("users").doc(uid);
 
-    const userRef = db.collection("users").doc(userId);
-    await db.runTransaction(async (txn) => {
-      const userSnap = await txn.get(userRef);
-      
-      // Anti-cheat: Ensure user document exists
-      if (!userSnap.exists) {
-        console.error("Invalid completion: user does not exist", { userId, challengeId });
-        return;
-      }
-      
-      const user = userSnap.data() || {};
-      const lastCompleted: admin.firestore.Timestamp | null = user.lastCompleted || null;
+    await db.runTransaction(async (tx) => {
+      const userDoc = await tx.get(userRef);
+      const nowTs = admin.firestore.Timestamp.now();
 
-      const now = new Date();
+      let totalCount = 1;
+      let streakCount = 1;
 
-      // Anti-cheat: One completion per day guard (prevent spamming)
-      const isSameDay =
-        lastCompleted?.toDate().getUTCFullYear() === now.getUTCFullYear() &&
-        lastCompleted?.toDate().getUTCMonth() === now.getUTCMonth() &&
-        lastCompleted?.toDate().getUTCDate() === now.getUTCDate();
+      if (userDoc.exists) {
+        const d = userDoc.data() || {};
+        const last = d.lastCompleted as admin.firestore.Timestamp | undefined;
+        const prevTotal = (d.totalCount as number) ?? 0;
+        const prevStreak = (d.streakCount as number) ?? 0;
 
-      // Always increment totalCount (for analytics)
-      const updates: admin.firestore.UpdateData<admin.firestore.DocumentData> = {
-        totalCount: admin.firestore.FieldValue.increment(1),
-        lastCompleted: admin.firestore.FieldValue.serverTimestamp(),
-      };
+        const sameDay = (a: admin.firestore.Timestamp, b: admin.firestore.Timestamp) => {
+          const A = a.toDate(), B = b.toDate();
+          return A.getUTCFullYear() === B.getUTCFullYear()
+              && A.getUTCMonth() === B.getUTCMonth()
+              && A.getUTCDate() === B.getUTCDate();
+        };
+        const yesterday = (a: admin.firestore.Timestamp, b: admin.firestore.Timestamp) => {
+          const B = b.toDate();
+          const prev = new Date(Date.UTC(B.getUTCFullYear(), B.getUTCMonth(), B.getUTCDate() - 1));
+          const A = a.toDate();
+          return A.getUTCFullYear() === prev.getUTCFullYear()
+              && A.getUTCMonth() === prev.getUTCMonth()
+              && A.getUTCDate() === prev.getUTCDate();
+        };
 
-      // Anti-cheat: Only increment daily/weekly/streak once per day
-      if (!isSameDay) {
-        updates["dailyCount"] = admin.firestore.FieldValue.increment(1);
-        updates["weeklyCount"] = admin.firestore.FieldValue.increment(1);
-        updates["streakCount"] = admin.firestore.FieldValue.increment(1);
-        console.log("Daily completion processed for user:", userId);
-      } else {
-        console.log("Duplicate daily completion ignored for user:", userId);
+        totalCount = prevTotal + 1;
+
+        if (last) {
+          if (sameDay(last, nowTs)) {
+            tx.update(userRef, { lastCompleted: nowTs, totalCount });
+            return;
+          } else if (yesterday(last, nowTs)) {
+            streakCount = prevStreak + 1;
+          } else {
+            streakCount = 1;
+          }
+        }
       }
 
-      txn.update(userRef, updates);
+      tx.set(userRef, { userId: uid, lastCompleted: nowTs, totalCount, streakCount }, { merge: true });
     });
-  });
-
-// Daily reset - set all dailyCount = 0 at midnight UTC
-exports.resetDaily = functions.pubsub
-  .schedule("0 0 * * *") // every day 00:00 UTC
-  .onRun(async () => {
-    const usersRef = db.collection("users");
-    const batchSize = 300; // page through
-    let last: FirebaseFirestore.QueryDocumentSnapshot | null = null;
-    while (true) {
-      let q = usersRef.orderBy(admin.firestore.FieldPath.documentId()).limit(batchSize);
-      if (last) q = q.startAfter(last.id);
-      const snap = await q.get();
-      if (snap.empty) break;
-
-      const batch = db.batch();
-      snap.docs.forEach(doc => batch.update(doc.ref, { dailyCount: 0 }));
-      await batch.commit();
-      last = snap.docs[snap.docs.length - 1];
-    }
-  });
-
-// Weekly reset - set all weeklyCount = 0 on Sundays at 23:59 UTC
-exports.resetWeekly = functions.pubsub
-  .schedule("59 23 * * 0") // Sundays 23:59 UTC
-  .onRun(async () => {
-    const usersRef = db.collection("users");
-    const batchSize = 300;
-    let last: FirebaseFirestore.QueryDocumentSnapshot | null = null;
-    while (true) {
-      let q = usersRef.orderBy(admin.firestore.FieldPath.documentId()).limit(batchSize);
-      if (last) q = q.startAfter(last.id);
-      const snap = await q.get();
-      if (snap.empty) break;
-
-      const batch = db.batch();
-      snap.docs.forEach(doc => batch.update(doc.ref, { weeklyCount: 0 }));
-      await batch.commit();
-      last = snap.docs[snap.docs.length - 1];
-    }
   });

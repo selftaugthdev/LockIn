@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
+    "target": "ES2020",
     "module": "commonjs",
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
     "outDir": "lib",
-    "sourceMap": true,
-    "strict": false,
-    "target": "es2017",
-    "skipLibCheck": true
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+
+    "moduleResolution": "node",
+    "lib": ["ES2020"],
+    "types": ["node"],            // <— only include Node ambient types
+    "skipLibCheck": true,         // <— ignore .d.ts in node_modules (fixes MDX/JSX noise)
+    "forceConsistentCasingInFileNames": true
   },
-  "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

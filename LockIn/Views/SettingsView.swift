@@ -2,9 +2,9 @@ import SwiftUI
 
 struct SettingsView: View {
   @EnvironmentObject var authService: AuthService
+  @EnvironmentObject var paywallService: PaywallService
   @State private var showingSignOutAlert = false
   @State private var showingCustomChallengeEditor = false
-  @State private var isPro = false
 
   var body: some View {
     NavigationView {
@@ -57,6 +57,12 @@ struct SettingsView: View {
           print("Error signing out: \(error)")
         }
       }
+    }
+    .sheet(isPresented: $showingCustomChallengeEditor) {
+      CustomChallengeEditor()
+    }
+    .sheet(isPresented: $paywallService.shouldShowPaywall) {
+      PaywallView()
     }
   }
 
@@ -142,26 +148,26 @@ struct SettingsView: View {
   private var premiumSection: some View {
     VStack(spacing: 16) {
       HStack {
-        Image(systemName: isPro ? "crown.fill" : "crown")
+        Image(systemName: paywallService.isPro ? "crown.fill" : "crown")
           .foregroundColor(.brandYellow)
-        Text(isPro ? "Pro Active" : "Premium")
+        Text(paywallService.isPro ? "Pro Active" : "Premium")
           .headlineStyle()
           .foregroundColor(.white)
         Spacer()
-        
-        if isPro {
+
+        if paywallService.isPro {
           Text("✓")
             .foregroundColor(.brandGreen)
             .fontWeight(.bold)
         }
       }
 
-      if isPro {
+      if paywallService.isPro {
         Text("You have access to all premium features!")
           .bodyStyle()
           .foregroundColor(.brandGreen)
           .multilineTextAlignment(.leading)
-        
+
         // Pro Features
         VStack(spacing: 12) {
           ProFeatureButton(
@@ -171,7 +177,7 @@ struct SettingsView: View {
           ) {
             // TODO: Implement when PaywallService is added to project
           }
-          
+
           ProFeatureButton(
             icon: "chart.bar",
             title: "Advanced Analytics",
@@ -188,7 +194,7 @@ struct SettingsView: View {
 
         Button("Upgrade to Pro") {
           AnalyticsService.shared.logPremiumView()
-          // This will be handled by PaywallKit
+          paywallService.shouldShowPaywall = true
         }
         .frame(maxWidth: .infinity)
         .padding()
@@ -275,7 +281,7 @@ struct SettingsView: View {
       .padding(.vertical, 8)
     }
   }
-  
+
   // MARK: - Pro Feature Button
   private func ProFeatureButton(
     icon: String,
@@ -288,19 +294,19 @@ struct SettingsView: View {
         Image(systemName: icon)
           .foregroundColor(.brandYellow)
           .frame(width: 24)
-        
+
         VStack(alignment: .leading, spacing: 2) {
           Text(title)
             .fontWeight(.semibold)
             .foregroundColor(.white)
-          
+
           Text(description)
             .font(.caption)
             .foregroundColor(.secondary)
         }
-        
+
         Spacer()
-        
+
         Image(systemName: "chevron.right")
           .foregroundColor(.secondary)
           .font(.caption)

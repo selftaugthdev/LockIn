@@ -3,8 +3,10 @@ import SwiftUI
 struct DailyChallengeView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
+  @EnvironmentObject var paywallService: PaywallService
   @State private var isCompleting = false
   @State private var showCompletionAnimation = false
+  @State private var showingCustomEditor = false
 
   var body: some View {
     NavigationView {
@@ -20,6 +22,11 @@ struct DailyChallengeView: View {
             // Challenge Card
             if let challenge = challengeService.todaysChallenge {
               challengeCard(challenge)
+
+              // Pro Card (only show to free users)
+              if !paywallService.isPro {
+                ProCard()
+              }
             } else if challengeService.isLoading {
               loadingView
             } else {
@@ -43,6 +50,12 @@ struct DailyChallengeView: View {
     }
     .task {
       await challengeService.loadTodaysChallenge()
+    }
+    .sheet(isPresented: $showingCustomEditor) {
+      CustomChallengeEditor()
+    }
+    .sheet(isPresented: $paywallService.shouldShowPaywall) {
+      PaywallView()
     }
   }
 
@@ -122,6 +135,29 @@ struct DailyChallengeView: View {
       }
       .disabled(isCompleting || isChallengeCompleted(challenge))
       .opacity(isChallengeCompleted(challenge) ? 0.6 : 1.0)
+
+      // Create Custom Challenge Button
+      Button(action: {
+        if paywallService.isPro {
+          showingCustomEditor = true
+        } else {
+          paywallService.shouldShowPaywall = true
+        }
+      }) {
+        HStack {
+          Image(systemName: "plus.circle.fill")
+          Text("Create Custom Challenge")
+            .headlineStyle()
+            .foregroundColor(.brandYellow)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.clear)
+        .overlay(
+          RoundedRectangle(cornerRadius: 16)
+            .stroke(Color.brandYellow, lineWidth: 1)
+        )
+      }
     }
     .padding(24)
     .background(Color.brandGray)
@@ -193,7 +229,7 @@ struct DailyChallengeView: View {
           Circle()
             .stroke(Color.brandGrayLight.opacity(0.3), lineWidth: 8)
             .frame(width: 80, height: 80)
-          
+
           // Progress circle with gradient
           Circle()
             .trim(from: 0, to: min(CGFloat(user.totalAura ?? 0) / 1000.0, 1.0))
@@ -208,7 +244,7 @@ struct DailyChallengeView: View {
             .frame(width: 80, height: 80)
             .rotationEffect(.degrees(-90))
             .animation(.easeInOut(duration: 1.0), value: user.totalAura ?? 0)
-          
+
           // Center text
           VStack(spacing: 2) {
             Text("\(user.totalAura ?? 0)")
@@ -230,7 +266,7 @@ struct DailyChallengeView: View {
               .bodyStyle()
               .foregroundColor(.white)
           }
-          
+
           HStack {
             Circle()
               .fill(Color.brandGreen)
@@ -239,7 +275,7 @@ struct DailyChallengeView: View {
               .bodyStyle()
               .foregroundColor(.white)
           }
-          
+
           if (user.totalAura ?? 0) < 1000 {
             Text("Next milestone: \(1000 - (user.totalAura ?? 0)) to go")
               .captionStyle()
@@ -250,7 +286,7 @@ struct DailyChallengeView: View {
               .foregroundColor(.brandGreen)
           }
         }
-        
+
         Spacer()
       }
     }
@@ -325,7 +361,7 @@ struct DailyChallengeView: View {
 
     do {
       let _ = try await challengeService.completeChallenge(challenge)
-      
+
       // The Cloud Function will handle updating user counters
       // We can refresh the user data to get the updated values
       if let uid = authService.uid {
@@ -338,7 +374,7 @@ struct DailyChallengeView: View {
         type: challenge.type.rawValue,
         difficulty: challenge.difficulty
       )
-      
+
       // Use current user for analytics after refresh
       if let user = authService.currentUser {
         AnalyticsService.shared.logStreakIncremented(streakCount: user.streakCount)
@@ -354,6 +390,13 @@ struct DailyChallengeView: View {
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
         withAnimation {
           showCompletionAnimation = false
+        }
+      }
+
+      // Show subtle upsell after completion (only for free users)
+      if !paywallService.isPro {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+          paywallService.showPaywallIfEligible()
         }
       }
 

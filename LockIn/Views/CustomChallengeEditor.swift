@@ -6,7 +6,6 @@ struct CustomChallengeEditor: View {
   @State private var challengeTitle = ""
   @State private var selectedType: ChallengeType = .wellness
   @State private var selectedDifficulty: Int = 1
-  @State private var isPresentingPaywall = false
 
   var body: some View {
     NavigationView {
@@ -125,9 +124,6 @@ struct CustomChallengeEditor: View {
       .navigationTitle("Custom Challenge")
       .navigationBarTitleDisplayMode(.inline)
       .preferredColorScheme(.dark)
-    }
-    .sheet(isPresented: $isPresentingPaywall) {
-      paywallService.createPaywallView()
     }
   }
 

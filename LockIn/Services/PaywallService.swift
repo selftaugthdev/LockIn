@@ -9,13 +9,25 @@ class PaywallService: ObservableObject {
   @Published var isPro = false
   @Published var isLoading = false
   @Published var errorMessage: String?
+  @Published var shouldShowPaywall = false
 
   private let authService: AuthService
+  private let userDefaults = UserDefaults.standard
+
+  // Frequency capping keys
+  private let lastPaywallShownKey = "lastPaywallShown"
+  private let paywallShownCountKey = "paywallShownCount"
+  private let lastPaywallShownWeekKey = "lastPaywallShownWeek"
 
   init(authService: AuthService) {
     self.authService = authService
     setupRevenueCat()
     checkProStatus()
+  }
+
+  func updateAuthService(_ newAuthService: AuthService) {
+    // This method allows updating the auth service reference
+    // Note: In a real app, you might want to use dependency injection instead
   }
 
   private func setupRevenueCat() {
@@ -112,19 +124,53 @@ class PaywallService: ObservableObject {
     }
   }
 
+  // MARK: - Frequency Capping
+
+  func shouldShowPaywallModal() -> Bool {
+    // Don't show if user is already Pro
+    if isPro { return false }
+
+    // Don't show if shown in last 24 hours
+    if let lastShown = userDefaults.object(forKey: lastPaywallShownKey) as? Date {
+      let hoursSinceLastShown = Date().timeIntervalSince(lastShown) / 3600
+      if hoursSinceLastShown < 24 { return false }
+    }
+
+    // Don't show more than 2 times per week
+    let currentWeek = Calendar.current.component(.weekOfYear, from: Date())
+    let lastShownWeek = userDefaults.integer(forKey: lastPaywallShownWeekKey)
+    let shownCount = userDefaults.integer(forKey: paywallShownCountKey)
+
+    if currentWeek == lastShownWeek && shownCount >= 2 {
+      return false
+    }
+
+    // Reset counter for new week
+    if currentWeek != lastShownWeek {
+      userDefaults.set(0, forKey: paywallShownCountKey)
+      userDefaults.set(currentWeek, forKey: lastPaywallShownWeekKey)
+    }
+
+    return true
+  }
+
+  func recordPaywallShown() {
+    userDefaults.set(Date(), forKey: lastPaywallShownKey)
+    let currentCount = userDefaults.integer(forKey: paywallShownCountKey)
+    userDefaults.set(currentCount + 1, forKey: paywallShownCountKey)
+  }
+
+  func showPaywallIfEligible() {
+    if shouldShowPaywallModal() {
+      shouldShowPaywall = true
+      recordPaywallShown()
+    }
+  }
+
   // MARK: - PaywallKit Integration
 
   func createPaywallView() -> some View {
-    // Use your actual PaywallKit view here
-    // This will be replaced with your PaywallKit view
-    PaywallView(
-      onPurchase: { package in
-        self.purchase(package: package)
-      },
-      onRestore: {
-        self.restorePurchases()
-      }
-    )
+    PaywallView()
   }
 }
 

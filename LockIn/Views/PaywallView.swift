@@ -159,7 +159,7 @@ struct PaywallView: View {
         Image(systemName: "checkmark.circle.fill")
           .foregroundColor(.brandGreen)
         Text(
-          "3-day free trial, then \(selectedPackage?.storeProduct.localizedPriceString ?? "$4.99")/month"
+          "3-day free trial, then \(selectedPackage?.storeProduct.localizedPriceString ?? "$3.99")/week"
         )
         .font(.caption)
         .foregroundColor(.secondary)
@@ -263,9 +263,10 @@ struct PackageRow: View {
     Button(action: onTap) {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
-          Text(package.storeProduct.localizedTitle)
-            .fontWeight(.semibold)
-            .foregroundColor(.white)
+          Text(packageTypeLabel(for: package.packageType))
+            .font(.title3)
+            .fontWeight(.bold)
+            .foregroundColor(.primary)
 
           Text(package.storeProduct.localizedDescription)
             .font(.caption)
@@ -276,10 +277,11 @@ struct PackageRow: View {
 
         VStack(alignment: .trailing, spacing: 4) {
           Text(package.storeProduct.localizedPriceString)
+            .font(.title2)
             .fontWeight(.bold)
             .foregroundColor(.brandYellow)
 
-          Text(packageTypeLabel(for: package.packageType))
+          Text(package.storeProduct.localizedTitle)
             .font(.caption2)
             .foregroundColor(.secondary)
         }

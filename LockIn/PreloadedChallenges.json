@@ -178,5 +178,365 @@
     "type": "productivity",
     "difficulty": 2,
     "dayIndex": 30
+  },
+  {
+    "title": "Take 5 deep breaths",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 31
+  },
+  {
+    "title": "Wake up at 5 AM",
+    "type": "self-discipline",
+    "difficulty": 3,
+    "dayIndex": 32
+  },
+  {
+    "title": "Write down 3 things you're grateful for",
+    "type": "gratitude",
+    "difficulty": 1,
+    "dayIndex": 33
+  },
+  {
+    "title": "Drink 3 litres of water today",
+    "type": "nutrition",
+    "difficulty": 2,
+    "dayIndex": 34
+  },
+  {
+    "title": "Walk 10,000 steps",
+    "type": "fitness",
+    "difficulty": 2,
+    "dayIndex": 35
+  },
+  {
+    "title": "Read 10 pages of a book",
+    "type": "productivity",
+    "difficulty": 1,
+    "dayIndex": 36
+  },
+  {
+    "title": "Avoid fast food for 24 hours",
+    "type": "nutrition",
+    "difficulty": 2,
+    "dayIndex": 37
+  },
+  {
+    "title": "Do a 20-minute bodyweight workout",
+    "type": "fitness",
+    "difficulty": 2,
+    "dayIndex": 38
+  },
+  {
+    "title": "Spend 15 minutes meditating",
+    "type": "mindfulness",
+    "difficulty": 2,
+    "dayIndex": 39
+  },
+  {
+    "title": "Journal your top 3 priorities for tomorrow",
+    "type": "productivity",
+    "difficulty": 1,
+    "dayIndex": 40
+  },
+  {
+    "title": "No added sugar today",
+    "type": "nutrition",
+    "difficulty": 3,
+    "dayIndex": 41
+  },
+  {
+    "title": "Go to bed by 9 PM",
+    "type": "self-discipline",
+    "difficulty": 2,
+    "dayIndex": 42
+  },
+  {
+    "title": "Do a 30-minute stretching or yoga session",
+    "type": "fitness",
+    "difficulty": 2,
+    "dayIndex": 43
+  },
+  {
+    "title": "Limit phone/social media to 30 min",
+    "type": "self-discipline",
+    "difficulty": 3,
+    "dayIndex": 44
+  },
+  {
+    "title": "Prepare a protein-rich meal",
+    "type": "nutrition",
+    "difficulty": 1,
+    "dayIndex": 45
+  },
+  {
+    "title": "Write a positive affirmation and repeat it 10×",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 46
+  },
+  {
+    "title": "Complete a 5-minute cold shower",
+    "type": "self-discipline",
+    "difficulty": 3,
+    "dayIndex": 47
+  },
+  {
+    "title": "Spend 20 minutes outside in nature",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 48
+  },
+  {
+    "title": "Perform 50 push-ups (can be broken up)",
+    "type": "fitness",
+    "difficulty": 3,
+    "dayIndex": 49
+  },
+  {
+    "title": "Write a short gratitude letter to someone",
+    "type": "gratitude",
+    "difficulty": 2,
+    "dayIndex": 50
+  },
+  {
+    "title": "Meal prep for the next day",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 51
+  },
+  {
+    "title": "Avoid alcohol today",
+    "type": "nutrition",
+    "difficulty": 2,
+    "dayIndex": 52
+  },
+  {
+    "title": "Track every calorie consumed today",
+    "type": "nutrition",
+    "difficulty": 3,
+    "dayIndex": 53
+  },
+  {
+    "title": "Do 100 bodyweight squats (break into sets)",
+    "type": "fitness",
+    "difficulty": 3,
+    "dayIndex": 54
+  },
+  {
+    "title": "Spend 10 minutes practicing deep breathing",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 55
+  },
+  {
+    "title": "Declutter one small area of your home",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 56
+  },
+  {
+    "title": "No excuses: Complete one postponed task",
+    "type": "self-discipline",
+    "difficulty": 2,
+    "dayIndex": 57
+  },
+  {
+    "title": "Plan your week ahead on paper or a calendar",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 58
+  },
+  {
+    "title": "Listen to a motivational podcast or talk",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 59
+  },
+  {
+    "title": "Do a 2-minute plank hold",
+    "type": "fitness",
+    "difficulty": 2,
+    "dayIndex": 60
+  },
+  {
+    "title": "Spend the evening without TV or streaming",
+    "type": "self-discipline",
+    "difficulty": 3,
+    "dayIndex": 61
+  },
+  {
+    "title": "Write down 5 long-term goals",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 62
+  },
+  {
+    "title": "Take a 20-minute walk without headphones",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 63
+  },
+  {
+    "title": "Do a full-body stretch routine",
+    "type": "fitness",
+    "difficulty": 1,
+    "dayIndex": 64
+  },
+  {
+    "title": "Prepare tomorrow's healthy snacks",
+    "type": "nutrition",
+    "difficulty": 1,
+    "dayIndex": 65
+  },
+  {
+    "title": "Write 3 affirmations for self-belief",
+    "type": "gratitude",
+    "difficulty": 1,
+    "dayIndex": 66
+  },
+  {
+    "title": "Avoid caffeine after noon",
+    "type": "nutrition",
+    "difficulty": 2,
+    "dayIndex": 67
+  },
+  {
+    "title": "Do a 10-minute HIIT workout",
+    "type": "fitness",
+    "difficulty": 3,
+    "dayIndex": 68
+  },
+  {
+    "title": "Write a to-do list and eliminate one distraction",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 69
+  },
+  {
+    "title": "Spend 30 minutes on a creative hobby",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 70
+  },
+  {
+    "title": "Complete a 3-minute wall sit",
+    "type": "fitness",
+    "difficulty": 2,
+    "dayIndex": 71
+  },
+  {
+    "title": "Drink only water or herbal tea today",
+    "type": "nutrition",
+    "difficulty": 2,
+    "dayIndex": 72
+  },
+  {
+    "title": "Compliment 3 people today",
+    "type": "gratitude",
+    "difficulty": 1,
+    "dayIndex": 73
+  },
+  {
+    "title": "Spend an hour phone-free",
+    "type": "self-discipline",
+    "difficulty": 2,
+    "dayIndex": 74
+  },
+  {
+    "title": "Take a 10-minute mindfulness walk",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 75
+  },
+  {
+    "title": "Do 25 burpees",
+    "type": "fitness",
+    "difficulty": 3,
+    "dayIndex": 76
+  },
+  {
+    "title": "Organize your workspace for productivity",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 77
+  },
+  {
+    "title": "Avoid snacking between meals",
+    "type": "nutrition",
+    "difficulty": 2,
+    "dayIndex": 78
+  },
+  {
+    "title": "Spend 10 minutes in silence",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 79
+  },
+  {
+    "title": "Write 3 things you admire about yourself",
+    "type": "gratitude",
+    "difficulty": 1,
+    "dayIndex": 80
+  },
+  {
+    "title": "Do a 15-minute core workout",
+    "type": "fitness",
+    "difficulty": 2,
+    "dayIndex": 81
+  },
+  {
+    "title": "Spend 30 minutes planning your meals",
+    "type": "productivity",
+    "difficulty": 2,
+    "dayIndex": 82
+  },
+  {
+    "title": "Unfollow 5 distracting social media accounts",
+    "type": "self-discipline",
+    "difficulty": 2,
+    "dayIndex": 83
+  },
+  {
+    "title": "Do a 5-minute breathing exercise before bed",
+    "type": "mindfulness",
+    "difficulty": 1,
+    "dayIndex": 84
+  },
+  {
+    "title": "Take the stairs all day instead of the elevator",
+    "type": "fitness",
+    "difficulty": 1,
+    "dayIndex": 85
+  },
+  {
+    "title": "Prep a balanced lunch for tomorrow",
+    "type": "nutrition",
+    "difficulty": 1,
+    "dayIndex": 86
+  },
+  {
+    "title": "Spend 20 minutes reading a self-improvement book",
+    "type": "productivity",
+    "difficulty": 1,
+    "dayIndex": 87
+  },
+  {
+    "title": "Write down 5 distractions to avoid this week",
+    "type": "self-discipline",
+    "difficulty": 2,
+    "dayIndex": 88
+  },
+  {
+    "title": "Do a random act of kindness today",
+    "type": "gratitude",
+    "difficulty": 1,
+    "dayIndex": 89
+  },
+  {
+    "title": "Reflect on your progress: write 3 lessons learned",
+    "type": "mindfulness",
+    "difficulty": 2,
+    "dayIndex": 90
   }
 ]

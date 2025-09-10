@@ -1,6 +1,5 @@
 import FirebaseFirestore
 import Foundation
-import PaywallKit
 import RevenueCat
 import SwiftUI
 
@@ -23,11 +22,6 @@ class PaywallService: ObservableObject {
     self.authService = authService
     setupRevenueCat()
     checkProStatus()
-  }
-
-  func updateAuthService(_ newAuthService: AuthService) {
-    // This method allows updating the auth service reference
-    // Note: In a real app, you might want to use dependency injection instead
   }
 
   private func setupRevenueCat() {

@@ -1,5 +1,5 @@
 {
-  "originHash" : "c63c63846d9c539229e96de38d6af51417e28c0ee9a0bc48bd0f0f19d923c329",
+  "originHash" : "4b743df442119740a6c6a43efd1b0d5013687d182168009a2e4746874b9cd53b",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -110,12 +110,30 @@
       }
     },
     {
+      "identity" : "paywallkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/selftaugthdev/PaywallKit",
+      "state" : {
+        "revision" : "1ec0720d87155ed3ab2101108c04485309ac1381",
+        "version" : "0.1.6"
+      }
+    },
+    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",
       "state" : {
         "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
         "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "purchases-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RevenueCat/purchases-ios.git",
+      "state" : {
+        "revision" : "48397460205ef4101c51f644a62cd1e6f9be463f",
+        "version" : "5.38.1"
       }
     },
     {

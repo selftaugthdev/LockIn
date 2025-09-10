@@ -22,17 +22,19 @@
 		E4AB29102E6F092A0024607D /* ChallengeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28FA2E6F092A0024607D /* ChallengeService.swift */; };
 		E4AB29112E6F092A0024607D /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F92E6F092A0024607D /* AuthService.swift */; };
 		E4AB29122E6F092A0024607D /* ShareService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28FC2E6F092A0024607D /* ShareService.swift */; };
-		E4AB291B2E6F092A0024607D /* UserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB291D2E6F092A0024607D /* UserRow.swift */; };
-		E4AB291C2E6F092A0024607D /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB291E2E6F092A0024607D /* LeaderboardService.swift */; };
 		E4AB29132E6F092A0024607D /* Typography.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F02E6F092A0024607D /* Typography.swift */; };
 		E4AB29142E6F092A0024607D /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */; };
 		E4AB29152E6F092A0024607D /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB29012E6F092A0024607D /* ProgressView.swift */; };
 		E4AB29172E6F092A0024607D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4AB29052E6F092A0024607D /* GoogleService-Info.plist */; };
 		E4AB29192E6F092A0024607D /* PreloadedChallenges.json in Resources */ = {isa = PBXBuildFile; fileRef = E4AB29062E6F092A0024607D /* PreloadedChallenges.json */; };
+		E4AB291B2E6F092A0024607D /* UserRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB291D2E6F092A0024607D /* UserRow.swift */; };
+		E4AB291C2E6F092A0024607D /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB291E2E6F092A0024607D /* LeaderboardService.swift */; };
 		E4AB291D2E6F11A10024607D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E4AB291C2E6F11A10024607D /* FirebaseAnalytics */; };
 		E4AB291F2E6F11A10024607D /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E4AB291E2E6F11A10024607D /* FirebaseAuth */; };
 		E4AB29212E6F11A10024607D /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E4AB29202E6F11A10024607D /* FirebaseCore */; };
 		E4AB29232E6F11A10024607D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E4AB29222E6F11A10024607D /* FirebaseFirestore */; };
+		E4C6FA292E70BCEB00233D7C /* PaywallKit in Frameworks */ = {isa = PBXBuildFile; productRef = E4C6FA282E70BCEB00233D7C /* PaywallKit */; };
+		E4C6FA2B2E70C5CC00233D7C /* LockIn.storekit in Resources */ = {isa = PBXBuildFile; fileRef = E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,8 +54,6 @@
 		E4AB28FA2E6F092A0024607D /* ChallengeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeService.swift; sourceTree = "<group>"; };
 		E4AB28FC2E6F092A0024607D /* ShareService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareService.swift; sourceTree = "<group>"; };
 		E4AB28FE2E6F092A0024607D /* DailyChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyChallengeView.swift; sourceTree = "<group>"; };
-		E4AB291D2E6F092A0024607D /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
-		E4AB291E2E6F092A0024607D /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
 		E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		E4AB29002E6F092A0024607D /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		E4AB29012E6F092A0024607D /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
@@ -61,6 +61,9 @@
 		E4AB29042E6F092A0024607D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E4AB29052E6F092A0024607D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E4AB29062E6F092A0024607D /* PreloadedChallenges.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = PreloadedChallenges.json; sourceTree = "<group>"; };
+		E4AB291D2E6F092A0024607D /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
+		E4AB291E2E6F092A0024607D /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
+		E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = LockIn.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +74,7 @@
 				E4AB291D2E6F11A10024607D /* FirebaseAnalytics in Frameworks */,
 				E4AB29232E6F11A10024607D /* FirebaseFirestore in Frameworks */,
 				E4AB29212E6F11A10024607D /* FirebaseCore in Frameworks */,
+				E4C6FA292E70BCEB00233D7C /* PaywallKit in Frameworks */,
 				E4AB291F2E6F11A10024607D /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +85,7 @@
 		E4689B6D2E6EE26B00A89328 = {
 			isa = PBXGroup;
 			children = (
+				E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */,
 				E4AB29072E6F092A0024607D /* LockIn */,
 				E4AB291A2E6F0CF80024607D /* Frameworks */,
 				E4689B772E6EE26B00A89328 /* Products */,
@@ -210,6 +215,7 @@
 				E4AB291E2E6F11A10024607D /* FirebaseAuth */,
 				E4AB29202E6F11A10024607D /* FirebaseCore */,
 				E4AB29222E6F11A10024607D /* FirebaseFirestore */,
+				E4C6FA282E70BCEB00233D7C /* PaywallKit */,
 			);
 			productName = LockIn;
 			productReference = E4689B762E6EE26B00A89328 /* LockIn.app */;
@@ -241,6 +247,7 @@
 			mainGroup = E4689B6D2E6EE26B00A89328;
 			packageReferences = (
 				E4AB291B2E6F11A10024607D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E4C6FA272E70BCEB00233D7C /* XCRemoteSwiftPackageReference "PaywallKit" */,
 			);
 			productRefGroup = E4689B772E6EE26B00A89328 /* Products */;
 			projectDirPath = "";
@@ -256,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4C6FA2B2E70C5CC00233D7C /* LockIn.storekit in Resources */,
 				E4689B812E6EE26B00A89328 /* Preview Assets.xcassets in Resources */,
 				E4689B7E2E6EE26B00A89328 /* Assets.xcassets in Resources */,
 				E4AB29172E6F092A0024607D /* GoogleService-Info.plist in Resources */,
@@ -423,6 +431,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"LockIn/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In Challenge";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -451,6 +460,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"LockIn/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In Challenge";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -501,6 +511,14 @@
 				minimumVersion = 12.2.0;
 			};
 		};
+		E4C6FA272E70BCEB00233D7C /* XCRemoteSwiftPackageReference "PaywallKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/selftaugthdev/PaywallKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -523,6 +541,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E4AB291B2E6F11A10024607D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		E4C6FA282E70BCEB00233D7C /* PaywallKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E4C6FA272E70BCEB00233D7C /* XCRemoteSwiftPackageReference "PaywallKit" */;
+			productName = PaywallKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

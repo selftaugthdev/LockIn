@@ -9,6 +9,8 @@ class PaywallService: ObservableObject {
   @Published var isLoading = false
   @Published var errorMessage: String?
   @Published var shouldShowPaywall = false
+  @Published var isPresentingPaywall = false
+  @Published var presentationReady = true
 
   private let authService: AuthService
   private let userDefaults = UserDefaults.standard
@@ -27,7 +29,7 @@ class PaywallService: ObservableObject {
   private func setupRevenueCat() {
     // Configure RevenueCat with your API key
     Purchases.logLevel = .debug
-    Purchases.configure(withAPIKey: "your_revenuecat_api_key_here")
+    Purchases.configure(withAPIKey: "appl_LzsdTlJaBclpBLwEMQEzdiQRvVW")
 
     // Set up user ID for RevenueCat
     if let userId = authService.uid {
@@ -155,9 +157,36 @@ class PaywallService: ObservableObject {
   }
 
   func showPaywallIfEligible() {
-    if shouldShowPaywallModal() {
-      shouldShowPaywall = true
-      recordPaywallShown()
+    if shouldShowPaywallModal() && !isPresentingPaywall {
+      // Add a small delay to prevent presentation conflicts
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        self.isPresentingPaywall = true
+        self.shouldShowPaywall = true
+        self.recordPaywallShown()
+      }
+    }
+  }
+
+  func safeShowPaywall() {
+    print("DEBUG: safeShowPaywall called")
+    print("DEBUG: isPresentingPaywall: \(isPresentingPaywall)")
+    print("DEBUG: presentationReady: \(presentationReady)")
+
+    if !isPresentingPaywall && presentationReady {
+      print("DEBUG: Safe to show paywall")
+      isPresentingPaywall = true
+
+      // Add a small delay to ensure TabView is stable
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        self.shouldShowPaywall = true
+      }
+    } else {
+      print("DEBUG: Not safe to show paywall, retrying in 0.5 seconds")
+      presentationReady = false
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        self.presentationReady = true
+        self.safeShowPaywall()
+      }
     }
   }
 
@@ -165,61 +194,5 @@ class PaywallService: ObservableObject {
 
   func createPaywallView() -> some View {
     PaywallView()
-  }
-}
-
-struct ProFeatureRow: View {
-  let icon: String
-  let title: String
-  let description: String
-
-  var body: some View {
-    HStack(spacing: 12) {
-      Image(systemName: icon)
-        .foregroundColor(.brandYellow)
-        .frame(width: 24)
-
-      VStack(alignment: .leading, spacing: 4) {
-        Text(title)
-          .fontWeight(.semibold)
-          .foregroundColor(.white)
-
-        Text(description)
-          .font(.caption)
-          .foregroundColor(.secondary)
-      }
-
-      Spacer()
-    }
-  }
-}
-
-// MARK: - Button Styles
-struct PrimaryButtonStyle: ButtonStyle {
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .foregroundColor(.brandInk)
-      .fontWeight(.semibold)
-      .frame(maxWidth: .infinity)
-      .padding()
-      .background(Color.brandYellow)
-      .cornerRadius(12)
-      .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-  }
-}
-
-struct SecondaryButtonStyle: ButtonStyle {
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .foregroundColor(.brandYellow)
-      .fontWeight(.medium)
-      .frame(maxWidth: .infinity)
-      .padding()
-      .background(Color.clear)
-      .overlay(
-        RoundedRectangle(cornerRadius: 12)
-          .stroke(Color.brandYellow, lineWidth: 1)
-      )
-      .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
   }
 }

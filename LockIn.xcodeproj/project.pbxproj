@@ -35,6 +35,10 @@
 		E4AB29232E6F11A10024607D /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E4AB29222E6F11A10024607D /* FirebaseFirestore */; };
 		E4C6FA292E70BCEB00233D7C /* PaywallKit in Frameworks */ = {isa = PBXBuildFile; productRef = E4C6FA282E70BCEB00233D7C /* PaywallKit */; };
 		E4C6FA2B2E70C5CC00233D7C /* LockIn.storekit in Resources */ = {isa = PBXBuildFile; fileRef = E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */; };
+		E4F5BB102E71B231001560F7 /* PaywallService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB0F2E71B231001560F7 /* PaywallService.swift */; };
+		E4F5BB142E71B257001560F7 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB122E71B257001560F7 /* PaywallView.swift */; };
+		E4F5BB152E71B257001560F7 /* CustomChallengeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */; };
+		E4F5BB162E71B257001560F7 /* ProCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB132E71B257001560F7 /* ProCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +68,10 @@
 		E4AB291D2E6F092A0024607D /* UserRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRow.swift; sourceTree = "<group>"; };
 		E4AB291E2E6F092A0024607D /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
 		E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = LockIn.storekit; sourceTree = "<group>"; };
+		E4F5BB0F2E71B231001560F7 /* PaywallService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallService.swift; sourceTree = "<group>"; };
+		E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChallengeEditor.swift; sourceTree = "<group>"; };
+		E4F5BB122E71B257001560F7 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		E4F5BB132E71B257001560F7 /* ProCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +147,7 @@
 		E4AB28FB2E6F092A0024607D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				E4F5BB0F2E71B231001560F7 /* PaywallService.swift */,
 				E4AB28F82E6F092A0024607D /* AnalyticsService.swift */,
 				E4AB28F92E6F092A0024607D /* AuthService.swift */,
 				E4AB28FA2E6F092A0024607D /* ChallengeService.swift */,
@@ -158,6 +167,9 @@
 		E4AB29032E6F092A0024607D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */,
+				E4F5BB122E71B257001560F7 /* PaywallView.swift */,
+				E4F5BB132E71B257001560F7 /* ProCard.swift */,
 				E4AB28FE2E6F092A0024607D /* DailyChallengeView.swift */,
 				E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */,
 				E4AB29002E6F092A0024607D /* OnboardingView.swift */,
@@ -281,6 +293,9 @@
 				E4689B7C2E6EE26B00A89328 /* ContentView.swift in Sources */,
 				E4689B7A2E6EE26B00A89328 /* LockInApp.swift in Sources */,
 				E4AB29082E6F092A0024607D /* Challenge.swift in Sources */,
+				E4F5BB142E71B257001560F7 /* PaywallView.swift in Sources */,
+				E4F5BB152E71B257001560F7 /* CustomChallengeEditor.swift in Sources */,
+				E4F5BB162E71B257001560F7 /* ProCard.swift in Sources */,
 				E4AB29092E6F092A0024607D /* Colors.swift in Sources */,
 				E4AB290A2E6F092A0024607D /* AnalyticsService.swift in Sources */,
 				E4AB290B2E6F092A0024607D /* SettingsView.swift in Sources */,
@@ -289,6 +304,7 @@
 				E4AB290E2E6F092A0024607D /* DailyChallengeView.swift in Sources */,
 				E4AB290F2E6F092A0024607D /* User.swift in Sources */,
 				E4AB29102E6F092A0024607D /* ChallengeService.swift in Sources */,
+				E4F5BB102E71B231001560F7 /* PaywallService.swift in Sources */,
 				E4AB29112E6F092A0024607D /* AuthService.swift in Sources */,
 				E4AB29122E6F092A0024607D /* ShareService.swift in Sources */,
 				E4AB291B2E6F092A0024607D /* UserRow.swift in Sources */,

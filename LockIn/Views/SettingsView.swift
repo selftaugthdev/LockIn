@@ -2,9 +2,10 @@ import SwiftUI
 
 struct SettingsView: View {
   @EnvironmentObject var authService: AuthService
-  // @EnvironmentObject var paywallService: PaywallService
+  @EnvironmentObject var paywallService: PaywallService
   @State private var showingSignOutAlert = false
   @State private var showingCustomChallengeEditor = false
+  @State private var showingPaywall = false
 
   var body: some View {
     NavigationView {
@@ -58,12 +59,12 @@ struct SettingsView: View {
         }
       }
     }
-    // .sheet(isPresented: $showingCustomChallengeEditor) {
-    //   CustomChallengeEditor()
-    // }
-    // .sheet(isPresented: $paywallService.shouldShowPaywall) {
-    //   PaywallView()
-    // }
+    .sheet(isPresented: $showingCustomChallengeEditor) {
+      CustomChallengeEditor()
+    }
+    .sheet(isPresented: $showingPaywall) {
+      PaywallView()
+    }
   }
 
   private func userInfoCard(_ user: User) -> some View {
@@ -163,7 +164,8 @@ struct SettingsView: View {
 
       Button("Upgrade to Pro") {
         AnalyticsService.shared.logPremiumView()
-        // paywallService.shouldShowPaywall = true
+        print("DEBUG: Upgrade to Pro button tapped")
+        showingPaywall = true
       }
       .frame(maxWidth: .infinity)
       .padding()

@@ -3,7 +3,7 @@ import SwiftUI
 struct DailyChallengeView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
-  // @EnvironmentObject var paywallService: PaywallService
+  @EnvironmentObject var paywallService: PaywallService
   @State private var isCompleting = false
   @State private var showCompletionAnimation = false
   @State private var showingCustomEditor = false
@@ -24,9 +24,9 @@ struct DailyChallengeView: View {
               challengeCard(challenge)
 
               // Pro Card (only show to free users)
-              // if !paywallService.isPro {
-              //   ProCard()
-              // }
+              if !paywallService.isPro {
+                ProCard()
+              }
             } else if challengeService.isLoading {
               loadingView
             } else {
@@ -51,12 +51,18 @@ struct DailyChallengeView: View {
     .task {
       await challengeService.loadTodaysChallenge()
     }
-    // .sheet(isPresented: $showingCustomEditor) {
-    //   CustomChallengeEditor()
-    // }
-    // .sheet(isPresented: $paywallService.shouldShowPaywall) {
-    //   PaywallView()
-    // }
+    .sheet(isPresented: $showingCustomEditor) {
+      CustomChallengeEditor()
+    }
+    .fullScreenCover(isPresented: $paywallService.shouldShowPaywall) {
+      PaywallView()
+    }
+    .onChange(of: paywallService.shouldShowPaywall) { _, newValue in
+      if !newValue {
+        paywallService.isPresentingPaywall = false
+        paywallService.presentationReady = true
+      }
+    }
   }
 
   // MARK: - Header Section
@@ -138,12 +144,11 @@ struct DailyChallengeView: View {
 
       // Create Custom Challenge Button
       Button(action: {
-        // if paywallService.isPro {
-        //   showingCustomEditor = true
-        // } else {
-        //   paywallService.shouldShowPaywall = true
-        // }
-        showingCustomEditor = true
+        if paywallService.isPro {
+          showingCustomEditor = true
+        } else {
+          paywallService.safeShowPaywall()
+        }
       }) {
         HStack {
           Image(systemName: "plus.circle.fill")
@@ -395,11 +400,11 @@ struct DailyChallengeView: View {
       }
 
       // Show subtle upsell after completion (only for free users)
-      // if !paywallService.isPro {
-      //   DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-      //     paywallService.showPaywallIfEligible()
-      //   }
-      // }
+      if !paywallService.isPro {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+          paywallService.showPaywallIfEligible()
+        }
+      }
 
     } catch {
       print("Error completing challenge: \(error)")

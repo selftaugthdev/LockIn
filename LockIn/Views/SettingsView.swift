@@ -58,9 +58,9 @@ struct SettingsView: View {
         }
       }
     }
-    .sheet(isPresented: $showingCustomChallengeEditor) {
-      CustomChallengeEditor()
-    }
+    // .sheet(isPresented: $showingCustomChallengeEditor) {
+    //   CustomChallengeEditor()
+    // }
     // .sheet(isPresented: $paywallService.shouldShowPaywall) {
     //   PaywallView()
     // }
@@ -156,46 +156,20 @@ struct SettingsView: View {
         Spacer()
       }
 
-      // if paywallService.isPro {
-        Text("You have access to all premium features!")
-          .bodyStyle()
-          .foregroundColor(.brandGreen)
-          .multilineTextAlignment(.leading)
+      Text("Unlock custom challenges, advanced analytics, and premium themes")
+        .bodyStyle()
+        .foregroundColor(.secondary)
+        .multilineTextAlignment(.leading)
 
-        // Pro Features
-        VStack(spacing: 12) {
-          ProFeatureButton(
-            icon: "plus.circle",
-            title: "Custom Challenge Editor",
-            description: "Create your own challenges"
-          ) {
-            // TODO: Implement when PaywallService is added to project
-          }
-
-          ProFeatureButton(
-            icon: "chart.bar",
-            title: "Advanced Analytics",
-            description: "Detailed progress insights"
-          ) {
-            // TODO: Navigate to advanced analytics
-          }
-        }
-      } else {
-        Text("Unlock custom challenges, advanced analytics, and premium themes")
-          .bodyStyle()
-          .foregroundColor(.secondary)
-          .multilineTextAlignment(.leading)
-
-        Button("Upgrade to Pro") {
-          AnalyticsService.shared.logPremiumView()
-          // paywallService.shouldShowPaywall = true
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.brandYellow)
-        .foregroundColor(.brandInk)
-        .cornerRadius(12)
+      Button("Upgrade to Pro") {
+        AnalyticsService.shared.logPremiumView()
+        // paywallService.shouldShowPaywall = true
       }
+      .frame(maxWidth: .infinity)
+      .padding()
+      .background(Color.brandYellow)
+      .foregroundColor(.brandInk)
+      .cornerRadius(12)
     }
     .padding(20)
     .background(Color.brandGray)

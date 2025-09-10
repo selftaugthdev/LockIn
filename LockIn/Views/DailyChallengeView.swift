@@ -51,9 +51,9 @@ struct DailyChallengeView: View {
     .task {
       await challengeService.loadTodaysChallenge()
     }
-    .sheet(isPresented: $showingCustomEditor) {
-      CustomChallengeEditor()
-    }
+    // .sheet(isPresented: $showingCustomEditor) {
+    //   CustomChallengeEditor()
+    // }
     // .sheet(isPresented: $paywallService.shouldShowPaywall) {
     //   PaywallView()
     // }

@@ -242,7 +242,10 @@ struct PaywallView: View {
       if let currentOffering = offerings.current {
         await MainActor.run {
           self.packages = currentOffering.availablePackages
-          self.selectedPackage = currentOffering.availablePackages.first
+          // Prefer weekly package, fallback to first available
+          self.selectedPackage =
+            currentOffering.availablePackages.first { $0.packageType == .weekly }
+            ?? currentOffering.availablePackages.first
         }
       }
     } catch {
@@ -276,11 +279,9 @@ struct PackageRow: View {
             .fontWeight(.bold)
             .foregroundColor(.brandYellow)
 
-          if package.packageType == .monthly {
-            Text("per month")
-              .font(.caption2)
-              .foregroundColor(.secondary)
-          }
+          Text(packageTypeLabel(for: package.packageType))
+            .font(.caption2)
+            .foregroundColor(.secondary)
         }
 
         Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
@@ -295,6 +296,31 @@ struct PackageRow: View {
               .stroke(isSelected ? Color.brandYellow : Color.clear, lineWidth: 1)
           )
       )
+    }
+  }
+
+  private func packageTypeLabel(for packageType: PackageType) -> String {
+    switch packageType {
+    case .annual:
+      return "Yearly"
+    case .monthly:
+      return "Monthly"
+    case .weekly:
+      return "Weekly"
+    case .twoMonth:
+      return "2 Months"
+    case .threeMonth:
+      return "3 Months"
+    case .sixMonth:
+      return "6 Months"
+    case .lifetime:
+      return "Lifetime"
+    case .custom:
+      return "Custom"
+    case .unknown:
+      return "Unknown"
+    @unknown default:
+      return "Unknown"
     }
   }
 }

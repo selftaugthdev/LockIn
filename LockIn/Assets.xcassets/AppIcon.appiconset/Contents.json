@@ -67,7 +67,6 @@
       "size" : "64x64"
     },
     {
-      "filename" : "Logo Lock In Challenge 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "3x",
@@ -80,14 +79,12 @@
       "size" : "68x68"
     },
     {
-      "filename" : "Logo Lock In Challenge 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",
       "size" : "76x76"
     },
     {
-      "filename" : "Logo Lock In Challenge.png",
       "idiom" : "universal",
       "platform" : "ios",
       "scale" : "2x",

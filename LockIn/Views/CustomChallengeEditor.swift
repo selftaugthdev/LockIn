@@ -2,10 +2,13 @@ import FirebaseFirestore
 import SwiftUI
 
 struct CustomChallengeEditor: View {
-  // @EnvironmentObject var paywallService: PaywallService
+  @EnvironmentObject var challengeService: ChallengeService
+  @Environment(\.dismiss) private var dismiss
   @State private var challengeTitle = ""
   @State private var selectedType: ChallengeType = .wellness
   @State private var selectedDifficulty: Int = 1
+  @State private var isCreating = false
+  @State private var showSuccess = false
 
   var body: some View {
     NavigationView {
@@ -104,17 +107,28 @@ struct CustomChallengeEditor: View {
           // Create Button
           Button(action: createChallenge) {
             HStack {
-              Image(systemName: "plus.circle.fill")
-              Text("Create Challenge")
+              if isCreating {
+                ProgressView()
+                  .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
+                  .scaleEffect(0.8)
+              } else if showSuccess {
+                Image(systemName: "checkmark.circle.fill")
+              } else {
+                Image(systemName: "plus.circle.fill")
+              }
+
+              Text(
+                showSuccess ? "Challenge Created!" : isCreating ? "Creating..." : "Create Challenge"
+              )
             }
             .foregroundColor(.brandInk)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity)
             .padding()
-            .background(Color.brandYellow)
+            .background(showSuccess ? Color.green : Color.brandYellow)
             .cornerRadius(16)
           }
-          .disabled(challengeTitle.isEmpty)
+          .disabled(challengeTitle.isEmpty || isCreating || showSuccess)
           .opacity(challengeTitle.isEmpty ? 0.6 : 1.0)
 
           Spacer()
@@ -137,9 +151,34 @@ struct CustomChallengeEditor: View {
   }
 
   private func createChallenge() {
-    // This is where you'd save the custom challenge
-    // For now, just show a success message
-    print("Creating custom challenge: \(challengeTitle)")
+    guard !challengeTitle.isEmpty else { return }
+
+    isCreating = true
+
+    Task {
+      do {
+        let _ = try await challengeService.createCustomChallenge(
+          title: challengeTitle,
+          type: selectedType,
+          difficulty: selectedDifficulty
+        )
+
+        await MainActor.run {
+          isCreating = false
+          showSuccess = true
+
+          // Auto-dismiss after success
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            dismiss()
+          }
+        }
+      } catch {
+        await MainActor.run {
+          isCreating = false
+          print("Error creating custom challenge: \(error)")
+        }
+      }
+    }
   }
 }
 

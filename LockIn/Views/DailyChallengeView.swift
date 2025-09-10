@@ -7,6 +7,7 @@ struct DailyChallengeView: View {
   @State private var isCompleting = false
   @State private var showCompletionAnimation = false
   @State private var showingCustomEditor = false
+  @State private var showingChallengeSelection = false
 
   var body: some View {
     NavigationView {
@@ -53,6 +54,9 @@ struct DailyChallengeView: View {
     }
     .sheet(isPresented: $showingCustomEditor) {
       CustomChallengeEditor()
+    }
+    .sheet(isPresented: $showingChallengeSelection) {
+      ChallengeSelectionView()
     }
     .fullScreenCover(isPresented: $paywallService.shouldShowPaywall) {
       PaywallView()
@@ -141,6 +145,25 @@ struct DailyChallengeView: View {
       }
       .disabled(isCompleting || isChallengeCompleted(challenge))
       .opacity(isChallengeCompleted(challenge) ? 0.6 : 1.0)
+
+      // Choose Challenges Button
+      Button(action: {
+        showingChallengeSelection = true
+      }) {
+        HStack {
+          Image(systemName: "list.bullet.circle.fill")
+          Text("Choose Challenges")
+            .headlineStyle()
+            .foregroundColor(.brandYellow)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.clear)
+        .overlay(
+          RoundedRectangle(cornerRadius: 16)
+            .stroke(Color.brandYellow, lineWidth: 1)
+        )
+      }
 
       // Create Custom Challenge Button
       Button(action: {

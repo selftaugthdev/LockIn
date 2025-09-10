@@ -39,6 +39,7 @@
 		E4F5BB142E71B257001560F7 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB122E71B257001560F7 /* PaywallView.swift */; };
 		E4F5BB152E71B257001560F7 /* CustomChallengeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */; };
 		E4F5BB162E71B257001560F7 /* ProCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB132E71B257001560F7 /* ProCard.swift */; };
+		E4F5BB182E71FDE6001560F7 /* ChallengeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChallengeEditor.swift; sourceTree = "<group>"; };
 		E4F5BB122E71B257001560F7 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		E4F5BB132E71B257001560F7 /* ProCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCard.swift; sourceTree = "<group>"; };
+		E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 		E4689B6D2E6EE26B00A89328 = {
 			isa = PBXGroup;
 			children = (
+				E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */,
 				E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */,
 				E4AB29072E6F092A0024607D /* LockIn */,
 				E4AB291A2E6F0CF80024607D /* Frameworks */,
@@ -300,6 +303,7 @@
 				E4AB290A2E6F092A0024607D /* AnalyticsService.swift in Sources */,
 				E4AB290B2E6F092A0024607D /* SettingsView.swift in Sources */,
 				E4AB290C2E6F092A0024607D /* Completion.swift in Sources */,
+				E4F5BB182E71FDE6001560F7 /* ChallengeSelectionView.swift in Sources */,
 				E4AB290D2E6F092A0024607D /* OnboardingView.swift in Sources */,
 				E4AB290E2E6F092A0024607D /* DailyChallengeView.swift in Sources */,
 				E4AB290F2E6F092A0024607D /* User.swift in Sources */,
@@ -447,7 +451,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"LockIn/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In Challenge";
+				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -476,7 +480,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"LockIn/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In Challenge";
+				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

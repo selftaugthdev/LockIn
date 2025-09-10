@@ -69,8 +69,8 @@ struct ProCard: View {
             Text("Unlock Pro")
               .fontWeight(.semibold)
 
-            // 3-day trial badge
-            Text("3-day trial")
+            // 3-day free trial badge
+            Text("3-day free trial")
               .font(.caption)
               .fontWeight(.medium)
               .padding(.horizontal, 8)

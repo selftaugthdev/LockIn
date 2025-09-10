@@ -73,7 +73,7 @@
 		E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChallengeEditor.swift; sourceTree = "<group>"; };
 		E4F5BB122E71B257001560F7 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		E4F5BB132E71B257001560F7 /* ProCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCard.swift; sourceTree = "<group>"; };
-		E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSelectionView.swift; sourceTree = "<group>"; };
+		E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LockIn/Views/ChallengeSelectionView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +95,6 @@
 		E4689B6D2E6EE26B00A89328 = {
 			isa = PBXGroup;
 			children = (
-				E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */,
 				E4C6FA2A2E70C55F00233D7C /* LockIn.storekit */,
 				E4AB29072E6F092A0024607D /* LockIn */,
 				E4AB291A2E6F0CF80024607D /* Frameworks */,
@@ -185,6 +184,7 @@
 		E4AB29072E6F092A0024607D /* LockIn */ = {
 			isa = PBXGroup;
 			children = (
+				E4F5BB192E721676001560F7 /* ChallengeSelectionView.swift */,
 				E4689B792E6EE26B00A89328 /* LockInApp.swift */,
 				E4689B7B2E6EE26B00A89328 /* ContentView.swift */,
 				E4689B7D2E6EE26B00A89328 /* Assets.xcassets */,

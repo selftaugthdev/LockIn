@@ -7,6 +7,8 @@ struct ChallengeSelectionView: View {
   @State private var searchText = ""
   @State private var selectedType: ChallengeType? = nil
   @State private var showingCustomEditor = false
+  @State private var showingLimitReachedAlert = false
+  @State private var showFreeProBanner = false
 
   private var filteredChallenges: [Challenge] {
     var challenges = challengeService.availableChallenges
@@ -34,15 +36,23 @@ struct ChallengeSelectionView: View {
         Color.brandInk
           .ignoresSafeArea()
 
-        VStack(spacing: 0) {
-          // Header
-          headerSection
+        ScrollView {
+          VStack(spacing: 16) {
+            // Header
+            headerSection
 
-          // Filters
-          filtersSection
+            // Free vs Pro Banner (only show when free user has 1 challenge selected)
+            if showFreeProBanner {
+              freeProBanner
+            }
 
-          // Challenge List
-          challengesList
+            // Filters
+            filtersSection
+
+            // Challenge List
+            challengesListContent
+          }
+          .padding(.top, 8)
         }
       }
       .navigationTitle("Choose Challenges")
@@ -70,6 +80,18 @@ struct ChallengeSelectionView: View {
     }
     .sheet(isPresented: $showingCustomEditor) {
       CustomChallengeEditor()
+    }
+    .alert("Challenge Limit Reached", isPresented: $showingLimitReachedAlert) {
+      Button("Upgrade to Pro") {
+        // Dismiss this view and show paywall
+        dismiss()
+        // The paywall will be shown from the parent view
+      }
+      Button("Cancel", role: .cancel) {}
+    } message: {
+      Text(
+        "Free users can only select 1 challenge per day. Upgrade to Pro to choose unlimited challenges and create custom ones!"
+      )
     }
   }
 
@@ -116,6 +138,45 @@ struct ChallengeSelectionView: View {
     .padding()
   }
 
+  private var freeProBanner: some View {
+    HStack(spacing: 12) {
+      VStack(alignment: .leading, spacing: 4) {
+        Text("Free: Pick 1 challenge daily · Pro: Pick multiple & create your own.")
+          .font(.caption)
+          .foregroundColor(.secondary)
+        Text("Try Pro For FREE For 3 Days")
+          .font(.caption)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow)
+      }
+      Spacer()
+      Button("Try Pro FREE") {
+        dismiss()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          paywallService.safeShowPaywall()
+        }
+      }
+      .font(.caption)
+      .fontWeight(.semibold)
+      .foregroundColor(.brandInk)
+      .padding(.horizontal, 12)
+      .padding(.vertical, 6)
+      .background(Color.brandYellow)
+      .cornerRadius(8)
+    }
+    .padding(.horizontal)
+    .padding(.vertical, 12)
+    .background(
+      RoundedRectangle(cornerRadius: 12)
+        .fill(Color.brandGray.opacity(0.5))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12)
+            .stroke(Color.brandYellow.opacity(0.3), lineWidth: 1)
+        )
+    )
+    .padding(.horizontal)
+  }
+
   private var filtersSection: some View {
     ScrollView(.horizontal, showsIndicators: false) {
       HStack(spacing: 12) {
@@ -139,24 +200,34 @@ struct ChallengeSelectionView: View {
     }
   }
 
-  private var challengesList: some View {
-    ScrollView {
-      LazyVStack(spacing: 12) {
-        ForEach(filteredChallenges) { challenge in
-          ChallengeSelectionRow(
-            challenge: challenge,
-            isSelected: challengeService.selectedChallenges.contains { $0.id == challenge.id },
-            canSelect: paywallService.isPro || challengeService.selectedChallenges.count < 1,
-            onTap: {
-              Task {
-                await toggleChallengeSelection(challenge)
-              }
-            }
-          )
-        }
+  private var challengesListContent: some View {
+    LazyVStack(spacing: 12) {
+      ForEach(filteredChallenges) { challenge in
+        let canSelect = paywallService.isPro || challengeService.selectedChallenges.count < 1
+        ChallengeSelectionRow(
+          challenge: challenge,
+          isSelected: challengeService.selectedChallenges.contains { $0.id == challenge.id },
+          canSelect: canSelect,
+          onTap: { attemptSelect(challenge) }
+        )
       }
-      .padding()
     }
+    .padding()
+  }
+
+  private func attemptSelect(_ challenge: Challenge) {
+    let alreadySelected = challengeService.selectedChallenges.contains { $0.id == challenge.id }
+
+    // Free user trying to add a second challenge
+    if !paywallService.isPro && !alreadySelected && challengeService.selectedChallenges.count >= 1 {
+      withAnimation { showFreeProBanner = true }
+      UINotificationFeedbackGenerator().notificationOccurred(.warning)
+      // (Optional) also show the alert or paywall here if you like
+      // showingLimitReachedAlert = true
+      return
+    }
+
+    Task { await toggleChallengeSelection(challenge) }
   }
 
   private func toggleChallengeSelection(_ challenge: Challenge) async {
@@ -165,8 +236,18 @@ struct ChallengeSelectionView: View {
     do {
       if isSelected {
         try await challengeService.deselectChallenge(challenge)
+        // Hide banner when deselecting
+        await MainActor.run {
+          showFreeProBanner = false
+        }
       } else {
         try await challengeService.selectChallenge(challenge, isPro: paywallService.isPro)
+      }
+    } catch ChallengeError.limitReached {
+      // Show banner and alert for free users who try to select more than 1 challenge
+      await MainActor.run {
+        showFreeProBanner = true
+        showingLimitReachedAlert = true
       }
     } catch {
       print("Error toggling challenge selection: \(error)")
@@ -241,6 +322,13 @@ struct ChallengeSelectionRow: View {
             .foregroundColor(.brandYellow)
             .font(.title3)
         }
+
+        // Lock icon for greyed out rows
+        if !canSelect && !isSelected {
+          Image(systemName: "lock.fill")
+            .foregroundColor(.secondary)
+            .font(.caption)
+        }
       }
       .padding()
       .background(
@@ -252,7 +340,6 @@ struct ChallengeSelectionRow: View {
           )
       )
     }
-    .disabled(!canSelect && !isSelected)
     .opacity((!canSelect && !isSelected) ? 0.5 : 1.0)
   }
 }

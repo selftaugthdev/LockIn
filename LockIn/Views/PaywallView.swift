@@ -308,7 +308,7 @@ struct PackageRow: View {
     case .monthly:
       return "Monthly"
     case .weekly:
-      return "Weekly"
+      return "Weekly (With a 3-day Free Trial)"
     case .twoMonth:
       return "2 Months"
     case .threeMonth:

@@ -8,6 +8,7 @@ struct DailyChallengeView: View {
   @State private var showCompletionAnimation = false
   @State private var showingCustomEditor = false
   @State private var showingChallengeSelection = false
+  @State private var showingMoreOptions = false
 
   var body: some View {
     NavigationView {
@@ -66,6 +67,24 @@ struct DailyChallengeView: View {
         paywallService.isPresentingPaywall = false
         paywallService.presentationReady = true
       }
+    }
+    .actionSheet(isPresented: $showingMoreOptions) {
+      ActionSheet(
+        title: Text("More Options"),
+        buttons: [
+          .default(Text("Choose Challenges")) {
+            showingChallengeSelection = true
+          },
+          .default(Text("Create Custom Challenge")) {
+            if paywallService.isPro {
+              showingCustomEditor = true
+            } else {
+              paywallService.safeShowPaywall()
+            }
+          },
+          .cancel(),
+        ]
+      )
     }
   }
 
@@ -146,37 +165,17 @@ struct DailyChallengeView: View {
       .disabled(isCompleting || isChallengeCompleted(challenge))
       .opacity(isChallengeCompleted(challenge) ? 0.6 : 1.0)
 
-      // Choose Challenges Button
+      // More Options Button
       Button(action: {
-        showingChallengeSelection = true
+        showingMoreOptions = true
       }) {
         HStack {
-          Image(systemName: "list.bullet.circle.fill")
-          Text("Choose Challenges")
+          Image(systemName: "ellipsis.circle.fill")
+          Text("More Options")
             .headlineStyle()
             .foregroundColor(.brandYellow)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.clear)
-        .overlay(
-          RoundedRectangle(cornerRadius: 16)
-            .stroke(Color.brandYellow, lineWidth: 1)
-        )
-      }
-
-      // Create Custom Challenge Button
-      Button(action: {
-        if paywallService.isPro {
-          showingCustomEditor = true
-        } else {
-          paywallService.safeShowPaywall()
-        }
-      }) {
-        HStack {
-          Image(systemName: "plus.circle.fill")
-          Text("Create Custom Challenge")
-            .headlineStyle()
+          Image(systemName: "chevron.down")
+            .font(.caption)
             .foregroundColor(.brandYellow)
         }
         .frame(maxWidth: .infinity)

@@ -2,7 +2,7 @@ import FirebaseFirestore
 import SwiftUI
 
 struct CustomChallengeEditor: View {
-  @EnvironmentObject var paywallService: PaywallService
+  // @EnvironmentObject var paywallService: PaywallService
   @State private var challengeTitle = ""
   @State private var selectedType: ChallengeType = .wellness
   @State private var selectedDifficulty: Int = 1

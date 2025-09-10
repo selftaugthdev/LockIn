@@ -3,27 +3,28 @@ import SwiftUI
 struct ContentView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
-  @State private var paywallService: PaywallService?
+  // @State private var paywallService: PaywallService?
 
   var body: some View {
     Group {
       if authService.isAuthenticated && !authService.forceOnboarding {
-        if let paywallService = paywallService {
-          MainTabView()
-            .environmentObject(paywallService)
-        } else {
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
-        }
+        MainTabView()
+        // if let paywallService = paywallService {
+        //   MainTabView()
+        //     .environmentObject(paywallService)
+        // } else {
+        //   ProgressView()
+        //     .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
+        // }
       } else {
         OnboardingView()
       }
     }
-    .onAppear {
-      if paywallService == nil {
-        paywallService = PaywallService(authService: authService)
-      }
-    }
+    // .onAppear {
+    //   if paywallService == nil {
+    //     paywallService = PaywallService(authService: authService)
+    //   }
+    // }
   }
 }
 

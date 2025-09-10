@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
   @EnvironmentObject var authService: AuthService
-  @EnvironmentObject var paywallService: PaywallService
+  // @EnvironmentObject var paywallService: PaywallService
   @State private var showingSignOutAlert = false
   @State private var showingCustomChallengeEditor = false
 
@@ -61,9 +61,9 @@ struct SettingsView: View {
     .sheet(isPresented: $showingCustomChallengeEditor) {
       CustomChallengeEditor()
     }
-    .sheet(isPresented: $paywallService.shouldShowPaywall) {
-      PaywallView()
-    }
+    // .sheet(isPresented: $paywallService.shouldShowPaywall) {
+    //   PaywallView()
+    // }
   }
 
   private func userInfoCard(_ user: User) -> some View {
@@ -148,21 +148,15 @@ struct SettingsView: View {
   private var premiumSection: some View {
     VStack(spacing: 16) {
       HStack {
-        Image(systemName: paywallService.isPro ? "crown.fill" : "crown")
+        Image(systemName: "crown")
           .foregroundColor(.brandYellow)
-        Text(paywallService.isPro ? "Pro Active" : "Premium")
+        Text("Premium")
           .headlineStyle()
           .foregroundColor(.white)
         Spacer()
-
-        if paywallService.isPro {
-          Text("✓")
-            .foregroundColor(.brandGreen)
-            .fontWeight(.bold)
-        }
       }
 
-      if paywallService.isPro {
+      // if paywallService.isPro {
         Text("You have access to all premium features!")
           .bodyStyle()
           .foregroundColor(.brandGreen)
@@ -194,7 +188,7 @@ struct SettingsView: View {
 
         Button("Upgrade to Pro") {
           AnalyticsService.shared.logPremiumView()
-          paywallService.shouldShowPaywall = true
+          // paywallService.shouldShowPaywall = true
         }
         .frame(maxWidth: .infinity)
         .padding()

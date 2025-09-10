@@ -3,7 +3,7 @@ import SwiftUI
 struct DailyChallengeView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
-  @EnvironmentObject var paywallService: PaywallService
+  // @EnvironmentObject var paywallService: PaywallService
   @State private var isCompleting = false
   @State private var showCompletionAnimation = false
   @State private var showingCustomEditor = false
@@ -24,9 +24,9 @@ struct DailyChallengeView: View {
               challengeCard(challenge)
 
               // Pro Card (only show to free users)
-              if !paywallService.isPro {
-                ProCard()
-              }
+              // if !paywallService.isPro {
+              //   ProCard()
+              // }
             } else if challengeService.isLoading {
               loadingView
             } else {
@@ -54,9 +54,9 @@ struct DailyChallengeView: View {
     .sheet(isPresented: $showingCustomEditor) {
       CustomChallengeEditor()
     }
-    .sheet(isPresented: $paywallService.shouldShowPaywall) {
-      PaywallView()
-    }
+    // .sheet(isPresented: $paywallService.shouldShowPaywall) {
+    //   PaywallView()
+    // }
   }
 
   // MARK: - Header Section
@@ -138,11 +138,12 @@ struct DailyChallengeView: View {
 
       // Create Custom Challenge Button
       Button(action: {
-        if paywallService.isPro {
-          showingCustomEditor = true
-        } else {
-          paywallService.shouldShowPaywall = true
-        }
+        // if paywallService.isPro {
+        //   showingCustomEditor = true
+        // } else {
+        //   paywallService.shouldShowPaywall = true
+        // }
+        showingCustomEditor = true
       }) {
         HStack {
           Image(systemName: "plus.circle.fill")
@@ -394,11 +395,11 @@ struct DailyChallengeView: View {
       }
 
       // Show subtle upsell after completion (only for free users)
-      if !paywallService.isPro {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-          paywallService.showPaywallIfEligible()
-        }
-      }
+      // if !paywallService.isPro {
+      //   DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      //     paywallService.showPaywallIfEligible()
+      //   }
+      // }
 
     } catch {
       print("Error completing challenge: \(error)")

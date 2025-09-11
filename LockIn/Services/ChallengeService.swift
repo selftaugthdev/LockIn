@@ -12,6 +12,7 @@ class ChallengeService: ObservableObject {
 
   private let db = Firestore.firestore()
   private let auth: AuthService
+  private lazy var reminderService = ReminderService()
   private var preloadedChallenges: [Challenge] = []
 
   init(auth: AuthService) {
@@ -25,25 +26,18 @@ class ChallengeService: ObservableObject {
     isLoading = true
     errorMessage = nil
 
-    do {
-      // Load available challenges (preloaded + custom)
-      await loadAvailableChallenges()
+    // Load available challenges (preloaded + custom)
+    await loadAvailableChallenges()
 
-      // Load user's selected challenges for today
-      await loadSelectedChallenges()
+    // Load user's selected challenges for today
+    await loadSelectedChallenges()
 
-      // Set today's challenge (first selected or default)
-      if let firstSelected = selectedChallenges.first {
-        todaysChallenge = firstSelected
-      } else {
-        // For free users, show a default challenge
-        todaysChallenge = availableChallenges.first
-      }
-    } catch {
-      print("Error loading today's challenge: \(error)")
-      errorMessage = "Failed to load today's challenge"
-      // Fallback to preloaded
-      todaysChallenge = preloadedChallenges.first
+    // Set today's challenge (first selected or default)
+    if let firstSelected = selectedChallenges.first {
+      todaysChallenge = firstSelected
+    } else {
+      // For free users, show a default challenge
+      todaysChallenge = availableChallenges.first
     }
 
     isLoading = false
@@ -122,6 +116,13 @@ class ChallengeService: ObservableObject {
       if selectedChallenges.count == 1 {
         todaysChallenge = challenge
       }
+
+      // Initialize reminder state for the challenge if it doesn't exist
+      let existingState = reminderService.getReminderState(for: challenge.id ?? "")
+      if existingState.challengeId.isEmpty {
+        let initialState = reminderService.initializeReminderState(for: challenge)
+        reminderService.updateReminderState(initialState)
+      }
     }
   }
 
@@ -141,6 +142,9 @@ class ChallengeService: ObservableObject {
     if todaysChallenge?.id == challenge.id {
       todaysChallenge = selectedChallenges.first
     }
+
+    // Cancel reminders for the deselected challenge
+    await reminderService.cancelReminders(for: challenge.id ?? "")
   }
 
   func createCustomChallenge(title: String, type: ChallengeType, difficulty: Int) async throws
@@ -218,6 +222,9 @@ class ChallengeService: ObservableObject {
     ])
 
     print("✅ completion written with challengeId=\(cid)")
+
+    // Handle reminder integration
+    await reminderService.handleChallengeCompletion(challengeId: cid)
 
     // Create a simple completion object for return (not saved to Firestore)
     let completion = Completion(

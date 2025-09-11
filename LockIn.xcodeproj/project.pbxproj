@@ -11,6 +11,13 @@
 		E4689B7C2E6EE26B00A89328 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4689B7B2E6EE26B00A89328 /* ContentView.swift */; };
 		E4689B7E2E6EE26B00A89328 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4689B7D2E6EE26B00A89328 /* Assets.xcassets */; };
 		E4689B812E6EE26B00A89328 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4689B802E6EE26B00A89328 /* Preview Assets.xcassets */; };
+		E49F43E92E72A98E00D9A979 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43E82E72A98E00D9A979 /* Reminder.swift */; };
+		E49F43EB2E72A99D00D9A979 /* ReminderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43EA2E72A99D00D9A979 /* ReminderService.swift */; };
+		E49F43F02E72A9B400D9A979 /* NotificationPermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43EE2E72A9B400D9A979 /* NotificationPermissionView.swift */; };
+		E49F43F12E72A9B400D9A979 /* GlobalReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43ED2E72A9B400D9A979 /* GlobalReminderSettingsView.swift */; };
+		E49F43F22E72A9B400D9A979 /* ChallengeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43EC2E72A9B400D9A979 /* ChallengeSelectionView.swift */; };
+		E49F43F32E72A9B400D9A979 /* ReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43EF2E72A9B400D9A979 /* ReminderSettingsView.swift */; };
+		E49F43F52E72A9C400D9A979 /* ReminderTestPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43F42E72A9C400D9A979 /* ReminderTestPlan.swift */; };
 		E4AB29082E6F092A0024607D /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F42E6F092A0024607D /* Challenge.swift */; };
 		E4AB29092E6F092A0024607D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28EF2E6F092A0024607D /* Colors.swift */; };
 		E4AB290A2E6F092A0024607D /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F82E6F092A0024607D /* AnalyticsService.swift */; };
@@ -39,7 +46,7 @@
 		E4F5BB142E71B257001560F7 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB122E71B257001560F7 /* PaywallView.swift */; };
 		E4F5BB152E71B257001560F7 /* CustomChallengeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */; };
 		E4F5BB162E71B257001560F7 /* ProCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB132E71B257001560F7 /* ProCard.swift */; };
-		E4F5BB182E71FDE6001560F7 /* ChallengeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */; };
+		E4F5BB182E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB172E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +55,13 @@
 		E4689B7B2E6EE26B00A89328 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		E4689B7D2E6EE26B00A89328 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E4689B802E6EE26B00A89328 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E49F43E82E72A98E00D9A979 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		E49F43EA2E72A99D00D9A979 /* ReminderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderService.swift; sourceTree = "<group>"; };
+		E49F43EC2E72A9B400D9A979 /* ChallengeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSelectionView.swift; sourceTree = "<group>"; };
+		E49F43ED2E72A9B400D9A979 /* GlobalReminderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalReminderSettingsView.swift; sourceTree = "<group>"; };
+		E49F43EE2E72A9B400D9A979 /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
+		E49F43EF2E72A9B400D9A979 /* ReminderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingsView.swift; sourceTree = "<group>"; };
+		E49F43F42E72A9C400D9A979 /* ReminderTestPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTestPlan.swift; sourceTree = "<group>"; };
 		E4AB28EF2E6F092A0024607D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		E4AB28F02E6F092A0024607D /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		E4AB28F22E6F092A0024607D /* Cursor PRD Lock In IOS App.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Cursor PRD Lock In IOS App.md"; sourceTree = "<group>"; };
@@ -73,7 +87,7 @@
 		E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChallengeEditor.swift; sourceTree = "<group>"; };
 		E4F5BB122E71B257001560F7 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		E4F5BB132E71B257001560F7 /* ProCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProCard.swift; sourceTree = "<group>"; };
-		E4F5BB172E71FDE6001560F7 /* ChallengeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LockIn/Views/ChallengeSelectionView.swift"; sourceTree = "<group>"; };
+		E4F5BB172E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockIn/Views/ChallengeSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +113,7 @@
 				E4AB29072E6F092A0024607D /* LockIn */,
 				E4AB291A2E6F0CF80024607D /* Frameworks */,
 				E4689B772E6EE26B00A89328 /* Products */,
+				E49F43E72E72A33400D9A979 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,6 +131,14 @@
 				E4689B802E6EE26B00A89328 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E49F43E72E72A33400D9A979 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				E4F5BB172E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		E4AB28F12E6F092A0024607D /* DesignSystem */ = {
@@ -138,6 +161,7 @@
 		E4AB28F72E6F092A0024607D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E49F43E82E72A98E00D9A979 /* Reminder.swift */,
 				E4AB28F42E6F092A0024607D /* Challenge.swift */,
 				E4AB28F52E6F092A0024607D /* Completion.swift */,
 				E4AB28F62E6F092A0024607D /* User.swift */,
@@ -149,6 +173,7 @@
 		E4AB28FB2E6F092A0024607D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				E49F43EA2E72A99D00D9A979 /* ReminderService.swift */,
 				E4F5BB0F2E71B231001560F7 /* PaywallService.swift */,
 				E4AB28F82E6F092A0024607D /* AnalyticsService.swift */,
 				E4AB28F92E6F092A0024607D /* AuthService.swift */,
@@ -161,6 +186,7 @@
 		E4AB28FD2E6F092A0024607D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E49F43F42E72A9C400D9A979 /* ReminderTestPlan.swift */,
 				E4AB28FC2E6F092A0024607D /* ShareService.swift */,
 			);
 			path = Utils;
@@ -169,6 +195,10 @@
 		E4AB29032E6F092A0024607D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E49F43EC2E72A9B400D9A979 /* ChallengeSelectionView.swift */,
+				E49F43ED2E72A9B400D9A979 /* GlobalReminderSettingsView.swift */,
+				E49F43EE2E72A9B400D9A979 /* NotificationPermissionView.swift */,
+				E49F43EF2E72A9B400D9A979 /* ReminderSettingsView.swift */,
 				E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */,
 				E4F5BB122E71B257001560F7 /* PaywallView.swift */,
 				E4F5BB132E71B257001560F7 /* ProCard.swift */,
@@ -184,7 +214,6 @@
 		E4AB29072E6F092A0024607D /* LockIn */ = {
 			isa = PBXGroup;
 			children = (
-				E4F5BB192E721676001560F7 /* ChallengeSelectionView.swift */,
 				E4689B792E6EE26B00A89328 /* LockInApp.swift */,
 				E4689B7B2E6EE26B00A89328 /* ContentView.swift */,
 				E4689B7D2E6EE26B00A89328 /* Assets.xcassets */,
@@ -303,16 +332,23 @@
 				E4AB290A2E6F092A0024607D /* AnalyticsService.swift in Sources */,
 				E4AB290B2E6F092A0024607D /* SettingsView.swift in Sources */,
 				E4AB290C2E6F092A0024607D /* Completion.swift in Sources */,
-				E4F5BB182E71FDE6001560F7 /* ChallengeSelectionView.swift in Sources */,
+				E49F43F52E72A9C400D9A979 /* ReminderTestPlan.swift in Sources */,
+				E49F43F02E72A9B400D9A979 /* NotificationPermissionView.swift in Sources */,
+				E49F43F12E72A9B400D9A979 /* GlobalReminderSettingsView.swift in Sources */,
+				E49F43F22E72A9B400D9A979 /* ChallengeSelectionView.swift in Sources */,
+				E49F43F32E72A9B400D9A979 /* ReminderSettingsView.swift in Sources */,
+				E4F5BB182E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift in Sources */,
 				E4AB290D2E6F092A0024607D /* OnboardingView.swift in Sources */,
 				E4AB290E2E6F092A0024607D /* DailyChallengeView.swift in Sources */,
 				E4AB290F2E6F092A0024607D /* User.swift in Sources */,
 				E4AB29102E6F092A0024607D /* ChallengeService.swift in Sources */,
+				E49F43E92E72A98E00D9A979 /* Reminder.swift in Sources */,
 				E4F5BB102E71B231001560F7 /* PaywallService.swift in Sources */,
 				E4AB29112E6F092A0024607D /* AuthService.swift in Sources */,
 				E4AB29122E6F092A0024607D /* ShareService.swift in Sources */,
 				E4AB291B2E6F092A0024607D /* UserRow.swift in Sources */,
 				E4AB291C2E6F092A0024607D /* LeaderboardService.swift in Sources */,
+				E49F43EB2E72A99D00D9A979 /* ReminderService.swift in Sources */,
 				E4AB29132E6F092A0024607D /* Typography.swift in Sources */,
 				E4AB29142E6F092A0024607D /* LeaderboardView.swift in Sources */,
 				E4AB29152E6F092A0024607D /* ProgressView.swift in Sources */,

@@ -1,11 +1,79 @@
 import SwiftUI
 
+// MARK: - Confetti Components
+
+struct ConfettiOverlay: View {
+  @State private var particles: [ConfettiParticle] = []
+
+  let colors: [Color] = [
+    .brandYellow, .brandBlue, .brandGreen, .brandRed,
+    .orange, .purple, .cyan, .pink,
+  ]
+
+  var body: some View {
+    ZStack {
+      ForEach(particles, id: \.id) { particle in
+        Circle()
+          .fill(particle.color)
+          .frame(width: particle.size, height: particle.size)
+          .position(
+            x: particle.x,
+            y: particle.y
+          )
+          .rotationEffect(.degrees(particle.rotation))
+          .opacity(particle.opacity)
+      }
+    }
+    .allowsHitTesting(false)
+    .onAppear {
+      generateParticles()
+      startAnimation()
+    }
+  }
+
+  private func generateParticles() {
+    particles = (0..<50).map { _ in
+      ConfettiParticle(
+        id: UUID(),
+        x: Double.random(in: 0...UIScreen.main.bounds.width),
+        y: -50,
+        size: Double.random(in: 8...16),
+        color: colors.randomElement() ?? .brandYellow,
+        rotation: Double.random(in: 0...360),
+        opacity: 1.0
+      )
+    }
+  }
+
+  private func startAnimation() {
+    withAnimation(.easeOut(duration: 3.0)) {
+      for i in particles.indices {
+        particles[i].y = UIScreen.main.bounds.height + 100
+        particles[i].x += Double.random(in: -100...100)
+        particles[i].rotation += Double.random(in: 360...720)
+        particles[i].opacity = 0.0
+      }
+    }
+  }
+}
+
+struct ConfettiParticle {
+  let id: UUID
+  var x: Double
+  var y: Double
+  let size: Double
+  let color: Color
+  var rotation: Double
+  var opacity: Double
+}
+
 struct DailyChallengeView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
   @EnvironmentObject var paywallService: PaywallService
   @State private var isCompleting = false
   @State private var showCompletionAnimation = false
+  @State private var showConfetti = false
   @State private var showingCustomEditor = false
   @State private var showingChallengeSelection = false
   @State private var showingMoreOptions = false
@@ -49,6 +117,19 @@ struct DailyChallengeView: View {
       .navigationTitle("Today's Challenge")
       .navigationBarTitleDisplayMode(.large)
       .preferredColorScheme(.dark)
+      .overlay(
+        Group {
+          if showConfetti {
+            ConfettiOverlay()
+              .onAppear {
+                // Auto-hide confetti after animation
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                  showConfetti = false
+                }
+              }
+          }
+        }
+      )
     }
     .task {
       await challengeService.loadTodaysChallenge()
@@ -409,10 +490,13 @@ struct DailyChallengeView: View {
         AnalyticsService.shared.setUserProperties(user: user)
       }
 
-      // Show completion animation
+      // Show completion animation and confetti
       withAnimation(.spring()) {
         showCompletionAnimation = true
       }
+
+      // Trigger confetti effect
+      showConfetti = true
 
       // Hide animation after delay
       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

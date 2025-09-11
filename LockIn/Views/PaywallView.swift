@@ -1,5 +1,6 @@
 import RevenueCat
 import SwiftUI
+import UIKit
 
 struct PaywallView: View {
   @EnvironmentObject var paywallService: PaywallService
@@ -220,13 +221,13 @@ struct PaywallView: View {
 
       HStack(spacing: 20) {
         Button("Privacy Policy") {
-          // TODO: Open privacy policy
+          openPrivacyPolicy()
         }
         .font(.caption)
         .foregroundColor(.brandYellow)
 
         Button("Terms of Service") {
-          // TODO: Open terms of service
+          openTermsOfService()
         }
         .font(.caption)
         .foregroundColor(.brandYellow)
@@ -235,6 +236,21 @@ struct PaywallView: View {
   }
 
   // MARK: - Helper Methods
+
+  private func openPrivacyPolicy() {
+    if let url = URL(
+      string:
+        "https://destiny-fender-4ad.notion.site/Privacy-Policy-LockIn-Challenge-26b77834762b80679bfdd2fa0695b057?pvs=73"
+    ) {
+      UIApplication.shared.open(url)
+    }
+  }
+
+  private func openTermsOfService() {
+    if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+      UIApplication.shared.open(url)
+    }
+  }
 
   private func loadPackages() async {
     do {

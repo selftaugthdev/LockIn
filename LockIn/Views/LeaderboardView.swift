@@ -28,12 +28,15 @@ struct LeaderboardView: View {
             Picker("Leaderboard Type", selection: $selectedTab) {
               Text("Daily").tag(0)
               Text("Weekly").tag(1)
+              Text("Friends").tag(2)
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal)
 
             // Leaderboard
-            if leaderboardService.isLoading {
+            if selectedTab == 2 {
+              comingSoonView
+            } else if leaderboardService.isLoading {
               loadingView
             } else if currentLeaderboard.isEmpty {
               emptyView
@@ -155,8 +158,75 @@ struct LeaderboardView: View {
     .cornerRadius(20)
   }
 
+  private var comingSoonView: some View {
+    VStack(spacing: 20) {
+      // Icon
+      ZStack {
+        Circle()
+          .fill(Color.brandYellow.opacity(0.2))
+          .frame(width: 80, height: 80)
+        Image(systemName: "person.2.fill")
+          .font(.system(size: 32))
+          .foregroundColor(.brandYellow)
+      }
+
+      // Title
+      Text("Friends Leaderboard")
+        .titleStyle()
+        .foregroundColor(.brandYellow)
+
+      // Description
+      VStack(spacing: 12) {
+        Text("Coming Soon!")
+          .headlineStyle()
+          .foregroundColor(.white)
+
+        Text(
+          "Compete with your friends and see who's the most consistent with their daily challenges."
+        )
+        .bodyStyle()
+        .foregroundColor(.secondary)
+        .multilineTextAlignment(.center)
+        .lineLimit(nil)
+      }
+
+      // Features Preview
+      VStack(spacing: 8) {
+        featureRow(icon: "person.badge.plus", text: "Add friends with friend codes")
+        featureRow(icon: "chart.bar.fill", text: "Compare progress with friends")
+        featureRow(icon: "trophy.fill", text: "Friends-only leaderboards")
+      }
+      .padding(.top, 8)
+    }
+    .frame(maxWidth: .infinity, minHeight: 300)
+    .padding(24)
+    .background(Color.brandGray)
+    .cornerRadius(20)
+  }
+
+  private func featureRow(icon: String, text: String) -> some View {
+    HStack(spacing: 12) {
+      Image(systemName: icon)
+        .font(.system(size: 16))
+        .foregroundColor(.brandYellow)
+        .frame(width: 20)
+
+      Text(text)
+        .bodyStyle()
+        .foregroundColor(.secondary)
+
+      Spacer()
+    }
+  }
+
   private func logAnalytics() {
-    let scope = selectedTab == 0 ? "daily" : "weekly"
+    let scope: String
+    switch selectedTab {
+    case 0: scope = "daily"
+    case 1: scope = "weekly"
+    case 2: scope = "friends"
+    default: scope = "daily"
+    }
     AnalyticsService.shared.logLeaderboardView(scope: scope)
   }
 }

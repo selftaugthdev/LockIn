@@ -122,7 +122,7 @@ struct ProgressView: View {
         // Aura Points (estimated: 10 points per completion)
         let auraPoints = user.totalCount * 10
         progressBar(
-          title: "Aura Points",
+          title: "Earned Aura",
           value: auraPoints,
           maxValue: max(auraPoints, 100),
           color: .brandYellow,

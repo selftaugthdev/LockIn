@@ -178,21 +178,52 @@ struct SettingsView: View {
         Spacer()
       }
 
-      Text("Unlock custom challenges, advanced analytics, and premium themes")
-        .bodyStyle()
-        .foregroundColor(.secondary)
-        .multilineTextAlignment(.leading)
+      if paywallService.isPro {
+        // Pro user - show subscription management
+        VStack(spacing: 12) {
+          HStack {
+            Image(systemName: "checkmark.circle.fill")
+              .foregroundColor(.brandYellow)
+            Text("Pro Active")
+              .headlineStyle()
+              .foregroundColor(.brandYellow)
+            Spacer()
+          }
 
-      Button("Upgrade to Pro") {
-        AnalyticsService.shared.logPremiumView()
-        print("DEBUG: Upgrade to Pro button tapped")
-        showingPaywall = true
+          Text("You have access to all premium features")
+            .bodyStyle()
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.leading)
+
+          Button("Manage Subscription") {
+            manageSubscription()
+          }
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(Color.brandYellow)
+          .foregroundColor(.brandInk)
+          .cornerRadius(12)
+        }
+      } else {
+        // Free user - show upgrade option
+        VStack(spacing: 12) {
+          Text("Unlock custom challenges, advanced analytics, and premium themes")
+            .bodyStyle()
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.leading)
+
+          Button("Upgrade to Pro") {
+            AnalyticsService.shared.logPremiumView()
+            print("DEBUG: Upgrade to Pro button tapped")
+            showingPaywall = true
+          }
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(Color.brandYellow)
+          .foregroundColor(.brandInk)
+          .cornerRadius(12)
+        }
       }
-      .frame(maxWidth: .infinity)
-      .padding()
-      .background(Color.brandYellow)
-      .foregroundColor(.brandInk)
-      .cornerRadius(12)
     }
     .padding(20)
     .background(Color.brandGray)
@@ -350,6 +381,13 @@ struct SettingsView: View {
 
   private func openTermsOfService() {
     if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+      UIApplication.shared.open(url)
+    }
+  }
+
+  private func manageSubscription() {
+    // Open the system subscription management interface
+    if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
       UIApplication.shared.open(url)
     }
   }

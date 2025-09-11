@@ -9,6 +9,7 @@ struct CustomChallengeEditor: View {
   @State private var selectedDifficulty: Int = 1
   @State private var isCreating = false
   @State private var showSuccess = false
+  @State private var showSuccessMessage = false
 
   var body: some View {
     NavigationView {
@@ -46,30 +47,38 @@ struct CustomChallengeEditor: View {
                 .headlineStyle()
                 .foregroundColor(.white)
 
-              ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                  ForEach(ChallengeType.allCases, id: \.self) { type in
-                    Button(action: {
-                      selectedType = type
-                    }) {
-                      HStack(spacing: 6) {
-                        Text(type.emoji)
-                          .font(.caption)
-                        Text(type.displayName)
-                          .font(.caption)
-                          .fontWeight(.medium)
+              HStack(spacing: 8) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                  HStack(spacing: 12) {
+                    ForEach(ChallengeType.allCases, id: \.self) { type in
+                      Button(action: {
+                        selectedType = type
+                      }) {
+                        HStack(spacing: 6) {
+                          Text(type.emoji)
+                            .font(.caption)
+                          Text(type.displayName)
+                            .font(.caption)
+                            .fontWeight(.medium)
+                        }
+                        .foregroundColor(selectedType == type ? .brandInk : .white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                          RoundedRectangle(cornerRadius: 16)
+                            .fill(selectedType == type ? Color.brandYellow : Color.brandGray)
+                        )
                       }
-                      .foregroundColor(selectedType == type ? .brandInk : .white)
-                      .padding(.horizontal, 12)
-                      .padding(.vertical, 8)
-                      .background(
-                        RoundedRectangle(cornerRadius: 16)
-                          .fill(selectedType == type ? Color.brandYellow : Color.brandGray)
-                      )
                     }
                   }
+                  .padding(.horizontal, 4)
                 }
-                .padding(.horizontal, 4)
+
+                // Scroll indicator arrow
+                Image(systemName: "chevron.right")
+                  .font(.caption)
+                  .foregroundColor(.secondary)
+                  .opacity(0.7)
               }
             }
 
@@ -156,6 +165,13 @@ struct CustomChallengeEditor: View {
       .navigationTitle("Custom Challenge")
       .navigationBarTitleDisplayMode(.inline)
       .preferredColorScheme(.dark)
+      .alert("Challenge Created!", isPresented: $showSuccessMessage) {
+        Button("OK") {
+          dismiss()
+        }
+      } message: {
+        Text("Your custom challenge has been added to the home page under \"Custom Challenges\"")
+      }
     }
   }
 
@@ -183,12 +199,7 @@ struct CustomChallengeEditor: View {
 
         await MainActor.run {
           isCreating = false
-          showSuccess = true
-
-          // Auto-dismiss after success
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            dismiss()
-          }
+          showSuccessMessage = true
         }
       } catch {
         await MainActor.run {

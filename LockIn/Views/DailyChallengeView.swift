@@ -96,6 +96,9 @@ struct DailyChallengeView: View {
               // Pro Card (only show to free users)
               if !paywallService.isPro {
                 ProCard()
+              } else {
+                // Custom Challenges Card (only show to Pro users)
+                CustomChallengesCard()
               }
             } else if challengeService.isLoading {
               loadingView

@@ -51,6 +51,13 @@ class PaywallService: ObservableObject {
           print("Error checking pro status: \(error)")
           self.errorMessage = "Failed to check subscription status"
         } else {
+          // Debug: Print all entitlements
+          print("🔍 DEBUG checkProStatus - All entitlements:")
+          for (key, entitlement) in customerInfo?.entitlements.all ?? [:] {
+            print(
+              "  - \(key): isActive=\(entitlement.isActive), willRenew=\(entitlement.willRenew)")
+          }
+
           self.isPro = customerInfo?.entitlements["pro"]?.isActive == true
           print("Pro status: \(self.isPro)")
         }
@@ -73,7 +80,14 @@ class PaywallService: ObservableObject {
           return
         }
 
-        if customerInfo?.entitlements["pro"]?.isActive == true {
+        // Debug: Print all entitlements
+        print("🔍 DEBUG: All entitlements:")
+        for (key, entitlement) in customerInfo?.entitlements.all ?? [:] {
+          print("  - \(key): isActive=\(entitlement.isActive), willRenew=\(entitlement.willRenew)")
+        }
+
+        // Check for pro entitlement
+        if let proEntitlement = customerInfo?.entitlements["pro"], proEntitlement.isActive {
           self.isPro = true
           self.updateUserProStatus(isPro: true)
           print("✅ Pro subscription activated!")
@@ -85,6 +99,9 @@ class PaywallService: ObservableObject {
 
           // Force a refresh of customer info to ensure status is updated
           self.checkProStatus()
+        } else {
+          print("❌ Pro entitlement not found or not active")
+          print("🔍 Available entitlements: \(customerInfo?.entitlements.all.keys ?? [])")
         }
       }
     }

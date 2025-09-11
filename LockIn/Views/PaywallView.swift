@@ -54,9 +54,22 @@ struct PaywallView: View {
       CustomChallengeEditor()
     }
     .onChange(of: paywallService.isPro) { _, isPro in
+      print("🔍 PaywallView: isPro changed to \(isPro)")
       if isPro {
         // Auto-open custom editor after successful purchase
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          print("🔍 PaywallView: Dismissing paywall and opening custom editor")
+          dismiss()
+          showingCustomEditor = true
+        }
+      }
+    }
+    .onChange(of: paywallService.isLoading) { _, isLoading in
+      print("🔍 PaywallView: isLoading changed to \(isLoading)")
+      // If loading finished and user is Pro, dismiss
+      if !isLoading && paywallService.isPro {
+        print("🔍 PaywallView: Purchase completed, user is Pro, dismissing")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
           dismiss()
           showingCustomEditor = true
         }

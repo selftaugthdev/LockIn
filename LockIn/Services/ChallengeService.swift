@@ -147,7 +147,9 @@ class ChallengeService: ObservableObject {
     await reminderService.cancelReminders(for: challenge.id ?? "")
   }
 
-  func createCustomChallenge(title: String, type: ChallengeType, difficulty: Int) async throws
+  func createCustomChallenge(
+    title: String, type: ChallengeType, difficulty: Int, customAura: Int? = nil
+  ) async throws
     -> Challenge
   {
     guard let uid = auth.uid else { throw ChallengeError.invalidUser }
@@ -157,12 +159,13 @@ class ChallengeService: ObservableObject {
       type: type,
       difficulty: difficulty,
       dayIndex: 0,  // Custom challenges don't have dayIndex
-      isActive: true
+      isActive: true,
+      customAura: customAura
     )
 
     // Save to Firestore
     let docRef = db.collection("customChallenges").document()
-    try await docRef.setData([
+    var data: [String: Any] = [
       "id": docRef.documentID,
       "title": challenge.title,
       "type": challenge.type.rawValue,
@@ -171,7 +174,14 @@ class ChallengeService: ObservableObject {
       "isActive": challenge.isActive,
       "userId": uid,
       "createdAt": FieldValue.serverTimestamp(),
-    ])
+    ]
+
+    // Add customAura if provided
+    if let customAura = customAura {
+      data["customAura"] = customAura
+    }
+
+    try await docRef.setData(data)
 
     // Add to available challenges
     var updatedChallenge = challenge

@@ -93,6 +93,11 @@ struct DailyChallengeView: View {
             if let challenge = challengeService.todaysChallenge {
               challengeCard(challenge)
 
+              // Selected Challenges Management (if more than 1 challenge selected)
+              if challengeService.selectedChallenges.count > 1 {
+                selectedChallengesSection
+              }
+
               // Pro Card (only show to free users)
               if !paywallService.isPro {
                 ProCard()
@@ -520,6 +525,125 @@ struct DailyChallengeView: View {
     }
 
     isCompleting = false
+  }
+
+  private var selectedChallengesSection: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      HStack {
+        Text("Your Selected Challenges")
+          .title2Style()
+          .foregroundColor(.white)
+
+        Spacer()
+
+        Button("Manage") {
+          showingChallengeSelection = true
+        }
+        .font(.subheadline)
+        .fontWeight(.medium)
+        .foregroundColor(.brandYellow)
+      }
+
+      VStack(spacing: 12) {
+        ForEach(challengeService.selectedChallenges) { challenge in
+          SelectedChallengeRow(
+            challenge: challenge,
+            isActive: challenge.id == challengeService.todaysChallenge?.id,
+            onTap: {
+              // Switch to this challenge as today's challenge
+              challengeService.todaysChallenge = challenge
+            },
+            onRemove: {
+              Task {
+                try? await challengeService.deselectChallenge(challenge)
+              }
+            }
+          )
+        }
+      }
+    }
+    .padding()
+    .background(Color.brandGray.opacity(0.3))
+    .cornerRadius(16)
+  }
+}
+
+struct SelectedChallengeRow: View {
+  let challenge: Challenge
+  let isActive: Bool
+  let onTap: () -> Void
+  let onRemove: () -> Void
+
+  var body: some View {
+    HStack(spacing: 12) {
+      // Active indicator
+      Circle()
+        .fill(isActive ? Color.brandYellow : Color.clear)
+        .frame(width: 8, height: 8)
+        .overlay(
+          Circle()
+            .stroke(Color.brandYellow, lineWidth: 1)
+        )
+
+      // Challenge info
+      VStack(alignment: .leading, spacing: 4) {
+        Text(challenge.title)
+          .font(.subheadline)
+          .fontWeight(.medium)
+          .foregroundColor(.white)
+          .lineLimit(2)
+
+        HStack(spacing: 12) {
+          HStack(spacing: 4) {
+            Text(challenge.type.emoji)
+              .font(.caption2)
+            Text(challenge.type.displayName)
+              .font(.caption)
+              .foregroundColor(.brandYellow)
+          }
+
+          HStack(spacing: 2) {
+            ForEach(1...3, id: \.self) { level in
+              Image(systemName: "star.fill")
+                .foregroundColor(level <= challenge.difficulty ? .brandYellow : .gray)
+                .font(.caption2)
+            }
+          }
+
+          HStack(spacing: 4) {
+            Image(systemName: "sparkles")
+              .foregroundColor(.brandYellow)
+              .font(.caption2)
+            Text("\(challenge.auraPoints)")
+              .font(.caption)
+              .foregroundColor(.brandYellow)
+              .fontWeight(.semibold)
+          }
+        }
+      }
+
+      Spacer()
+
+      // Remove button
+      Button(action: onRemove) {
+        Image(systemName: "xmark.circle.fill")
+          .foregroundColor(.secondary)
+          .font(.title3)
+      }
+    }
+    .padding(.horizontal, 12)
+    .padding(.vertical, 8)
+    .background(
+      RoundedRectangle(cornerRadius: 8)
+        .fill(isActive ? Color.brandYellow.opacity(0.1) : Color.brandInk.opacity(0.3))
+        .overlay(
+          RoundedRectangle(cornerRadius: 8)
+            .stroke(isActive ? Color.brandYellow : Color.clear, lineWidth: 1)
+        )
+    )
+    .onTapGesture {
+      onTap()
+    }
   }
 }
 

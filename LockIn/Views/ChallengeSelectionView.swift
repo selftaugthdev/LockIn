@@ -311,6 +311,17 @@ struct ChallengeSelectionRow: View {
                   .font(.caption2)
               }
             }
+
+            // Aura points
+            HStack(spacing: 4) {
+              Image(systemName: "sparkles")
+                .foregroundColor(.brandYellow)
+                .font(.caption2)
+              Text("\(challenge.auraPoints)")
+                .captionStyle()
+                .foregroundColor(.brandYellow)
+                .fontWeight(.semibold)
+            }
           }
         }
 

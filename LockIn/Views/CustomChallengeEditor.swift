@@ -7,6 +7,7 @@ struct CustomChallengeEditor: View {
   @State private var challengeTitle = ""
   @State private var selectedType: ChallengeType = .wellness
   @State private var selectedDifficulty: Int = 1
+  @State private var customAura: String = ""
   @State private var isCreating = false
   @State private var showSuccess = false
   @State private var showSuccessMessage = false
@@ -112,6 +113,23 @@ struct CustomChallengeEditor: View {
               }
             }
 
+            // Aura Points
+            VStack(alignment: .leading, spacing: 8) {
+              Text("Aura Points")
+                .headlineStyle()
+                .foregroundColor(.white)
+
+              VStack(alignment: .leading, spacing: 8) {
+                TextField("Enter Aura points (10-50)", text: $customAura)
+                  .textFieldStyle(CustomTextFieldStyle())
+                  .keyboardType(.numberPad)
+
+                Text("Choose Aura points between 10-50 for fair friend comparisons")
+                  .font(.caption)
+                  .foregroundColor(.secondary)
+              }
+            }
+
             // Preview
             if !challengeTitle.isEmpty {
               VStack(alignment: .leading, spacing: 8) {
@@ -187,6 +205,18 @@ struct CustomChallengeEditor: View {
   private func createChallenge() {
     guard !challengeTitle.isEmpty else { return }
 
+    // Validate Aura input
+    let auraPoints: Int?
+    if !customAura.isEmpty {
+      guard let aura = Int(customAura), aura >= 10 && aura <= 50 else {
+        // Show error for invalid Aura
+        return
+      }
+      auraPoints = aura
+    } else {
+      auraPoints = nil
+    }
+
     isCreating = true
 
     Task {
@@ -194,7 +224,8 @@ struct CustomChallengeEditor: View {
         let _ = try await challengeService.createCustomChallenge(
           title: challengeTitle,
           type: selectedType,
-          difficulty: selectedDifficulty
+          difficulty: selectedDifficulty,
+          customAura: auraPoints
         )
 
         await MainActor.run {

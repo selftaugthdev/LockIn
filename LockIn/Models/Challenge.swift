@@ -8,6 +8,7 @@ struct Challenge: Codable, Identifiable {
   let difficulty: Int  // 1-5 scale
   let dayIndex: Int  // For daily challenges
   var isActive: Bool
+  let customAura: Int?  // Custom Aura points for user-created challenges
 
   init(
     id: String? = nil,
@@ -15,7 +16,8 @@ struct Challenge: Codable, Identifiable {
     type: ChallengeType,
     difficulty: Int,
     dayIndex: Int,
-    isActive: Bool = true
+    isActive: Bool = true,
+    customAura: Int? = nil
   ) {
     // Don't set @DocumentID manually - let Firestore handle it
     self.title = title
@@ -23,6 +25,7 @@ struct Challenge: Codable, Identifiable {
     self.difficulty = difficulty
     self.dayIndex = dayIndex
     self.isActive = isActive
+    self.customAura = customAura
   }
 }
 
@@ -90,6 +93,10 @@ extension Challenge {
   }
 
   var auraPoints: Int {
-    return difficulty * 10  // 10, 20, 30, 40, 50 points
+    // Use custom Aura if provided, otherwise use difficulty-based calculation
+    if let customAura = customAura {
+      return customAura
+    }
+    return difficulty * 10  // 10, 20, 30, 40, 50 points for preloaded challenges
   }
 }

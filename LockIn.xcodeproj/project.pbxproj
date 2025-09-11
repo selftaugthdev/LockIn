@@ -18,6 +18,7 @@
 		E49F43F22E72A9B400D9A979 /* ChallengeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43EC2E72A9B400D9A979 /* ChallengeSelectionView.swift */; };
 		E49F43F32E72A9B400D9A979 /* ReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43EF2E72A9B400D9A979 /* ReminderSettingsView.swift */; };
 		E49F43F52E72A9C400D9A979 /* ReminderTestPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43F42E72A9C400D9A979 /* ReminderTestPlan.swift */; };
+		E49F43F92E7365BB00D9A979 /* CustomChallengesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49F43F82E7365BB00D9A979 /* CustomChallengesCard.swift */; };
 		E4AB29082E6F092A0024607D /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F42E6F092A0024607D /* Challenge.swift */; };
 		E4AB29092E6F092A0024607D /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28EF2E6F092A0024607D /* Colors.swift */; };
 		E4AB290A2E6F092A0024607D /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4AB28F82E6F092A0024607D /* AnalyticsService.swift */; };
@@ -62,6 +63,7 @@
 		E49F43EE2E72A9B400D9A979 /* NotificationPermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPermissionView.swift; sourceTree = "<group>"; };
 		E49F43EF2E72A9B400D9A979 /* ReminderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderSettingsView.swift; sourceTree = "<group>"; };
 		E49F43F42E72A9C400D9A979 /* ReminderTestPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTestPlan.swift; sourceTree = "<group>"; };
+		E49F43F82E7365BB00D9A979 /* CustomChallengesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChallengesCard.swift; sourceTree = "<group>"; };
 		E4AB28EF2E6F092A0024607D /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		E4AB28F02E6F092A0024607D /* Typography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Typography.swift; sourceTree = "<group>"; };
 		E4AB28F22E6F092A0024607D /* Cursor PRD Lock In IOS App.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "Cursor PRD Lock In IOS App.md"; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 		E4AB29032E6F092A0024607D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E49F43F82E7365BB00D9A979 /* CustomChallengesCard.swift */,
 				E49F43EC2E72A9B400D9A979 /* ChallengeSelectionView.swift */,
 				E49F43ED2E72A9B400D9A979 /* GlobalReminderSettingsView.swift */,
 				E49F43EE2E72A9B400D9A979 /* NotificationPermissionView.swift */,
@@ -334,6 +337,7 @@
 				E4AB290C2E6F092A0024607D /* Completion.swift in Sources */,
 				E49F43F52E72A9C400D9A979 /* ReminderTestPlan.swift in Sources */,
 				E49F43F02E72A9B400D9A979 /* NotificationPermissionView.swift in Sources */,
+				E49F43F92E7365BB00D9A979 /* CustomChallengesCard.swift in Sources */,
 				E49F43F12E72A9B400D9A979 /* GlobalReminderSettingsView.swift in Sources */,
 				E49F43F22E72A9B400D9A979 /* ChallengeSelectionView.swift in Sources */,
 				E49F43F32E72A9B400D9A979 /* ReminderSettingsView.swift in Sources */,

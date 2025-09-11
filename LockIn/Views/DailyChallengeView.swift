@@ -98,10 +98,7 @@ struct DailyChallengeView: View {
                 ProCard()
               } else {
                 // Custom Challenges Card (only show to Pro users)
-                // TODO: Add CustomChallengesCard to Xcode project
-                Text("Custom Challenges Card - Coming Soon")
-                  .foregroundColor(.secondary)
-                  .padding()
+                CustomChallengesCard()
               }
             } else if challengeService.isLoading {
               loadingView

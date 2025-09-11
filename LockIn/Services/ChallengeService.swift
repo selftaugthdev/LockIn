@@ -59,7 +59,9 @@ class ChallengeService: ObservableObject {
           try document.data(as: Challenge.self)
         }
 
-        availableChallenges.append(contentsOf: customChallenges)
+        // Filter out expired challenges
+        let activeCustomChallenges = customChallenges.filter { !$0.isExpired }
+        availableChallenges.append(contentsOf: activeCustomChallenges)
       } catch {
         print("Error loading custom challenges: \(error)")
       }
@@ -148,7 +150,8 @@ class ChallengeService: ObservableObject {
   }
 
   func createCustomChallenge(
-    title: String, type: ChallengeType, difficulty: Int, customAura: Int? = nil
+    title: String, type: ChallengeType, difficulty: Int, customAura: Int? = nil,
+    durationDays: Int? = nil
   ) async throws
     -> Challenge
   {
@@ -160,7 +163,9 @@ class ChallengeService: ObservableObject {
       difficulty: difficulty,
       dayIndex: 0,  // Custom challenges don't have dayIndex
       isActive: true,
-      customAura: customAura
+      customAura: customAura,
+      durationDays: durationDays,
+      startDate: durationDays != nil ? Date() : nil
     )
 
     // Save to Firestore
@@ -179,6 +184,12 @@ class ChallengeService: ObservableObject {
     // Add customAura if provided
     if let customAura = customAura {
       data["customAura"] = customAura
+    }
+
+    // Add duration fields if provided
+    if let durationDays = durationDays {
+      data["durationDays"] = durationDays
+      data["startDate"] = Timestamp(date: Date())
     }
 
     try await docRef.setData(data)

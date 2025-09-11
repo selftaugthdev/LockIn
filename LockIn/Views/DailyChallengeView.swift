@@ -553,6 +553,11 @@ struct DailyChallengeView: View {
               // Switch to this challenge as today's challenge
               challengeService.todaysChallenge = challenge
             },
+            onComplete: {
+              Task {
+                try? await challengeService.completeChallenge(challenge)
+              }
+            },
             onRemove: {
               Task {
                 try? await challengeService.deselectChallenge(challenge)
@@ -572,6 +577,7 @@ struct SelectedChallengeRow: View {
   let challenge: Challenge
   let isActive: Bool
   let onTap: () -> Void
+  let onComplete: () -> Void
   let onRemove: () -> Void
 
   var body: some View {
@@ -619,10 +625,29 @@ struct SelectedChallengeRow: View {
               .foregroundColor(.brandYellow)
               .fontWeight(.semibold)
           }
+
+          // Days remaining
+          if let daysRemaining = challenge.daysRemaining {
+            HStack(spacing: 4) {
+              Image(systemName: "clock")
+                .foregroundColor(.secondary)
+                .font(.caption2)
+              Text("\(daysRemaining)d left")
+                .font(.caption)
+                .foregroundColor(.secondary)
+            }
+          }
         }
       }
 
       Spacer()
+
+      // Complete button
+      Button(action: onComplete) {
+        Image(systemName: "checkmark.circle.fill")
+          .foregroundColor(.brandYellow)
+          .font(.title3)
+      }
 
       // Remove button
       Button(action: onRemove) {

@@ -9,6 +9,8 @@ struct Challenge: Codable, Identifiable {
   let dayIndex: Int  // For daily challenges
   var isActive: Bool
   let customAura: Int?  // Custom Aura points for user-created challenges
+  let durationDays: Int?  // Duration in days (nil for permanent challenges)
+  let startDate: Date?  // When the challenge started
 
   init(
     id: String? = nil,
@@ -17,7 +19,9 @@ struct Challenge: Codable, Identifiable {
     difficulty: Int,
     dayIndex: Int,
     isActive: Bool = true,
-    customAura: Int? = nil
+    customAura: Int? = nil,
+    durationDays: Int? = nil,
+    startDate: Date? = nil
   ) {
     // Don't set @DocumentID manually - let Firestore handle it
     self.title = title
@@ -26,6 +30,8 @@ struct Challenge: Codable, Identifiable {
     self.dayIndex = dayIndex
     self.isActive = isActive
     self.customAura = customAura
+    self.durationDays = durationDays
+    self.startDate = startDate
   }
 }
 
@@ -98,5 +104,30 @@ extension Challenge {
       return customAura
     }
     return difficulty * 10  // 10, 20, 30, 40, 50 points for preloaded challenges
+  }
+
+  var isExpired: Bool {
+    guard let durationDays = durationDays,
+      let startDate = startDate
+    else {
+      return false  // No duration means it never expires
+    }
+
+    let calendar = Calendar.current
+    let endDate = calendar.date(byAdding: .day, value: durationDays, to: startDate) ?? startDate
+    return Date() > endDate
+  }
+
+  var daysRemaining: Int? {
+    guard let durationDays = durationDays,
+      let startDate = startDate
+    else {
+      return nil  // No duration means it never expires
+    }
+
+    let calendar = Calendar.current
+    let endDate = calendar.date(byAdding: .day, value: durationDays, to: startDate) ?? startDate
+    let daysLeft = calendar.dateComponents([.day], from: Date(), to: endDate).day ?? 0
+    return max(0, daysLeft)
   }
 }

@@ -8,6 +8,7 @@ struct CustomChallengeEditor: View {
   @State private var selectedType: ChallengeType = .wellness
   @State private var selectedDifficulty: Int = 1
   @State private var customAura: String = ""
+  @State private var selectedDuration: Int = 0  // 0 = permanent, 7 = 1 week, 30 = 1 month, etc.
   @State private var isCreating = false
   @State private var showSuccess = false
   @State private var showSuccessMessage = false
@@ -130,6 +131,37 @@ struct CustomChallengeEditor: View {
               }
             }
 
+            // Duration
+            VStack(alignment: .leading, spacing: 8) {
+              Text("Duration")
+                .headlineStyle()
+                .foregroundColor(.white)
+
+              ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                  ForEach(durationOptions, id: \.value) { option in
+                    Button(action: {
+                      selectedDuration = option.value
+                    }) {
+                      Text(option.label)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(selectedDuration == option.value ? .brandInk : .white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 8)
+                        .background(
+                          RoundedRectangle(cornerRadius: 16)
+                            .fill(
+                              selectedDuration == option.value ? Color.brandYellow : Color.brandGray
+                            )
+                        )
+                    }
+                  }
+                }
+                .padding(.horizontal, 4)
+              }
+            }
+
             // Preview
             if !challengeTitle.isEmpty {
               VStack(alignment: .leading, spacing: 8) {
@@ -202,6 +234,19 @@ struct CustomChallengeEditor: View {
     }
   }
 
+  private var durationOptions: [(label: String, value: Int)] {
+    [
+      ("Permanent", 0),
+      ("1 Week", 7),
+      ("2 Weeks", 14),
+      ("1 Month", 30),
+      ("2 Months", 60),
+      ("3 Months", 90),
+      ("6 Months", 180),
+      ("1 Year", 365),
+    ]
+  }
+
   private func createChallenge() {
     guard !challengeTitle.isEmpty else { return }
 
@@ -225,7 +270,8 @@ struct CustomChallengeEditor: View {
           title: challengeTitle,
           type: selectedType,
           difficulty: selectedDifficulty,
-          customAura: auraPoints
+          customAura: auraPoints,
+          durationDays: selectedDuration == 0 ? nil : selectedDuration
         )
 
         await MainActor.run {

@@ -58,7 +58,7 @@ class PaywallService: ObservableObject {
               "  - \(key): isActive=\(entitlement.isActive), willRenew=\(entitlement.willRenew)")
           }
 
-          self.isPro = customerInfo?.entitlements["pro"]?.isActive == true
+          self.isPro = customerInfo?.entitlements["Pro"]?.isActive == true
           print("Pro status: \(self.isPro)")
         }
       }
@@ -87,7 +87,7 @@ class PaywallService: ObservableObject {
         }
 
         // Check for pro entitlement
-        if let proEntitlement = customerInfo?.entitlements["pro"], proEntitlement.isActive {
+        if let proEntitlement = customerInfo?.entitlements["Pro"], proEntitlement.isActive {
           self.isPro = true
           self.updateUserProStatus(isPro: true)
           print("✅ Pro subscription activated!")
@@ -124,7 +124,7 @@ class PaywallService: ObservableObject {
           return
         }
 
-        if customerInfo?.entitlements["pro"]?.isActive == true {
+        if customerInfo?.entitlements["Pro"]?.isActive == true {
           self.isPro = true
           self.updateUserProStatus(isPro: true)
           print("✅ Purchases restored successfully!")

@@ -522,6 +522,8 @@ struct PrivacySettingsView: View {
 // MARK: - Help & Support View
 struct HelpSupportView: View {
   @Environment(\.dismiss) private var dismiss
+  @State private var showingFAQ = false
+  @State private var showingAbout = false
 
   var body: some View {
     NavigationView {
@@ -541,7 +543,7 @@ struct HelpSupportView: View {
             icon: "questionmark.circle.fill",
             title: "FAQ",
             subtitle: "Frequently asked questions",
-            action: { /* TODO: Implement FAQ */  }
+            action: { showingFAQ = true }
           )
 
           helpRow(
@@ -552,17 +554,10 @@ struct HelpSupportView: View {
           )
 
           helpRow(
-            icon: "star.fill",
-            title: "Rate the App",
-            subtitle: "Share your feedback",
-            action: { /* TODO: Implement app rating */  }
-          )
-
-          helpRow(
             icon: "info.circle.fill",
             title: "About",
             subtitle: "App version and info",
-            action: { /* TODO: Implement about */  }
+            action: { showingAbout = true }
           )
         }
 
@@ -582,6 +577,12 @@ struct HelpSupportView: View {
       }
     }
     .preferredColorScheme(.dark)
+    .sheet(isPresented: $showingFAQ) {
+      FAQView()
+    }
+    .sheet(isPresented: $showingAbout) {
+      AboutView()
+    }
   }
 
   private func helpRow(icon: String, title: String, subtitle: String, action: @escaping () -> Void)
@@ -614,8 +615,294 @@ struct HelpSupportView: View {
   }
 
   private func openContactSupport() {
-    if let url = URL(string: "mailto:support@lockinapp.com?subject=LockIn Support Request") {
-      UIApplication.shared.open(url)
+    let email = "thatnocodelife@gmail.com"
+    let subject = "LockIn Support Request"
+
+    let emailString =
+      "mailto:\(email)?subject=\(subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+
+    if let url = URL(string: emailString) {
+      if UIApplication.shared.canOpenURL(url) {
+        UIApplication.shared.open(url)
+      } else {
+        // Fallback: Copy email to clipboard
+        UIPasteboard.general.string = email
+        print("Email copied to clipboard: \(email)")
+      }
+    }
+  }
+
+}
+
+// MARK: - FAQ View
+struct FAQView: View {
+  @Environment(\.dismiss) private var dismiss
+  @State private var expandedQuestions: Set<Int> = []
+
+  let faqs = [
+    FAQItem(
+      question: "How do I complete a challenge?",
+      answer:
+        "Simply tap the 'Complete Challenge' button on your daily challenge. You can also add custom challenges by tapping the '+' button."
+    ),
+    FAQItem(
+      question: "What are SMART reminders?",
+      answer:
+        "SMART reminders help you stay consistent with your habits. They include daily reminders, weekly quotas, and smart nudges that adapt to your behavior."
+    ),
+    FAQItem(
+      question: "How do I add friends?",
+      answer:
+        "Friend functionality is coming soon! You'll be able to add friends using friend codes and compete on leaderboards together."
+    ),
+    FAQItem(
+      question: "What's the difference between free and pro?",
+      answer:
+        "Free users get access to basic challenges and features. Pro users get unlimited custom challenges, advanced analytics, and premium features."
+    ),
+    FAQItem(
+      question: "How do I reset my progress?",
+      answer:
+        "Go to Settings > Developer Options > Reset Data. This will clear all your progress and start fresh."
+    ),
+    FAQItem(
+      question: "Can I use the app offline?",
+      answer:
+        "Yes! You can complete challenges and view your progress offline. Data will sync when you're back online."
+    ),
+    FAQItem(
+      question: "How do I change my display name?",
+      answer:
+        "Go to Settings > Profile to update your display name. This will be visible on leaderboards and to friends."
+    ),
+    FAQItem(
+      question: "What if I miss a day?",
+      answer:
+        "Don't worry! Missing a day is normal. The app focuses on consistency over perfection. Just get back on track the next day."
+    ),
+  ]
+
+  var body: some View {
+    NavigationView {
+      ScrollView {
+        VStack(spacing: 16) {
+          VStack(spacing: 8) {
+            Text("Frequently Asked Questions")
+              .titleStyle()
+              .foregroundColor(.brandYellow)
+
+            Text("Find answers to common questions")
+              .bodyStyle()
+              .foregroundColor(.secondary)
+          }
+          .padding(.top)
+
+          LazyVStack(spacing: 12) {
+            ForEach(Array(faqs.enumerated()), id: \.offset) { index, faq in
+              FAQRow(
+                faq: faq,
+                isExpanded: expandedQuestions.contains(index),
+                onTap: {
+                  withAnimation(.easeInOut(duration: 0.3)) {
+                    if expandedQuestions.contains(index) {
+                      expandedQuestions.remove(index)
+                    } else {
+                      expandedQuestions.insert(index)
+                    }
+                  }
+                }
+              )
+            }
+          }
+          .padding(.horizontal)
+        }
+      }
+      .background(Color.brandInk)
+      .navigationTitle("FAQ")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button("Done") {
+            dismiss()
+          }
+          .foregroundColor(.brandYellow)
+        }
+      }
+    }
+    .preferredColorScheme(.dark)
+  }
+}
+
+struct FAQItem {
+  let question: String
+  let answer: String
+}
+
+struct FAQRow: View {
+  let faq: FAQItem
+  let isExpanded: Bool
+  let onTap: () -> Void
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 0) {
+      Button(action: onTap) {
+        HStack {
+          Text(faq.question)
+            .headlineStyle()
+            .foregroundColor(.white)
+            .multilineTextAlignment(.leading)
+
+          Spacer()
+
+          Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+            .foregroundColor(.brandYellow)
+            .font(.caption)
+        }
+        .padding()
+      }
+      .buttonStyle(PlainButtonStyle())
+
+      if isExpanded {
+        VStack(alignment: .leading, spacing: 8) {
+          Divider()
+            .background(Color.brandGray)
+
+          Text(faq.answer)
+            .bodyStyle()
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.leading)
+            .padding(.horizontal)
+            .padding(.bottom)
+        }
+        .transition(.opacity.combined(with: .move(edge: .top)))
+      }
+    }
+    .background(Color.brandGray)
+    .cornerRadius(12)
+  }
+}
+
+// MARK: - About View
+struct AboutView: View {
+  @Environment(\.dismiss) private var dismiss
+
+  var body: some View {
+    NavigationView {
+      ScrollView {
+        VStack(spacing: 24) {
+          // App Icon and Title
+          VStack(spacing: 16) {
+            Image(systemName: "lock.fill")
+              .font(.system(size: 60))
+              .foregroundColor(.brandYellow)
+
+            Text("LockIn")
+              .titleStyle()
+              .foregroundColor(.brandYellow)
+
+            Text("Version 1.0.0")
+              .bodyStyle()
+              .foregroundColor(.secondary)
+          }
+
+          // App Description
+          VStack(spacing: 16) {
+            Text("About LockIn")
+              .headlineStyle()
+              .foregroundColor(.white)
+
+            Text(
+              "LockIn helps you build consistent daily habits through micro-challenges. Whether it's fitness, mindfulness, learning, or productivity, we make it easy to lock in your goals one small step at a time."
+            )
+            .bodyStyle()
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.center)
+          }
+
+          // Features
+          VStack(spacing: 12) {
+            Text("Key Features")
+              .headlineStyle()
+              .foregroundColor(.white)
+
+            VStack(spacing: 8) {
+              featureRow(icon: "target", text: "90+ Preloaded Challenges")
+              featureRow(icon: "bell", text: "SMART Reminders")
+              featureRow(icon: "chart.bar", text: "Progress Tracking")
+              featureRow(icon: "trophy", text: "Leaderboards")
+              featureRow(icon: "person.2", text: "Friends (Coming Soon)")
+            }
+          }
+
+          // Developer Info
+          VStack(spacing: 12) {
+            Text("Developer")
+              .headlineStyle()
+              .foregroundColor(.white)
+
+            Text("Built with ❤️ by That No Code Life")
+              .bodyStyle()
+              .foregroundColor(.secondary)
+          }
+
+          // Legal
+          VStack(spacing: 8) {
+            Text("Legal")
+              .headlineStyle()
+              .foregroundColor(.white)
+
+            HStack(spacing: 20) {
+              Button("Privacy Policy") {
+                if let url = URL(
+                  string:
+                    "https://destiny-fender-4ad.notion.site/Privacy-Policy-LockIn-Challenge-26b77834762b80679bfdd2fa0695b057?pvs=73"
+                ) {
+                  UIApplication.shared.open(url)
+                }
+              }
+              .font(.caption)
+              .foregroundColor(.brandYellow)
+
+              Button("Terms of Service") {
+                if let url = URL(
+                  string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
+                {
+                  UIApplication.shared.open(url)
+                }
+              }
+              .font(.caption)
+              .foregroundColor(.brandYellow)
+            }
+          }
+        }
+        .padding()
+      }
+      .background(Color.brandInk)
+      .navigationTitle("About")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button("Done") {
+            dismiss()
+          }
+          .foregroundColor(.brandYellow)
+        }
+      }
+    }
+    .preferredColorScheme(.dark)
+  }
+
+  private func featureRow(icon: String, text: String) -> some View {
+    HStack(spacing: 12) {
+      Image(systemName: icon)
+        .foregroundColor(.brandYellow)
+        .frame(width: 20)
+
+      Text(text)
+        .bodyStyle()
+        .foregroundColor(.secondary)
+
+      Spacer()
     }
   }
 }

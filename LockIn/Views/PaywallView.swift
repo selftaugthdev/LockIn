@@ -53,11 +53,13 @@ struct PaywallView: View {
     .sheet(isPresented: $showingCustomEditor) {
       CustomChallengeEditor()
     }
-    .onChange(of: paywallService.isPro) { isPro in
+    .onChange(of: paywallService.isPro) { _, isPro in
       if isPro {
         // Auto-open custom editor after successful purchase
-        dismiss()
-        showingCustomEditor = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+          dismiss()
+          showingCustomEditor = true
+        }
       }
     }
   }

@@ -77,6 +77,14 @@ class PaywallService: ObservableObject {
           self.isPro = true
           self.updateUserProStatus(isPro: true)
           print("✅ Pro subscription activated!")
+
+          // Reset paywall state since user is now Pro
+          self.shouldShowPaywall = false
+          self.isPresentingPaywall = false
+          self.presentationReady = true
+
+          // Force a refresh of customer info to ensure status is updated
+          self.checkProStatus()
         }
       }
     }
@@ -99,6 +107,11 @@ class PaywallService: ObservableObject {
           self.isPro = true
           self.updateUserProStatus(isPro: true)
           print("✅ Purchases restored successfully!")
+
+          // Reset paywall state since user is now Pro
+          self.shouldShowPaywall = false
+          self.isPresentingPaywall = false
+          self.presentationReady = true
         } else {
           self.errorMessage = "No active subscriptions found"
         }
@@ -171,6 +184,13 @@ class PaywallService: ObservableObject {
     print("DEBUG: safeShowPaywall called")
     print("DEBUG: isPresentingPaywall: \(isPresentingPaywall)")
     print("DEBUG: presentationReady: \(presentationReady)")
+    print("DEBUG: isPro: \(isPro)")
+
+    // Don't show paywall if user is already Pro
+    if isPro {
+      print("DEBUG: User is already Pro, not showing paywall")
+      return
+    }
 
     if !isPresentingPaywall && presentationReady {
       print("DEBUG: Safe to show paywall")

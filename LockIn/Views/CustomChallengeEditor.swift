@@ -46,13 +46,31 @@ struct CustomChallengeEditor: View {
                 .headlineStyle()
                 .foregroundColor(.white)
 
-              Picker("Type", selection: $selectedType) {
-                ForEach(ChallengeType.allCases, id: \.self) { type in
-                  Text(type.rawValue.capitalized)
-                    .tag(type)
+              ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                  ForEach(ChallengeType.allCases, id: \.self) { type in
+                    Button(action: {
+                      selectedType = type
+                    }) {
+                      HStack(spacing: 6) {
+                        Text(type.emoji)
+                          .font(.caption)
+                        Text(type.displayName)
+                          .font(.caption)
+                          .fontWeight(.medium)
+                      }
+                      .foregroundColor(selectedType == type ? .brandInk : .white)
+                      .padding(.horizontal, 12)
+                      .padding(.vertical, 8)
+                      .background(
+                        RoundedRectangle(cornerRadius: 16)
+                          .fill(selectedType == type ? Color.brandYellow : Color.brandGray)
+                      )
+                    }
+                  }
                 }
+                .padding(.horizontal, 4)
               }
-              .pickerStyle(SegmentedPickerStyle())
             }
 
             // Difficulty

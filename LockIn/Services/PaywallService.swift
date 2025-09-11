@@ -101,7 +101,11 @@ class PaywallService: ObservableObject {
           self.checkProStatus()
         } else {
           print("❌ Pro entitlement not found or not active")
-          print("🔍 Available entitlements: \(customerInfo?.entitlements.all.keys ?? [])")
+          if let entitlements = customerInfo?.entitlements.all {
+            print("🔍 Available entitlements: \(Array(entitlements.keys))")
+          } else {
+            print("🔍 No entitlements available")
+          }
         }
       }
     }

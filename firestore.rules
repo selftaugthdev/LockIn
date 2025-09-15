@@ -25,9 +25,11 @@ service cloud.firestore {
     // Users can create completions for themselves
     match /completions/{completionId} {
       allow create: if request.auth != null && 
-        request.auth.uid == resource.data.userId;
+        (request.auth.uid == resource.data.userId || 
+         completionId.matches('^' + request.auth.uid + '_.*'));
       allow read: if request.auth != null && 
-        request.auth.uid == resource.data.userId;
+        (request.auth.uid == resource.data.userId || 
+         completionId.matches('^' + request.auth.uid + '_.*'));
       allow update, delete: if false; // Completions are immutable
     }
     

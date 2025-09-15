@@ -151,10 +151,12 @@ struct CustomChallengeRow: View {
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
             .scaleEffect(0.8)
+            .frame(width: 16, height: 16)
         } else {
           Image(systemName: "checkmark.circle")
             .foregroundColor(.brandYellow)
             .font(.caption)
+            .frame(width: 16, height: 16)
         }
       }
       .padding(.horizontal, 12)
@@ -184,6 +186,23 @@ struct CustomChallengeRow: View {
         await MainActor.run {
           isCompleting = false
           print("Error completing custom challenge: \(error)")
+
+          // Show error alert to user
+          DispatchQueue.main.async {
+            let alert = UIAlertController(
+              title: "Completion Failed",
+              message:
+                "Unable to complete challenge. Please check your internet connection and try again.",
+              preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first
+            {
+              window.rootViewController?.present(alert, animated: true)
+            }
+          }
         }
       }
     }

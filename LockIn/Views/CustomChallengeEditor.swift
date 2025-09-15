@@ -19,198 +19,17 @@ struct CustomChallengeEditor: View {
         Color.brandInk
           .ignoresSafeArea()
 
-        VStack(spacing: 24) {
-          // Header
-          VStack(spacing: 8) {
-            Text("Create Custom Challenge")
-              .titleStyle()
-              .foregroundColor(.brandYellow)
-
-            Text("Design your own daily challenge")
-              .bodyStyle()
-              .foregroundColor(.secondary)
-          }
-
-          // Form
-          VStack(spacing: 20) {
-            // Challenge Title
-            VStack(alignment: .leading, spacing: 8) {
-              Text("Challenge Title")
-                .headlineStyle()
-                .foregroundColor(.white)
-
-              TextField("Enter your challenge...", text: $challengeTitle)
-                .textFieldStyle(CustomTextFieldStyle())
+        VStack(spacing: 0) {
+          ScrollView {
+            VStack(spacing: 24) {
+              headerView
+              formView
             }
-
-            // Challenge Type
-            VStack(alignment: .leading, spacing: 8) {
-              Text("Type")
-                .headlineStyle()
-                .foregroundColor(.white)
-
-              HStack(spacing: 8) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                  HStack(spacing: 12) {
-                    ForEach(ChallengeType.allCases, id: \.self) { type in
-                      Button(action: {
-                        selectedType = type
-                      }) {
-                        HStack(spacing: 6) {
-                          Text(type.emoji)
-                            .font(.caption)
-                          Text(type.displayName)
-                            .font(.caption)
-                            .fontWeight(.medium)
-                        }
-                        .foregroundColor(selectedType == type ? .brandInk : .white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(
-                          RoundedRectangle(cornerRadius: 16)
-                            .fill(selectedType == type ? Color.brandYellow : Color.brandGray)
-                        )
-                      }
-                    }
-                  }
-                  .padding(.horizontal, 4)
-                }
-
-                // Scroll indicator arrow
-                Image(systemName: "chevron.right")
-                  .font(.caption)
-                  .foregroundColor(.secondary)
-                  .opacity(0.7)
-              }
-            }
-
-            // Difficulty
-            VStack(alignment: .leading, spacing: 8) {
-              Text("Difficulty")
-                .headlineStyle()
-                .foregroundColor(.white)
-
-              HStack {
-                ForEach(1...3, id: \.self) { level in
-                  Button(action: {
-                    selectedDifficulty = level
-                  }) {
-                    Text("\(level)")
-                      .fontWeight(.semibold)
-                      .foregroundColor(selectedDifficulty == level ? .brandInk : .white)
-                      .frame(width: 40, height: 40)
-                      .background(
-                        Circle()
-                          .fill(selectedDifficulty == level ? Color.brandYellow : Color.brandGray)
-                      )
-                  }
-                }
-
-                Spacer()
-
-                Text(difficultyText)
-                  .bodyStyle()
-                  .foregroundColor(.secondary)
-              }
-            }
-
-            // Aura Points
-            VStack(alignment: .leading, spacing: 8) {
-              Text("Aura Points")
-                .headlineStyle()
-                .foregroundColor(.white)
-
-              VStack(alignment: .leading, spacing: 8) {
-                TextField("Enter Aura points (10-50)", text: $customAura)
-                  .textFieldStyle(CustomTextFieldStyle())
-                  .keyboardType(.numberPad)
-
-                Text("Choose Aura points between 10-50 for fair friend comparisons")
-                  .font(.caption)
-                  .foregroundColor(.secondary)
-              }
-            }
-
-            // Duration
-            VStack(alignment: .leading, spacing: 8) {
-              Text("Duration")
-                .headlineStyle()
-                .foregroundColor(.white)
-
-              ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                  ForEach(durationOptions, id: \.value) { option in
-                    Button(action: {
-                      selectedDuration = option.value
-                    }) {
-                      Text(option.label)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .foregroundColor(selectedDuration == option.value ? .brandInk : .white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(
-                          RoundedRectangle(cornerRadius: 16)
-                            .fill(
-                              selectedDuration == option.value ? Color.brandYellow : Color.brandGray
-                            )
-                        )
-                    }
-                  }
-                }
-                .padding(.horizontal, 4)
-              }
-            }
-
-            // Preview
-            if !challengeTitle.isEmpty {
-              VStack(alignment: .leading, spacing: 8) {
-                Text("Preview")
-                  .headlineStyle()
-                  .foregroundColor(.white)
-
-                ChallengePreviewCard(
-                  title: challengeTitle,
-                  type: selectedType,
-                  difficulty: selectedDifficulty
-                )
-              }
-            }
-          }
-          .padding()
-          .background(Color.brandGray)
-          .cornerRadius(20)
-
-          // Create Button
-          Button(action: createChallenge) {
-            HStack {
-              if isCreating {
-                ProgressView()
-                  .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
-                  .scaleEffect(0.8)
-              } else if showSuccess {
-                Image(systemName: "checkmark.circle.fill")
-              } else {
-                Image(systemName: "plus.circle.fill")
-              }
-
-              Text(
-                showSuccess ? "Challenge Created!" : isCreating ? "Creating..." : "Create Challenge"
-              )
-            }
-            .foregroundColor(.brandInk)
-            .fontWeight(.semibold)
-            .frame(maxWidth: .infinity)
             .padding()
-            .background(showSuccess ? Color.green : Color.brandYellow)
-            .cornerRadius(16)
           }
-          .disabled(challengeTitle.isEmpty || isCreating || showSuccess)
-          .opacity(challengeTitle.isEmpty ? 0.6 : 1.0)
 
-          Spacer()
+          createButtonView
         }
-        .padding()
       }
       .navigationTitle("Custom Challenge")
       .navigationBarTitleDisplayMode(.inline)
@@ -222,6 +41,219 @@ struct CustomChallengeEditor: View {
       } message: {
         Text("Your custom challenge has been added to the home page under \"Custom Challenges\"")
       }
+    }
+  }
+
+  private var headerView: some View {
+    VStack(spacing: 8) {
+      Text("Create Custom Challenge")
+        .titleStyle()
+        .foregroundColor(.brandYellow)
+
+      Text("Design your own daily challenge")
+        .bodyStyle()
+        .foregroundColor(.secondary)
+    }
+  }
+
+  private var formView: some View {
+    VStack(spacing: 20) {
+      challengeTitleSection
+      challengeTypeSection
+      difficultySection
+      auraSection
+      durationSection
+      previewSection
+    }
+    .padding()
+    .background(Color.brandGray)
+    .cornerRadius(20)
+  }
+
+  private var challengeTitleSection: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("Challenge Title")
+        .headlineStyle()
+        .foregroundColor(.white)
+
+      TextField("Enter your challenge...", text: $challengeTitle)
+        .textFieldStyle(CustomTextFieldStyle())
+    }
+  }
+
+  private var challengeTypeSection: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("Type")
+        .headlineStyle()
+        .foregroundColor(.white)
+
+      HStack(spacing: 8) {
+        ScrollView(.horizontal, showsIndicators: false) {
+          HStack(spacing: 12) {
+            ForEach(ChallengeType.allCases, id: \.self) { type in
+              typeButton(for: type)
+            }
+          }
+          .padding(.horizontal, 4)
+        }
+
+        Image(systemName: "chevron.right")
+          .font(.caption)
+          .foregroundColor(.secondary)
+          .opacity(0.7)
+      }
+    }
+  }
+
+  private var difficultySection: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("Difficulty")
+        .headlineStyle()
+        .foregroundColor(.white)
+
+      HStack {
+        ForEach(1...3, id: \.self) { level in
+          Button(action: {
+            selectedDifficulty = level
+          }) {
+            Text("\(level)")
+              .fontWeight(.semibold)
+              .foregroundColor(selectedDifficulty == level ? .brandInk : .white)
+              .frame(width: 40, height: 40)
+              .background(
+                Circle()
+                  .fill(selectedDifficulty == level ? Color.brandYellow : Color.brandGray)
+              )
+          }
+        }
+
+        Spacer()
+
+        Text(difficultyText)
+          .bodyStyle()
+          .foregroundColor(.secondary)
+      }
+    }
+  }
+
+  private var auraSection: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("Aura")
+        .headlineStyle()
+        .foregroundColor(.white)
+
+      VStack(alignment: .leading, spacing: 8) {
+        TextField("Enter Aura (10-50)", text: $customAura)
+          .textFieldStyle(CustomTextFieldStyle())
+          .keyboardType(.numberPad)
+
+        Text("Choose Aura between 10-50 for fair friend comparisons")
+          .font(.caption)
+          .foregroundColor(.secondary)
+      }
+    }
+  }
+
+  private var durationSection: some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text("Duration")
+        .headlineStyle()
+        .foregroundColor(.white)
+
+      ScrollView(.horizontal, showsIndicators: false) {
+        HStack(spacing: 12) {
+          ForEach(durationOptions, id: \.value) { option in
+            Button(action: {
+              selectedDuration = option.value
+            }) {
+              Text(option.label)
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundColor(selectedDuration == option.value ? .brandInk : .white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background(
+                  RoundedRectangle(cornerRadius: 16)
+                    .fill(
+                      selectedDuration == option.value ? Color.brandYellow : Color.brandGray
+                    )
+                )
+            }
+          }
+        }
+        .padding(.horizontal, 4)
+      }
+    }
+  }
+
+  private var previewSection: some View {
+    Group {
+      if !challengeTitle.isEmpty {
+        VStack(alignment: .leading, spacing: 8) {
+          Text("Preview")
+            .headlineStyle()
+            .foregroundColor(.white)
+
+          ChallengePreviewCard(
+            title: challengeTitle,
+            type: selectedType,
+            difficulty: selectedDifficulty
+          )
+        }
+      }
+    }
+  }
+
+  private var createButtonView: some View {
+    VStack {
+      Button(action: createChallenge) {
+        HStack {
+          if isCreating {
+            ProgressView()
+              .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
+              .scaleEffect(0.8)
+          } else if showSuccess {
+            Image(systemName: "checkmark.circle.fill")
+          } else {
+            Image(systemName: "plus.circle.fill")
+          }
+
+          Text(
+            showSuccess ? "Challenge Created!" : isCreating ? "Creating..." : "Create Challenge"
+          )
+        }
+        .foregroundColor(.brandInk)
+        .fontWeight(.semibold)
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(showSuccess ? Color.green : Color.brandYellow)
+        .cornerRadius(16)
+      }
+      .disabled(challengeTitle.isEmpty || isCreating || showSuccess)
+      .opacity(challengeTitle.isEmpty ? 0.6 : 1.0)
+      .padding(.horizontal)
+      .padding(.bottom, 20)
+    }
+  }
+
+  private func typeButton(for type: ChallengeType) -> some View {
+    Button(action: {
+      selectedType = type
+    }) {
+      HStack(spacing: 6) {
+        Text(type.emoji)
+          .font(.caption)
+        Text(type.displayName)
+          .font(.caption)
+          .fontWeight(.medium)
+      }
+      .foregroundColor(selectedType == type ? .brandInk : .white)
+      .padding(.horizontal, 12)
+      .padding(.vertical, 8)
+      .background(
+        RoundedRectangle(cornerRadius: 16)
+          .fill(selectedType == type ? Color.brandYellow : Color.brandGray)
+      )
     }
   }
 

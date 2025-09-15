@@ -116,38 +116,77 @@ struct CustomChallengesCard: View {
 
 struct CustomChallengeRow: View {
   let challenge: Challenge
+  @EnvironmentObject var challengeService: ChallengeService
+  @State private var isCompleting = false
 
   var body: some View {
-    HStack(spacing: 12) {
-      Text(challenge.type.emoji)
-        .font(.caption)
-
-      VStack(alignment: .leading, spacing: 2) {
-        Text(challenge.title)
-          .fontWeight(.medium)
-          .foregroundColor(.white)
-          .font(.subheadline)
-          .lineLimit(1)
-
-        Text(challenge.type.displayName)
+    Button(action: completeChallenge) {
+      HStack(spacing: 12) {
+        Text(challenge.type.emoji)
           .font(.caption)
-          .foregroundColor(.brandYellow)
+
+        VStack(alignment: .leading, spacing: 2) {
+          Text(challenge.title)
+            .fontWeight(.medium)
+            .foregroundColor(.white)
+            .font(.subheadline)
+            .lineLimit(1)
+
+          Text(challenge.type.displayName)
+            .font(.caption)
+            .foregroundColor(.brandYellow)
+        }
+
+        Spacer()
+
+        HStack(spacing: 2) {
+          ForEach(1...3, id: \.self) { level in
+            Image(systemName: "star.fill")
+              .foregroundColor(level <= challenge.difficulty ? .brandYellow : .gray)
+              .font(.caption2)
+          }
+        }
+
+        if isCompleting {
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
+            .scaleEffect(0.8)
+        } else {
+          Image(systemName: "checkmark.circle")
+            .foregroundColor(.brandYellow)
+            .font(.caption)
+        }
       }
+      .padding(.horizontal, 12)
+      .padding(.vertical, 8)
+      .background(Color.brandInk.opacity(0.3))
+      .cornerRadius(8)
+    }
+    .buttonStyle(PlainButtonStyle())
+    .disabled(isCompleting)
+  }
 
-      Spacer()
+  private func completeChallenge() {
+    guard !isCompleting else { return }
 
-      HStack(spacing: 2) {
-        ForEach(1...3, id: \.self) { level in
-          Image(systemName: "star.fill")
-            .foregroundColor(level <= challenge.difficulty ? .brandYellow : .gray)
-            .font(.caption2)
+    isCompleting = true
+
+    Task {
+      do {
+        let _ = try await challengeService.completeChallenge(challenge)
+        await MainActor.run {
+          isCompleting = false
+          // Show success feedback
+          let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+          impactFeedback.impactOccurred()
+        }
+      } catch {
+        await MainActor.run {
+          isCompleting = false
+          print("Error completing custom challenge: \(error)")
         }
       }
     }
-    .padding(.horizontal, 12)
-    .padding(.vertical, 8)
-    .background(Color.brandInk.opacity(0.3))
-    .cornerRadius(8)
   }
 }
 

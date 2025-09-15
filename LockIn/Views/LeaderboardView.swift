@@ -22,6 +22,7 @@ struct LeaderboardView: View {
               Text("Top performers")
                 .bodyStyle()
                 .foregroundColor(.secondary)
+
             }
 
             // Tab Selector

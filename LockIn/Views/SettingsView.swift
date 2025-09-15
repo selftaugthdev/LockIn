@@ -655,18 +655,45 @@ struct HelpSupportView: View {
   private func openContactSupport() {
     let email = "thatnocodelife@gmail.com"
     let subject = "LockIn Support Request"
+    let body = "Hi there!\n\nI need help with:\n\n[Please describe your issue here]\n\nThanks!"
 
-    let emailString =
-      "mailto:\(email)?subject=\(subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+    // Create the mailto URL with proper encoding
+    var components = URLComponents()
+    components.scheme = "mailto"
+    components.path = email
+    components.queryItems = [
+      URLQueryItem(name: "subject", value: subject),
+      URLQueryItem(name: "body", value: body),
+    ]
 
-    if let url = URL(string: emailString) {
+    if let url = components.url {
       if UIApplication.shared.canOpenURL(url) {
         UIApplication.shared.open(url)
       } else {
-        // Fallback: Copy email to clipboard
+        // Fallback: Copy email to clipboard and show alert
         UIPasteboard.general.string = email
         print("Email copied to clipboard: \(email)")
+
+        // Show a simple alert to inform user
+        DispatchQueue.main.async {
+          let alert = UIAlertController(
+            title: "Email Copied",
+            message: "Email address copied to clipboard: \(email)",
+            preferredStyle: .alert
+          )
+          alert.addAction(UIAlertAction(title: "OK", style: .default))
+
+          if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            let window = windowScene.windows.first
+          {
+            window.rootViewController?.present(alert, animated: true)
+          }
+        }
       }
+    } else {
+      // Ultimate fallback
+      UIPasteboard.general.string = email
+      print("Failed to create mailto URL, email copied to clipboard: \(email)")
     }
   }
 

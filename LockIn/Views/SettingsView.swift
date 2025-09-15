@@ -380,8 +380,10 @@ struct ProfileEditorView: View {
             .foregroundColor(.white)
 
           TextField("Enter your name", text: $displayName)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            .foregroundColor(.brandInk)
+            .padding()
+            .background(Color.brandGray)
+            .foregroundColor(.white)
+            .cornerRadius(12)
         }
 
         Spacer()

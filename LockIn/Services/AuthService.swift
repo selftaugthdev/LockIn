@@ -81,19 +81,20 @@ class AuthService: ObservableObject {
     if let uid = Auth.auth().currentUser?.uid {
       return uid
     }
-    
+
     // No current user, sign in anonymously
     let result = try await Auth.auth().signInAnonymously()
     let uid = result.user.uid
-    
+
     // Bootstrap user doc
-    try await db.collection("users").document(uid).setData([
-      "createdAt": FieldValue.serverTimestamp(),
-      "streakCount": 0,
-      "premium": false,
-      "friendCode": UUID().uuidString.prefix(8).uppercased(),
-    ], merge: true)
-    
+    try await db.collection("users").document(uid).setData(
+      [
+        "createdAt": FieldValue.serverTimestamp(),
+        "streakCount": 0,
+        "premium": false,
+        "friendCode": UUID().uuidString.prefix(8).uppercased(),
+      ], merge: true)
+
     return uid
   }
 
@@ -195,7 +196,21 @@ class AuthService: ObservableObject {
     guard let uid = user.id else { return }
 
     do {
-      try await db.collection("users").document(uid).setData(from: user)
+      // Only update fields that clients are allowed to modify
+      // Counter fields (streakCount, totalCount, totalAura, lastCompleted) are handled by Cloud Functions
+      var updateData: [String: Any] = [:]
+
+      if let displayName = user.displayName {
+        updateData["displayName"] = displayName
+      }
+      updateData["premium"] = user.premium
+      if let friendCode = user.friendCode {
+        updateData["friendCode"] = friendCode
+      }
+
+      try await db.collection("users").document(uid).updateData(updateData)
+
+      // Update local user object
       self.currentUser = user
     } catch {
       print("Error updating user: \(error)")

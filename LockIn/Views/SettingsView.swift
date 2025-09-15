@@ -562,6 +562,7 @@ struct HelpSupportView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var showingFAQ = false
   @State private var showingAbout = false
+  @State private var showingEmailAlert = false
 
   var body: some View {
     NavigationView {
@@ -621,6 +622,11 @@ struct HelpSupportView: View {
     .sheet(isPresented: $showingAbout) {
       AboutView()
     }
+    .alert("Email Copied", isPresented: $showingEmailAlert) {
+      Button("OK") {}
+    } message: {
+      Text("Email address copied to clipboard: thatnocodelife@gmail.com")
+    }
   }
 
   private func helpRow(icon: String, title: String, subtitle: String, action: @escaping () -> Void)
@@ -670,30 +676,16 @@ struct HelpSupportView: View {
       if UIApplication.shared.canOpenURL(url) {
         UIApplication.shared.open(url)
       } else {
-        // Fallback: Copy email to clipboard and show alert
+        // Fallback: Copy email to clipboard and show SwiftUI alert
         UIPasteboard.general.string = email
         print("Email copied to clipboard: \(email)")
-
-        // Show a simple alert to inform user
-        DispatchQueue.main.async {
-          let alert = UIAlertController(
-            title: "Email Copied",
-            message: "Email address copied to clipboard: \(email)",
-            preferredStyle: .alert
-          )
-          alert.addAction(UIAlertAction(title: "OK", style: .default))
-
-          if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-            let window = windowScene.windows.first
-          {
-            window.rootViewController?.present(alert, animated: true)
-          }
-        }
+        showingEmailAlert = true
       }
     } else {
       // Ultimate fallback
       UIPasteboard.general.string = email
       print("Failed to create mailto URL, email copied to clipboard: \(email)")
+      showingEmailAlert = true
     }
   }
 

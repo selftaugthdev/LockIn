@@ -43,9 +43,6 @@ struct SettingsView: View {
             // Premium Section
             premiumSection
 
-            // Developer Options
-            developerSection
-
             // Legal Section
             legalSection
 
@@ -161,6 +158,17 @@ struct SettingsView: View {
         subtitle: "Get help and contact us",
         action: { showingHelpSupport = true }
       )
+
+      // Sign Out Button
+      Button("Sign Out") {
+        showingSignOutAlert = true
+      }
+      .frame(maxWidth: .infinity)
+      .padding()
+      .background(Color.brandRed)
+      .foregroundColor(.white)
+      .cornerRadius(12)
+      .padding(.top, 8)
     }
     .padding(20)
     .background(Color.brandGray)
@@ -224,52 +232,6 @@ struct SettingsView: View {
           .cornerRadius(12)
         }
       }
-    }
-    .padding(20)
-    .background(Color.brandGray)
-    .cornerRadius(16)
-  }
-
-  private var developerSection: some View {
-    VStack(spacing: 12) {
-      HStack {
-        Text("Developer")
-          .headlineStyle()
-          .foregroundColor(.white)
-        Spacer()
-      }
-
-      settingsRow(
-        icon: "arrow.clockwise",
-        title: "Reset Data",
-        subtitle: "Clear all progress (dev only)",
-        action: { /* TODO: Implement data reset */  }
-      )
-
-      settingsRow(
-        icon: "square.and.arrow.up",
-        title: "Export Data",
-        subtitle: "Download your data",
-        action: { /* TODO: Implement data export */  }
-      )
-
-      settingsRow(
-        icon: "play.circle",
-        title: "Reset Onboarding",
-        subtitle: "Show onboarding again (dev only)",
-        action: {
-          authService.resetForTesting()
-        }
-      )
-
-      Button("Sign Out") {
-        showingSignOutAlert = true
-      }
-      .frame(maxWidth: .infinity)
-      .padding()
-      .background(Color.brandRed)
-      .foregroundColor(.white)
-      .cornerRadius(12)
     }
     .padding(20)
     .background(Color.brandGray)

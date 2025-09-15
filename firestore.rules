@@ -6,14 +6,12 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.uid == userId;
       // Allow creation without counter field restrictions (for onboarding)
       allow create: if request.auth != null && request.auth.uid == userId;
-      // Allow updates but prevent counter field modifications
-      allow update: if request.auth != null && request.auth.uid == userId &&
-        // Anti-cheat: Prevent clients from writing counter fields
-        !('totalCount' in request.resource.data.diff(resource.data).affectedKeys()) &&
-        !('dailyCount' in request.resource.data.diff(resource.data).affectedKeys()) &&
-        !('weeklyCount' in request.resource.data.diff(resource.data).affectedKeys()) &&
-        !('streakCount' in request.resource.data.diff(resource.data).affectedKeys()) &&
-        !('lastCompleted' in request.resource.data.diff(resource.data).affectedKeys());
+      // Allow Cloud Functions (admin) to update any fields, clients can only update lastCompleted
+      allow update: if request.auth != null
+                    && request.auth.uid == userId
+                    && (request.auth.token.firebase.sign_in_provider == 'custom' // Cloud Functions
+                        || request.resource.data.diff(resource.data)
+                             .changedKeys().hasOnly(['lastCompleted']));
     }
     
     // Anyone can read challenges
@@ -24,12 +22,10 @@ service cloud.firestore {
     
     // Users can create completions for themselves
     match /completions/{completionId} {
-      allow create: if request.auth != null && 
-        (request.auth.uid == resource.data.userId || 
-         completionId.matches('^' + request.auth.uid + '_.*_UTC$'));
-      allow read: if request.auth != null && 
-        (request.auth.uid == resource.data.userId || 
-         completionId.matches('^' + request.auth.uid + '_.*_UTC$'));
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
+      allow read:   if request.auth != null
+                    && resource.data.userId == request.auth.uid;
       allow update, delete: if false; // Completions are immutable
     }
     
@@ -41,18 +37,18 @@ service cloud.firestore {
     
     // Custom challenges - users can create and read their own
     match /customChallenges/{challengeId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.data.userId;
-      allow create: if request.auth != null && 
-        request.auth.uid == request.resource.data.userId;
+      allow read, write: if request.auth != null
+                         && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
     }
     
     // Selected challenges - users can manage their own selections
     match /selectedChallenges/{selectionId} {
-      allow read, write: if request.auth != null && 
-        request.auth.uid == resource.data.userId;
-      allow create: if request.auth != null && 
-        request.auth.uid == request.resource.data.userId;
+      allow read, write: if request.auth != null
+                         && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null
+                    && request.resource.data.userId == request.auth.uid;
     }
   }
 }

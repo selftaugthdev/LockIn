@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CustomChallengesCard: View {
   @EnvironmentObject var challengeService: ChallengeService
+  @EnvironmentObject var authService: AuthService
   @State private var showingCustomEditor = false
   @State private var hideCompletedChallenges = false
   @State private var showingAllChallenges = false
@@ -171,6 +172,7 @@ struct CustomChallengesCard: View {
 struct CustomChallengeRow: View {
   let challenge: Challenge
   @EnvironmentObject var challengeService: ChallengeService
+  @EnvironmentObject var authService: AuthService
   @State private var isCompleting = false
 
   private var isCompleted: Bool {
@@ -272,8 +274,9 @@ struct CustomChallengeRow: View {
         try await Task.sleep(nanoseconds: 2_000_000_000)  // 2 seconds
 
         // Refresh user data to get updated aura
-        // We'll let the DailyChallengeView handle the user data refresh
-        // since it has access to the AuthService
+        if let uid = authService.uid {
+          await authService.loadUserData(uid: uid)
+        }
 
         await MainActor.run {
           isCompleting = false

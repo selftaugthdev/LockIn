@@ -272,9 +272,8 @@ struct CustomChallengeRow: View {
         try await Task.sleep(nanoseconds: 2_000_000_000)  // 2 seconds
 
         // Refresh user data to get updated aura
-        if let uid = challengeService.auth.uid {
-          await challengeService.auth.loadUserData(uid: uid)
-        }
+        // We'll let the DailyChallengeView handle the user data refresh
+        // since it has access to the AuthService
 
         await MainActor.run {
           isCompleting = false

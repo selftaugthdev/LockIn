@@ -49,6 +49,56 @@ struct ReminderConfig: Codable {
   }
 }
 
+// MARK: - Per-Challenge Reminder Override
+struct ReminderOverride: Codable {
+  var useDefaultSettings: Bool  // true = use global defaults, false = use custom settings
+  var customConfig: ReminderConfig?  // custom settings when useDefaultSettings is false
+  var multiPingConfig: MultiPingConfig?  // for edge cases like water drinking
+
+  init(
+    useDefaultSettings: Bool = true,
+    customConfig: ReminderConfig? = nil,
+    multiPingConfig: MultiPingConfig? = nil
+  ) {
+    self.useDefaultSettings = useDefaultSettings
+    self.customConfig = customConfig
+    self.multiPingConfig = multiPingConfig
+  }
+}
+
+// MARK: - Multi-Ping Configuration (for edge cases like water drinking)
+struct MultiPingConfig: Codable {
+  var timesPerDay: Int  // 2-6 reminders per day
+  var startHour: Int  // e.g., 9 for 9:00 AM
+  var endHour: Int  // e.g., 21 for 9:00 PM
+
+  init(timesPerDay: Int = 3, startHour: Int = 9, endHour: Int = 21) {
+    self.timesPerDay = max(2, min(6, timesPerDay))  // Clamp between 2-6
+    self.startHour = max(0, min(23, startHour))  // Clamp between 0-23
+    self.endHour = max(0, min(23, endHour))  // Clamp between 0-23
+  }
+
+  /// Calculate evenly spaced reminder times between startHour and endHour
+  var reminderTimes: [DateComponents] {
+    guard timesPerDay > 1, endHour > startHour else {
+      return [DateComponents(hour: startHour, minute: 0)]
+    }
+
+    let totalMinutes = (endHour - startHour) * 60
+    let intervalMinutes = totalMinutes / (timesPerDay - 1)
+
+    var times: [DateComponents] = []
+    for i in 0..<timesPerDay {
+      let minutesFromStart = i * intervalMinutes
+      let hour = startHour + (minutesFromStart / 60)
+      let minute = minutesFromStart % 60
+      times.append(DateComponents(hour: hour, minute: minute))
+    }
+
+    return times
+  }
+}
+
 // MARK: - Challenge Reminder State
 struct ChallengeReminderState: Codable {
   var challengeId: String

@@ -13,6 +13,19 @@ struct CustomChallengeEditor: View {
   @State private var showSuccess = false
   @State private var showSuccessMessage = false
 
+  // Reminder settings
+  @State private var useDefaultReminders = true
+  @State private var customReminderMode: ReminderMode = .smart
+  @State private var customReminderTime = Date()
+  @State private var enableEveningNudge = true
+  @State private var eveningNudgeTime = Date()
+  @State private var selectedWeekdays: Set<Int> = Set(1...7)  // All days by default
+  @State private var showAdvancedReminders = false
+  @State private var useMultiPing = false
+  @State private var multiPingTimes = 3
+  @State private var multiPingStartHour = 9
+  @State private var multiPingEndHour = 21
+
   var body: some View {
     NavigationView {
       ZStack {
@@ -63,6 +76,7 @@ struct CustomChallengeEditor: View {
       difficultySection
       auraSection
       durationSection
+      reminderSection
       previewSection
     }
     .padding()
@@ -186,6 +200,186 @@ struct CustomChallengeEditor: View {
     }
   }
 
+  private var reminderSection: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      Text("Reminder Settings")
+        .headlineStyle()
+        .foregroundColor(.white)
+
+      // Toggle for using default vs custom reminders
+      VStack(alignment: .leading, spacing: 12) {
+        Toggle("Use default reminder settings", isOn: $useDefaultReminders)
+          .foregroundColor(.white)
+          .toggleStyle(SwitchToggleStyle(tint: .brandYellow))
+
+        if !useDefaultReminders {
+          VStack(alignment: .leading, spacing: 12) {
+            // Reminder mode selection
+            VStack(alignment: .leading, spacing: 8) {
+              Text("Reminder Mode")
+                .bodyStyle()
+                .foregroundColor(.white)
+
+              Picker("Mode", selection: $customReminderMode) {
+                ForEach(ReminderMode.allCases, id: \.self) { mode in
+                  Text(mode.displayName).tag(mode)
+                }
+              }
+              .pickerStyle(SegmentedPickerStyle())
+            }
+
+            // Time picker (only for daily/selectedDays modes)
+            if customReminderMode != .off {
+              VStack(alignment: .leading, spacing: 8) {
+                Text("Reminder Time")
+                  .bodyStyle()
+                  .foregroundColor(.white)
+
+                DatePicker(
+                  "Time", selection: $customReminderTime, displayedComponents: .hourAndMinute
+                )
+                .datePickerStyle(WheelDatePickerStyle())
+                .labelsHidden()
+                .colorScheme(.dark)
+              }
+            }
+
+            // Weekday selection (only for selectedDays mode)
+            if customReminderMode == .selectedDays {
+              VStack(alignment: .leading, spacing: 8) {
+                Text("Days")
+                  .bodyStyle()
+                  .foregroundColor(.white)
+
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
+                  ForEach(1...7, id: \.self) { day in
+                    let dayName = Calendar.current.shortWeekdaySymbols[day - 1]
+                    Button(action: {
+                      if selectedWeekdays.contains(day) {
+                        selectedWeekdays.remove(day)
+                      } else {
+                        selectedWeekdays.insert(day)
+                      }
+                    }) {
+                      Text(dayName)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(selectedWeekdays.contains(day) ? .brandInk : .white)
+                        .frame(width: 32, height: 32)
+                        .background(
+                          RoundedRectangle(cornerRadius: 8)
+                            .fill(
+                              selectedWeekdays.contains(day) ? Color.brandYellow : Color.brandGray)
+                        )
+                    }
+                  }
+                }
+              }
+            }
+
+            // Evening nudge toggle
+            VStack(alignment: .leading, spacing: 8) {
+              Toggle("Evening nudge", isOn: $enableEveningNudge)
+                .foregroundColor(.white)
+                .toggleStyle(SwitchToggleStyle(tint: .brandYellow))
+
+              if enableEveningNudge {
+                DatePicker(
+                  "Nudge Time", selection: $eveningNudgeTime, displayedComponents: .hourAndMinute
+                )
+                .datePickerStyle(WheelDatePickerStyle())
+                .labelsHidden()
+                .colorScheme(.dark)
+              }
+            }
+
+            // Advanced options for edge cases
+            VStack(alignment: .leading, spacing: 8) {
+              Button(action: {
+                showAdvancedReminders.toggle()
+              }) {
+                HStack {
+                  Text("Advanced Options")
+                    .bodyStyle()
+                    .foregroundColor(.brandYellow)
+                  Spacer()
+                  Image(systemName: showAdvancedReminders ? "chevron.up" : "chevron.down")
+                    .foregroundColor(.brandYellow)
+                }
+              }
+
+              if showAdvancedReminders {
+                VStack(alignment: .leading, spacing: 12) {
+                  Toggle("Multiple reminders per day", isOn: $useMultiPing)
+                    .foregroundColor(.white)
+                    .toggleStyle(SwitchToggleStyle(tint: .brandYellow))
+
+                  if useMultiPing {
+                    VStack(alignment: .leading, spacing: 8) {
+                      Text("Reminders per day: \(multiPingTimes)")
+                        .bodyStyle()
+                        .foregroundColor(.white)
+
+                      Slider(
+                        value: Binding(
+                          get: { Double(multiPingTimes) },
+                          set: { multiPingTimes = Int($0) }
+                        ), in: 2...6, step: 1
+                      )
+                      .accentColor(.brandYellow)
+
+                      HStack {
+                        Text("Start: \(multiPingStartHour):00")
+                          .captionStyle()
+                          .foregroundColor(.secondary)
+                        Spacer()
+                        Text("End: \(multiPingEndHour):00")
+                          .captionStyle()
+                          .foregroundColor(.secondary)
+                      }
+
+                      HStack {
+                        Text("Start Hour")
+                          .captionStyle()
+                          .foregroundColor(.white)
+                        Slider(
+                          value: Binding(
+                            get: { Double(multiPingStartHour) },
+                            set: { multiPingStartHour = Int($0) }
+                          ), in: 0...23, step: 1
+                        )
+                        .accentColor(.brandYellow)
+                      }
+
+                      HStack {
+                        Text("End Hour")
+                          .captionStyle()
+                          .foregroundColor(.white)
+                        Slider(
+                          value: Binding(
+                            get: { Double(multiPingEndHour) },
+                            set: { multiPingEndHour = Int($0) }
+                          ), in: 0...23, step: 1
+                        )
+                        .accentColor(.brandYellow)
+                      }
+                    }
+                  }
+                }
+                .padding()
+                .background(Color.brandInk.opacity(0.3))
+                .cornerRadius(12)
+              }
+            }
+          }
+          .padding()
+          .background(Color.brandInk.opacity(0.2))
+          .cornerRadius(12)
+        }
+      }
+    }
+  }
+
   private var previewSection: some View {
     Group {
       if !challengeTitle.isEmpty {
@@ -294,6 +488,39 @@ struct CustomChallengeEditor: View {
       auraPoints = nil
     }
 
+    // Create reminder override if custom settings are used
+    let reminderOverride: ReminderOverride?
+    if !useDefaultReminders {
+      let calendar = Calendar.current
+      let reminderTimeComponents = calendar.dateComponents(
+        [.hour, .minute], from: customReminderTime)
+      let eveningTimeComponents = calendar.dateComponents([.hour, .minute], from: eveningNudgeTime)
+
+      let customConfig = ReminderConfig(
+        mode: customReminderMode,
+        time: customReminderMode != .off ? reminderTimeComponents : nil,
+        selectedWeekdays: customReminderMode == .selectedDays ? selectedWeekdays : nil,
+        eveningAnchor: enableEveningNudge ? eveningTimeComponents : nil,
+        enableEveningNudge: enableEveningNudge
+      )
+
+      let multiPingConfig: MultiPingConfig? =
+        useMultiPing
+        ? MultiPingConfig(
+          timesPerDay: multiPingTimes,
+          startHour: multiPingStartHour,
+          endHour: multiPingEndHour
+        ) : nil
+
+      reminderOverride = ReminderOverride(
+        useDefaultSettings: false,
+        customConfig: customConfig,
+        multiPingConfig: multiPingConfig
+      )
+    } else {
+      reminderOverride = nil
+    }
+
     isCreating = true
 
     Task {
@@ -303,7 +530,8 @@ struct CustomChallengeEditor: View {
           type: selectedType,
           difficulty: selectedDifficulty,
           customAura: auraPoints,
-          durationDays: selectedDuration == 0 ? nil : selectedDuration
+          durationDays: selectedDuration == 0 ? nil : selectedDuration,
+          reminderOverride: reminderOverride
         )
 
         await MainActor.run {

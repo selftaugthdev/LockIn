@@ -175,7 +175,7 @@ class ChallengeService: ObservableObject {
 
   func createCustomChallenge(
     title: String, type: ChallengeType, difficulty: Int, customAura: Int? = nil,
-    durationDays: Int? = nil
+    durationDays: Int? = nil, reminderOverride: ReminderOverride? = nil
   ) async throws
     -> Challenge
   {
@@ -189,7 +189,8 @@ class ChallengeService: ObservableObject {
       isActive: true,
       customAura: customAura,
       durationDays: durationDays,
-      startDate: durationDays != nil ? Date() : nil
+      startDate: durationDays != nil ? Date() : nil,
+      reminderOverride: reminderOverride
     )
 
     // Save to Firestore
@@ -214,6 +215,16 @@ class ChallengeService: ObservableObject {
     if let durationDays = durationDays {
       data["durationDays"] = durationDays
       data["startDate"] = Timestamp(date: Date())
+    }
+
+    // Add reminder override if provided
+    if let reminderOverride = reminderOverride {
+      do {
+        let reminderData = try Firestore.Encoder().encode(reminderOverride)
+        data["reminderOverride"] = reminderData
+      } catch {
+        print("Error encoding reminder override: \(error)")
+      }
     }
 
     try await docRef.setData(data)

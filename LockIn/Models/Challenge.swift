@@ -11,6 +11,7 @@ struct Challenge: Codable, Identifiable {
   let customAura: Int?  // Custom Aura points for user-created challenges
   let durationDays: Int?  // Duration in days (nil for permanent challenges)
   let startDate: Date?  // When the challenge started
+  let reminderOverride: ReminderOverride?  // Optional per-challenge reminder settings
 
   init(
     id: String? = nil,
@@ -21,7 +22,8 @@ struct Challenge: Codable, Identifiable {
     isActive: Bool = true,
     customAura: Int? = nil,
     durationDays: Int? = nil,
-    startDate: Date? = nil
+    startDate: Date? = nil,
+    reminderOverride: ReminderOverride? = nil
   ) {
     // Don't set @DocumentID manually - let Firestore handle it
     self.title = title
@@ -32,6 +34,7 @@ struct Challenge: Codable, Identifiable {
     self.customAura = customAura
     self.durationDays = durationDays
     self.startDate = startDate
+    self.reminderOverride = reminderOverride
   }
 }
 

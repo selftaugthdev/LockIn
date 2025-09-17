@@ -10,6 +10,7 @@ class ChallengeService: ObservableObject {
   @Published var selectedChallenges: [Challenge] = []
   @Published var isLoading = false
   @Published var errorMessage: String?
+  @Published var completedChallengesToday: Set<String> = []
 
   private let db = Firestore.firestore()
   private let auth: AuthService
@@ -32,6 +33,9 @@ class ChallengeService: ObservableObject {
 
     // Load user's selected challenges for today
     await loadSelectedChallenges()
+
+    // Load completed challenges for today
+    await loadCompletedChallengesToday()
 
     // Set today's challenge (first selected or default)
     if let firstSelected = selectedChallenges.first {
@@ -87,6 +91,25 @@ class ChallengeService: ObservableObject {
     } catch {
       print("Error loading selected challenges: \(error)")
       selectedChallenges = []
+    }
+  }
+
+  func loadCompletedChallengesToday() async {
+    guard let uid = auth.uid else { return }
+
+    do {
+      let today = getTodayString()
+      let query = db.collection("completions")
+        .whereField("userId", isEqualTo: uid)
+        .whereField("date", isEqualTo: today)
+
+      let snapshot = try await query.getDocuments()
+      let completedIds = snapshot.documents.compactMap { $0.data()["challengeId"] as? String }
+
+      completedChallengesToday = Set(completedIds)
+    } catch {
+      print("Error loading completed challenges: \(error)")
+      completedChallengesToday = []
     }
   }
 
@@ -205,6 +228,35 @@ class ChallengeService: ObservableObject {
 
   // MARK: - Challenge Completion
 
+  func isChallengeCompletedToday(_ challenge: Challenge) async -> Bool {
+    guard let uid = auth.uid else { return false }
+
+    let cid =
+      (challenge.id?.trimmingCharacters(in: .whitespacesAndNewlines)).flatMap {
+        $0.isEmpty ? nil : $0
+      }
+      ?? challenge.title
+      .lowercased()
+      .replacingOccurrences(of: "[^a-z0-9]+", with: "-", options: .regularExpression)
+      .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
+
+    guard !cid.isEmpty else { return false }
+
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    formatter.timeZone = TimeZone(identifier: "UTC")
+    let dateString = formatter.string(from: Date())
+    let docId = "\(uid)_\(dateString)_\(cid)"
+
+    do {
+      let doc = try await db.collection("completions").document(docId).getDocument()
+      return doc.exists
+    } catch {
+      print("Error checking completion status: \(error)")
+      return false
+    }
+  }
+
   func completeChallenge(_ challenge: Challenge) async throws -> Completion {
     // Ensure we have a signed-in user
     let uid = try await auth.ensureSignedIn()
@@ -249,14 +301,24 @@ class ChallengeService: ObservableObject {
     print("🔍 DEBUG: About to write completion data...")
 
     do {
-      try await ref.setData([
+      var completionData: [String: Any] = [
         "userId": uid,
         "challengeId": cid,
         "challengeTitle": challenge.title,  // helpful for lists
         "date": dateString,  // easy querying by date
         "completedAt": FieldValue.serverTimestamp(),
-      ])
+      ]
+
+      // Add customAura if this is a custom challenge
+      if let customAura = challenge.customAura {
+        completionData["customAura"] = customAura
+      }
+
+      try await ref.setData(completionData)
       print("✅ completion written successfully with challengeId=\(cid)")
+
+      // Add to completed challenges set
+      completedChallengesToday.insert(cid)
     } catch {
       print("❌ ERROR writing completion:", error)
       print("❌ Error details:", error.localizedDescription)

@@ -234,6 +234,11 @@ class ChallengeService: ObservableObject {
     updatedChallenge.id = docRef.documentID
     availableChallenges.append(updatedChallenge)
 
+    // Apply reminder override if provided
+    if reminderOverride != nil {
+      await reminderService.applyReminderOverride(for: updatedChallenge)
+    }
+
     return updatedChallenge
   }
 

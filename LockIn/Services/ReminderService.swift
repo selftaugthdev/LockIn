@@ -236,6 +236,26 @@ class ReminderService: NSObject, ObservableObject {
     await notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
   }
 
+  /// Debug method to list all pending notifications (useful for simulator testing)
+  func listPendingNotifications() async {
+    let pendingRequests = await notificationCenter.pendingNotificationRequests()
+    print("🔔 Pending notifications count: \(pendingRequests.count)")
+
+    for request in pendingRequests {
+      let content = request.content
+      let trigger = request.trigger
+      print("🔔 Notification: \(content.title) - \(content.body)")
+      print("   ID: \(request.identifier)")
+      print("   Thread: \(content.threadIdentifier)")
+
+      if let calendarTrigger = trigger as? UNCalendarNotificationTrigger {
+        print("   Trigger: \(calendarTrigger.dateComponents)")
+        print("   Repeats: \(calendarTrigger.repeats)")
+      }
+      print("---")
+    }
+  }
+
   // MARK: - Smart Reminder Features
 
   /// Handle challenge completion - cancel today's reminders and update analytics
@@ -481,6 +501,127 @@ class ReminderService: NSObject, ObservableObject {
       lastIgnoredAt: nil,
       isPaused: false
     )
+  }
+
+  /// Apply reminder override to a challenge and schedule notifications
+  func applyReminderOverride(for challenge: Challenge) async {
+    guard let reminderOverride = challenge.reminderOverride else {
+      print("🔔 No reminder override for challenge: \(challenge.title)")
+      return
+    }
+
+    print("🔔 Applying reminder override for challenge: \(challenge.title)")
+    print("🔔 Use default settings: \(reminderOverride.useDefaultSettings)")
+
+    // If using default settings, don't override anything
+    if reminderOverride.useDefaultSettings {
+      print("🔔 Using default reminder settings for challenge: \(challenge.title)")
+      return
+    }
+
+    // Use custom configuration
+    guard let customConfig = reminderOverride.customConfig else {
+      print("🔔 No custom config provided for challenge: \(challenge.title)")
+      return
+    }
+
+    print("🔔 Custom config mode: \(customConfig.mode)")
+    print("🔔 Custom config time: \(customConfig.time?.description ?? "nil")")
+    print("🔔 Evening nudge: \(customConfig.enableEveningNudge)")
+
+    // Create a reminder state with the custom configuration
+    let reminderState = ChallengeReminderState(
+      challengeId: challenge.id ?? "",
+      config: customConfig,
+      weeklyQuota: nil,  // Custom challenges don't use quotas by default
+      autoSpread: false,
+      completionsThisWeek: 0,
+      lastCompletionAt: nil,
+      ignoredRemindersCount: 0,
+      lastIgnoredAt: nil,
+      isPaused: false
+    )
+
+    // Update the reminder state
+    updateReminderState(reminderState)
+
+    // Schedule the reminders based on the override
+    do {
+      try await scheduleRemindersForChallenge(challenge, with: reminderState)
+      print("✅ Successfully scheduled reminders for challenge: \(challenge.title)")
+
+      // Debug: List all pending notifications
+      await listPendingNotifications()
+    } catch {
+      print("❌ Failed to schedule reminders for challenge: \(challenge.title), error: \(error)")
+    }
+  }
+
+  /// Schedule reminders for a challenge based on its reminder state
+  private func scheduleRemindersForChallenge(
+    _ challenge: Challenge, with state: ChallengeReminderState
+  ) async throws {
+    guard isNotificationAuthorized else {
+      print("🔔 Notifications not authorized, skipping reminder scheduling")
+      return
+    }
+
+    let challengeId = challenge.id ?? ""
+    let title = challenge.title
+
+    switch state.config.mode {
+    case .off:
+      print("🔔 Reminder mode is OFF for challenge: \(title)")
+      await cancelReminders(for: challengeId)
+
+    case .daily:
+      guard let time = state.config.time else {
+        print("❌ Daily reminder mode requires a time")
+        return
+      }
+      print("🔔 Scheduling daily reminder for \(title) at \(time)")
+      try await scheduleDailyReminder(
+        challengeId: challengeId,
+        title: title,
+        time: time
+      )
+
+    case .selectedDays:
+      guard let time = state.config.time, let weekdays = state.config.selectedWeekdays else {
+        print("❌ Selected days reminder mode requires time and weekdays")
+        return
+      }
+      print("🔔 Scheduling selected days reminder for \(title) at \(time) on days: \(weekdays)")
+      try await scheduleDailyReminder(
+        challengeId: challengeId,
+        title: title,
+        time: time,
+        weekdays: weekdays
+      )
+
+    case .smart:
+      guard let time = state.config.time else {
+        print("❌ Smart reminder mode requires a time")
+        return
+      }
+      print("🔔 Scheduling smart reminder for \(title) at \(time)")
+      try await scheduleDailyReminder(
+        challengeId: challengeId,
+        title: title,
+        time: time
+      )
+    }
+
+    // Schedule evening nudge if enabled
+    if state.config.enableEveningNudge, let eveningTime = state.config.eveningAnchor {
+      print("🔔 Scheduling evening nudge for \(title) at \(eveningTime)")
+      try await scheduleEveningNudgeIfNeeded(
+        challengeId: challengeId,
+        title: title,
+        evening: eveningTime,
+        completedToday: false
+      )
+    }
   }
 
   // MARK: - Persistence

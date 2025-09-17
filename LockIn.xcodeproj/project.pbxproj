@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E45D7D942E7ABE0400553764 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = E45D7D932E7ABE0400553764 /* GoogleSignIn */; };
+		E45D7D962E7ABE0400553764 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E45D7D952E7ABE0400553764 /* GoogleSignInSwift */; };
 		E4689B7A2E6EE26B00A89328 /* LockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4689B792E6EE26B00A89328 /* LockInApp.swift */; };
 		E4689B7C2E6EE26B00A89328 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4689B7B2E6EE26B00A89328 /* ContentView.swift */; };
 		E4689B7E2E6EE26B00A89328 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E4689B7D2E6EE26B00A89328 /* Assets.xcassets */; };
@@ -51,6 +53,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E45D7D972E7ABE6E00553764 /* LockIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LockIn.entitlements; sourceTree = "<group>"; };
+		E45D7D982E7AC08200553764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E4689B762E6EE26B00A89328 /* LockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4689B792E6EE26B00A89328 /* LockInApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockInApp.swift; sourceTree = "<group>"; };
 		E4689B7B2E6EE26B00A89328 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -99,9 +103,11 @@
 			files = (
 				E4AB291D2E6F11A10024607D /* FirebaseAnalytics in Frameworks */,
 				E4AB29232E6F11A10024607D /* FirebaseFirestore in Frameworks */,
+				E45D7D962E7ABE0400553764 /* GoogleSignInSwift in Frameworks */,
 				E4AB29212E6F11A10024607D /* FirebaseCore in Frameworks */,
 				E4C6FA292E70BCEB00233D7C /* PaywallKit in Frameworks */,
 				E4AB291F2E6F11A10024607D /* FirebaseAuth in Frameworks */,
+				E45D7D942E7ABE0400553764 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +223,8 @@
 		E4AB29072E6F092A0024607D /* LockIn */ = {
 			isa = PBXGroup;
 			children = (
+				E45D7D982E7AC08200553764 /* Info.plist */,
+				E45D7D972E7ABE6E00553764 /* LockIn.entitlements */,
 				E4689B792E6EE26B00A89328 /* LockInApp.swift */,
 				E4689B7B2E6EE26B00A89328 /* ContentView.swift */,
 				E4689B7D2E6EE26B00A89328 /* Assets.xcassets */,
@@ -263,6 +271,8 @@
 				E4AB29202E6F11A10024607D /* FirebaseCore */,
 				E4AB29222E6F11A10024607D /* FirebaseFirestore */,
 				E4C6FA282E70BCEB00233D7C /* PaywallKit */,
+				E45D7D932E7ABE0400553764 /* GoogleSignIn */,
+				E45D7D952E7ABE0400553764 /* GoogleSignInSwift */,
 			);
 			productName = LockIn;
 			productReference = E4689B762E6EE26B00A89328 /* LockIn.app */;
@@ -295,6 +305,7 @@
 			packageReferences = (
 				E4AB291B2E6F11A10024607D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E4C6FA272E70BCEB00233D7C /* XCRemoteSwiftPackageReference "PaywallKit" */,
+				E45D7D922E7ABE0400553764 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = E4689B772E6EE26B00A89328 /* Products */;
 			projectDirPath = "";
@@ -486,12 +497,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LockIn/LockIn.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"LockIn/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KGZBP5SVJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LockIn/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -516,12 +529,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LockIn/LockIn.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"LockIn/Preview Content\"";
 				DEVELOPMENT_TEAM = 3KGZBP5SVJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LockIn/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -565,6 +580,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E45D7D922E7ABE0400553764 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		E4AB291B2E6F11A10024607D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -584,6 +607,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E45D7D932E7ABE0400553764 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E45D7D922E7ABE0400553764 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		E45D7D952E7ABE0400553764 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E45D7D922E7ABE0400553764 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		E4AB291C2E6F11A10024607D /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E4AB291B2E6F11A10024607D /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

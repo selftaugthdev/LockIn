@@ -9,6 +9,8 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == userId;
       // TEMPORARILY ALLOW ALL UPDATES TO TEST BATCH WRITE THEORY
       allow update: if request.auth != null && request.auth.uid == userId;
+      // Allow anonymous users to read their own document during linking process
+      allow read: if request.auth != null && request.auth.uid == userId;
       // ORIGINAL RESTRICTED RULE (commented out for testing):
       // allow update: if request.auth != null
       //               && request.auth.uid == userId

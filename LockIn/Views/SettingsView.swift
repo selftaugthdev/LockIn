@@ -1,3 +1,7 @@
+import AuthenticationServices
+import CryptoKit
+import FirebaseAuth
+import GoogleSignIn
 import SwiftUI
 import UIKit
 
@@ -6,6 +10,8 @@ struct SettingsView: View {
   @EnvironmentObject var paywallService: PaywallService
   @StateObject private var reminderService = ReminderService()
   @State private var showingSignOutAlert = false
+  @State private var showingResetDataAlert = false
+  @State private var showingBackupPrompt = false
   @State private var showingCustomChallengeEditor = false
   @State private var showingPaywall = false
   @State private var showingReminderSettings = false
@@ -65,6 +71,20 @@ struct SettingsView: View {
         }
       }
     }
+    .alert("Reset Local Data", isPresented: $showingResetDataAlert) {
+      Button("Cancel", role: .cancel) {}
+      Button("Reset Data", role: .destructive) {
+        Task {
+          do {
+            try await authService.resetLocalData()
+          } catch {
+            print("Error resetting data: \(error)")
+          }
+        }
+      }
+    } message: {
+      Text("This will clear your streaks and progress on this device. This cannot be undone.")
+    }
     .sheet(isPresented: $showingCustomChallengeEditor) {
       CustomChallengeEditor()
     }
@@ -82,6 +102,49 @@ struct SettingsView: View {
     }
     .sheet(isPresented: $showingHelpSupport) {
       HelpSupportView()
+    }
+    .sheet(isPresented: $showingBackupPrompt) {
+      BackupProgressView()
+    }
+  }
+
+  @ViewBuilder
+  private var accountActionsSection: some View {
+    if authService.isAnonymous {
+      // For anonymous users, show backup and reset options
+      VStack(spacing: 12) {
+        // Backup Progress Button
+        Button("Back Up Your Progress") {
+          showingBackupPrompt = true
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.brandYellow)
+        .foregroundColor(.brandInk)
+        .cornerRadius(12)
+
+        // Reset Data Button
+        Button("Reset Local Data") {
+          showingResetDataAlert = true
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.brandRed)
+        .foregroundColor(.white)
+        .cornerRadius(12)
+      }
+      .padding(.top, 8)
+    } else {
+      // For signed-in users, show sign out
+      Button("Sign Out") {
+        showingSignOutAlert = true
+      }
+      .frame(maxWidth: .infinity)
+      .padding()
+      .background(Color.brandRed)
+      .foregroundColor(.white)
+      .cornerRadius(12)
+      .padding(.top, 8)
     }
   }
 
@@ -159,16 +222,8 @@ struct SettingsView: View {
         action: { showingHelpSupport = true }
       )
 
-      // Sign Out Button
-      Button("Sign Out") {
-        showingSignOutAlert = true
-      }
-      .frame(maxWidth: .infinity)
-      .padding()
-      .background(Color.brandRed)
-      .foregroundColor(.white)
-      .cornerRadius(12)
-      .padding(.top, 8)
+      // Account Actions Section
+      accountActionsSection
     }
     .padding(20)
     .background(Color.brandGray)
@@ -928,7 +983,251 @@ struct AboutView: View {
   }
 }
 
+struct BackupProgressView: View {
+  @Environment(\.dismiss) private var dismiss
+  @EnvironmentObject var authService: AuthService
+  @State private var isLoading = false
+  @State private var errorMessage: String?
+  @State private var currentNonce: String?
+
+  var body: some View {
+    NavigationView {
+      ScrollView {
+        VStack(spacing: 24) {
+          // Header
+          VStack(spacing: 16) {
+            Image(systemName: "icloud.and.arrow.up")
+              .font(.system(size: 50))
+              .foregroundColor(.brandYellow)
+
+            Text("Back Up Your Progress")
+              .titleStyle()
+              .foregroundColor(.white)
+              .multilineTextAlignment(.center)
+
+            Text(
+              "Create a free account to sync your streaks across devices and never lose your progress."
+            )
+            .bodyStyle()
+            .foregroundColor(.secondary)
+            .multilineTextAlignment(.center)
+          }
+
+          // Benefits
+          VStack(alignment: .leading, spacing: 12) {
+            benefitRow(icon: "checkmark.circle", text: "Sync across all your devices")
+            benefitRow(icon: "checkmark.circle", text: "Never lose your streaks")
+            benefitRow(icon: "checkmark.circle", text: "Access your data anywhere")
+            benefitRow(icon: "checkmark.circle", text: "Free forever")
+          }
+          .padding()
+          .background(Color.brandGray)
+          .cornerRadius(12)
+
+          // Sign In Options
+          VStack(spacing: 12) {
+            SignInWithAppleButton(
+              onRequest: { request in
+                let nonce = randomNonceString()
+                currentNonce = nonce
+                request.requestedScopes = [.fullName, .email]
+                request.nonce = sha256(nonce)
+              },
+              onCompletion: { result in
+                handleAppleSignIn(result: result)
+              }
+            )
+            .signInWithAppleButtonStyle(.white)
+            .frame(height: 50)
+            .cornerRadius(12)
+
+            Button("Sign in with Google") {
+              handleGoogleSignIn()
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(12)
+          }
+
+          if let errorMessage = errorMessage {
+            Text(errorMessage)
+              .bodyStyle()
+              .foregroundColor(.red)
+              .multilineTextAlignment(.center)
+          }
+        }
+        .padding()
+      }
+      .background(Color.brandInk)
+      .navigationTitle("Backup Progress")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button("Cancel") {
+            dismiss()
+          }
+          .foregroundColor(.brandYellow)
+        }
+      }
+    }
+    .preferredColorScheme(.dark)
+  }
+
+  private func benefitRow(icon: String, text: String) -> some View {
+    HStack(spacing: 12) {
+      Image(systemName: icon)
+        .foregroundColor(.brandYellow)
+        .frame(width: 20)
+
+      Text(text)
+        .bodyStyle()
+        .foregroundColor(.white)
+
+      Spacer()
+    }
+  }
+
+  private func handleAppleSignIn(result: Result<ASAuthorization, Error>) {
+    switch result {
+    case .success(let authorization):
+      guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+        let identityToken = appleIDCredential.identityToken,
+        let identityTokenString = String(data: identityToken, encoding: .utf8),
+        let nonce = currentNonce
+      else {
+        errorMessage = "Failed to get Apple ID credential"
+        return
+      }
+
+      // ✅ Correct Firebase credential API for Apple
+      let credential = OAuthProvider.appleCredential(
+        withIDToken: identityTokenString,
+        rawNonce: nonce,
+        fullName: appleIDCredential.fullName
+      )
+
+      Task {
+        do {
+          try await authService.linkWithApple(credential: credential)
+          dismiss()
+        } catch {
+          await MainActor.run {
+            errorMessage = "Failed to link Apple account: \(error.localizedDescription)"
+          }
+        }
+      }
+
+    case .failure(let error):
+      // Handle cancellation gracefully - don't show error for user cancellation
+      if let authError = error as? ASAuthorizationError, authError.code == .canceled {
+        // User cancelled - don't show error message
+        return
+      }
+      errorMessage = "Apple Sign In failed: \(error.localizedDescription)"
+    }
+  }
+
+  private func handleGoogleSignIn() {
+    guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+      let presentingViewController = windowScene.windows.first?.rootViewController
+    else {
+      errorMessage = "Unable to present Google Sign In"
+      return
+    }
+
+    GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) {
+      result, error in
+      if let error = error {
+        DispatchQueue.main.async {
+          // Handle cancellation gracefully
+          if let gidError = error as? GIDSignInError, gidError.code == .canceled {
+            // User cancelled - don't show error
+            return
+          }
+          self.errorMessage = "Google Sign In failed: \(error.localizedDescription)"
+        }
+        return
+      }
+
+      guard let user = result?.user,
+        let idToken = user.idToken?.tokenString
+      else {
+        DispatchQueue.main.async {
+          self.errorMessage = "Failed to get Google ID token"
+        }
+        return
+      }
+
+      let credential = GoogleAuthProvider.credential(
+        withIDToken: idToken, accessToken: user.accessToken.tokenString)
+
+      Task {
+        do {
+          // Debug: Check if user is anonymous
+          if let currentUser = Auth.auth().currentUser {
+            print("Current user is anonymous: \(currentUser.isAnonymous)")
+            print("Current user UID: \(currentUser.uid)")
+          }
+
+          try await self.authService.linkWithGoogle(credential: credential)
+          await MainActor.run {
+            self.dismiss()
+          }
+        } catch {
+          await MainActor.run {
+            print("Google linking error: \(error)")
+
+            // Check if this is a Firestore permission error during linking
+            if let firestoreError = error as? NSError,
+              firestoreError.domain == "FIRFirestoreErrorDomain" && firestoreError.code == 7
+            {
+              print(
+                "Firestore permission error during linking - this is expected, linking may have succeeded"
+              )
+              // Don't show error to user, just dismiss the view
+              self.dismiss()
+              return
+            }
+
+            self.errorMessage = "Failed to link Google account: \(error.localizedDescription)"
+          }
+        }
+      }
+    }
+  }
+}
+
 #Preview {
   SettingsView()
     .environmentObject(AuthService())
+}
+
+// MARK: - Nonce helpers
+func sha256(_ input: String) -> String {
+  let inputData = Data(input.utf8)
+  let hashed = SHA256.hash(data: inputData)
+  return hashed.compactMap { String(format: "%02x", $0) }.joined()
+}
+
+func randomNonceString(length: Int = 32) -> String {
+  precondition(length > 0)
+  let charset: [Character] = Array(
+    "0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+  var result = ""
+  var remaining = length
+
+  while remaining > 0 {
+    var randoms = [UInt8](repeating: 0, count: 16)
+    _ = SecRandomCopyBytes(kSecRandomDefault, randoms.count, &randoms)
+    randoms.forEach { random in
+      if remaining == 0 { return }
+      if random < charset.count {
+        result.append(charset[Int(random)])
+        remaining -= 1
+      }
+    }
+  }
+  return result
 }

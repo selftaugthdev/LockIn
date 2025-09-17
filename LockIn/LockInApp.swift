@@ -1,4 +1,5 @@
 import FirebaseCore
+import GoogleSignIn
 import SwiftUI
 
 @main
@@ -8,6 +9,16 @@ struct LockInApp: App {
 
   init() {
     FirebaseApp.configure()
+
+    // Configure Google Sign-In
+    guard let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist"),
+      let plist = NSDictionary(contentsOfFile: path),
+      let clientId = plist["CLIENT_ID"] as? String
+    else {
+      fatalError("GoogleService-Info.plist not found or CLIENT_ID missing")
+    }
+    GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: clientId)
+
     // Initialize services with authService
     let auth = AuthService()
     _authService = StateObject(wrappedValue: auth)

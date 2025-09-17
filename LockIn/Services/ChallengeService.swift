@@ -312,8 +312,12 @@ class ChallengeService: ObservableObject {
       // Add customAura if this is a custom challenge
       if let customAura = challenge.customAura {
         completionData["customAura"] = customAura
+        print("🔍 Adding customAura to completion data: \(customAura)")
+      } else {
+        print("🔍 No customAura found for challenge: \(challenge.title)")
       }
 
+      print("🔍 Final completion data: \(completionData)")
       try await ref.setData(completionData)
       print("✅ completion written successfully with challengeId=\(cid)")
 

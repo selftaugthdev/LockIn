@@ -4,6 +4,7 @@ struct CustomChallengesCard: View {
   @EnvironmentObject var challengeService: ChallengeService
   @State private var showingCustomEditor = false
   @State private var hideCompletedChallenges = false
+  @State private var showingAllChallenges = false
 
   private var customChallenges: [Challenge] {
     let allCustom = challengeService.availableChallenges.filter { challenge in
@@ -90,18 +91,30 @@ struct CustomChallengesCard: View {
           .multilineTextAlignment(.center)
         }
 
-        // Custom challenges list (show up to 3)
+        // Custom challenges list
         if !customChallenges.isEmpty {
           VStack(spacing: 8) {
-            ForEach(Array(customChallenges.prefix(3)), id: \.id) { challenge in
+            let challengesToShow =
+              showingAllChallenges ? customChallenges : Array(customChallenges.prefix(3))
+
+            ForEach(challengesToShow, id: \.id) { challenge in
               CustomChallengeRow(challenge: challenge)
             }
 
             if customChallenges.count > 3 {
-              Text("+ \(customChallenges.count - 3) more")
-                .font(.caption)
-                .foregroundColor(.secondary)
+              Button(action: {
+                showingAllChallenges.toggle()
+              }) {
+                HStack(spacing: 4) {
+                  Image(systemName: showingAllChallenges ? "chevron.up" : "chevron.down")
+                    .font(.caption)
+                  Text(showingAllChallenges ? "Show Less" : "+ \(customChallenges.count - 3) more")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                }
+                .foregroundColor(.brandYellow)
                 .padding(.top, 4)
+              }
             }
           }
         } else {
@@ -254,6 +267,15 @@ struct CustomChallengeRow: View {
     Task {
       do {
         let _ = try await challengeService.completeChallenge(challenge)
+
+        // Wait a moment for Cloud Function to process
+        try await Task.sleep(nanoseconds: 2_000_000_000)  // 2 seconds
+
+        // Refresh user data to get updated aura
+        if let uid = challengeService.auth.uid {
+          await challengeService.auth.loadUserData(uid: uid)
+        }
+
         await MainActor.run {
           isCompleting = false
           // Show success feedback

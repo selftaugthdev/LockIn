@@ -29,6 +29,7 @@ function isYesterdayUtc(a: Timestamp, b: Timestamp): boolean {
 // Keep the name NEW to avoid any Gen1 residue firing in parallel
 export const onCompletionCreateV6 = onDocumentCreated("completions/{completionId}", async (event) => {
   console.log("🚀 onCompletionCreateV6 (Gen2/Node20)");
+  console.log("🔍 Event data:", JSON.stringify(event.data?.data(), null, 2));
 
   const snap = event.data;
   if (!snap) return;
@@ -111,12 +112,21 @@ export const onCompletionCreateV6 = onDocumentCreated("completions/{completionId
     const finalAura = (userDoc.exists ? (userDoc.data()?.totalAura as number) ?? 0 : 0) + auraPoints;
     console.log("🔍 Final aura calculation:", finalAura, "(previous:", (userDoc.data()?.totalAura as number) ?? 0, "+ new:", auraPoints, ")");
     
-    tx.set(userRef, {
+    const userData: any = {
       userId: uid,
       lastCompleted: nowTs,
       totalCount,
       streakCount,
       totalAura: finalAura,
-    }, { merge: true });
+    };
+    
+    // If this is a new user, also set default fields
+    if (!userDoc.exists) {
+      userData.createdAt = FieldValue.serverTimestamp();
+      userData.premium = false;
+      userData.friendCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+    }
+    
+    tx.set(userRef, userData, { merge: true });
   });
 });

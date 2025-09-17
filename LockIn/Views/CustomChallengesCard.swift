@@ -169,6 +169,28 @@ struct CustomChallengeRow: View {
   }
 
   private func completeChallenge() {
+    // For custom challenges, show a confirmation dialog instead of immediately completing
+    let alert = UIAlertController(
+      title: "Complete Challenge",
+      message:
+        "Are you sure you want to mark '\(challenge.title)' as completed? This action cannot be undone.",
+      preferredStyle: .alert
+    )
+
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    alert.addAction(
+      UIAlertAction(title: "Complete", style: .default) { _ in
+        self.performCompletion()
+      })
+
+    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+      let window = windowScene.windows.first
+    {
+      window.rootViewController?.present(alert, animated: true)
+    }
+  }
+
+  private func performCompletion() {
     guard !isCompleting else { return }
 
     isCompleting = true

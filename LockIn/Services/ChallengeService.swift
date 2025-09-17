@@ -1,4 +1,5 @@
 import Combine
+import FirebaseAuth
 import FirebaseFirestore
 import Foundation
 
@@ -208,7 +209,12 @@ class ChallengeService: ObservableObject {
     // Ensure we have a signed-in user
     let uid = try await auth.ensureSignedIn()
 
-    print("UID before write:", uid)
+    print("🔍 DEBUG: UID before write:", uid)
+    print("🔍 DEBUG: Current Firebase user UID:", Auth.auth().currentUser?.uid ?? "nil")
+    print(
+      "🔍 DEBUG: Current Firebase user is anonymous:", Auth.auth().currentUser?.isAnonymous ?? "nil")
+    print("🔍 DEBUG: Challenge ID:", challenge.id ?? "nil")
+    print("🔍 DEBUG: Challenge title:", challenge.title)
 
     // Prefer a real challenge.id from Firestore; fall back to a slug
     let cid =
@@ -220,6 +226,8 @@ class ChallengeService: ObservableObject {
       .replacingOccurrences(of: "[^a-z0-9]+", with: "-", options: .regularExpression)
       .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
 
+    print("🔍 DEBUG: Final challengeId (cid):", cid)
+
     // Guard against empty
     guard !cid.isEmpty else {
       print("❌ No challengeId; aborting write")
@@ -229,20 +237,36 @@ class ChallengeService: ObservableObject {
     // Simple completion - just write to Firestore
     // Cloud Functions will handle counter increments
     // Use deterministic doc ID to prevent duplicate completions per day
+    // NEW: Include challengeId to allow multiple challenges per day
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
     formatter.timeZone = TimeZone(identifier: "UTC")
     let dateString = formatter.string(from: Date())
-    let docId = "\(uid)_\(dateString)_UTC"
+    let docId = "\(uid)_\(dateString)_\(cid)"
     let ref = db.collection("completions").document(docId)
-    try await ref.setData([
-      "userId": uid,
-      "challengeId": cid,
-      "challengeTitle": challenge.title,  // helpful for lists
-      "completedAt": FieldValue.serverTimestamp(),
-    ])
 
-    print("✅ completion written with challengeId=\(cid)")
+    print("🔍 DEBUG: Document ID:", docId)
+    print("🔍 DEBUG: About to write completion data...")
+
+    do {
+      try await ref.setData([
+        "userId": uid,
+        "challengeId": cid,
+        "challengeTitle": challenge.title,  // helpful for lists
+        "date": dateString,  // easy querying by date
+        "completedAt": FieldValue.serverTimestamp(),
+      ])
+      print("✅ completion written successfully with challengeId=\(cid)")
+    } catch {
+      print("❌ ERROR writing completion:", error)
+      print("❌ Error details:", error.localizedDescription)
+      if let nsError = error as NSError? {
+        print("❌ Error domain:", nsError.domain)
+        print("❌ Error code:", nsError.code)
+        print("❌ Error userInfo:", nsError.userInfo)
+      }
+      throw error
+    }
 
     // Handle reminder integration
     await reminderService.handleChallengeCompletion(challengeId: cid)

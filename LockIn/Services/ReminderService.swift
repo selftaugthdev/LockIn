@@ -529,6 +529,17 @@ class ReminderService: NSObject, ObservableObject {
     print("🔔 Custom config time: \(customConfig.time?.description ?? "nil")")
     print("🔔 Evening nudge: \(customConfig.enableEveningNudge)")
 
+    // Check and request notification permission if needed
+    if !isNotificationAuthorized {
+      print("🔔 Notification permission not granted, requesting permission...")
+      let granted = await requestNotificationPermission()
+      if !granted {
+        print("❌ Notification permission denied, cannot schedule reminders")
+        return
+      }
+      print("✅ Notification permission granted!")
+    }
+
     // Create a reminder state with the custom configuration
     let reminderState = ChallengeReminderState(
       challengeId: challenge.id ?? "",

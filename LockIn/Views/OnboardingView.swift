@@ -103,12 +103,12 @@ struct OnboardingView: View {
   }
 
   private func onboardingPage(_ page: OnboardingPage) -> some View {
-    VStack(spacing: 40) {
+    VStack(spacing: 24) {
       Spacer()
 
       // Image
       Image(systemName: page.image)
-        .font(.system(size: 80))
+        .font(.system(size: 60))
         .foregroundColor(.brandYellow)
 
       // Content
@@ -191,7 +191,6 @@ struct OnboardingView: View {
       }
       .padding(.horizontal, 16)
     }
-    .frame(maxHeight: 300)
   }
 
   private func explanationPoint(_ text: String) -> some View {

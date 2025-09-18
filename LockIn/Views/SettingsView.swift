@@ -1026,20 +1026,21 @@ struct BackupProgressView: View {
 
           // Sign In Options
           VStack(spacing: 12) {
-            SignInWithAppleButton(
-              onRequest: { request in
-                let nonce = randomNonceString()
-                currentNonce = nonce
-                request.requestedScopes = [.fullName, .email]
-                request.nonce = sha256(nonce)
-              },
-              onCompletion: { result in
-                handleAppleSignIn(result: result)
-              }
-            )
-            .signInWithAppleButtonStyle(.white)
-            .frame(height: 50)
-            .cornerRadius(12)
+            // Temporarily disabled Apple Sign-In for App Store review
+            // SignInWithAppleButton(
+            //   onRequest: { request in
+            //     let nonce = randomNonceString()
+            //     currentNonce = nonce
+            //     request.requestedScopes = [.fullName, .email]
+            //     request.nonce = sha256(nonce)
+            //   },
+            //   onCompletion: { result in
+            //     handleAppleSignIn(result: result)
+            //   }
+            // )
+            // .signInWithAppleButtonStyle(.white)
+            // .frame(height: 50)
+            // .cornerRadius(12)
 
             Button("Sign in with Google") {
               handleGoogleSignIn()
@@ -1089,45 +1090,46 @@ struct BackupProgressView: View {
     }
   }
 
-  private func handleAppleSignIn(result: Result<ASAuthorization, Error>) {
-    switch result {
-    case .success(let authorization):
-      guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
-        let identityToken = appleIDCredential.identityToken,
-        let identityTokenString = String(data: identityToken, encoding: .utf8),
-        let nonce = currentNonce
-      else {
-        errorMessage = "Failed to get Apple ID credential"
-        return
-      }
+  // Temporarily disabled Apple Sign-In for App Store review
+  // private func handleAppleSignIn(result: Result<ASAuthorization, Error>) {
+  //   switch result {
+  //   case .success(let authorization):
+  //     guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+  //       let identityToken = appleIDCredential.identityToken,
+  //       let identityTokenString = String(data: identityToken, encoding: .utf8),
+  //       let nonce = currentNonce
+  //     else {
+  //       errorMessage = "Failed to get Apple ID credential"
+  //       return
+  //     }
 
-      // ✅ Correct Firebase credential API for Apple
-      let credential = OAuthProvider.appleCredential(
-        withIDToken: identityTokenString,
-        rawNonce: nonce,
-        fullName: appleIDCredential.fullName
-      )
+  //     // ✅ Correct Firebase credential API for Apple
+  //     let credential = OAuthProvider.appleCredential(
+  //       withIDToken: identityTokenString,
+  //       rawNonce: nonce,
+  //       fullName: appleIDCredential.fullName
+  //     )
 
-      Task {
-        do {
-          try await authService.linkWithApple(credential: credential)
-          dismiss()
-        } catch {
-          await MainActor.run {
-            errorMessage = "Failed to link Apple account: \(error.localizedDescription)"
-          }
-        }
-      }
+  //     Task {
+  //       do {
+  //         try await authService.linkWithApple(credential: credential)
+  //         dismiss()
+  //       } catch {
+  //         await MainActor.run {
+  //           errorMessage = "Failed to link Apple account: \(error.localizedDescription)"
+  //         }
+  //       }
+  //     }
 
-    case .failure(let error):
-      // Handle cancellation gracefully - don't show error for user cancellation
-      if let authError = error as? ASAuthorizationError, authError.code == .canceled {
-        // User cancelled - don't show error message
-        return
-      }
-      errorMessage = "Apple Sign In failed: \(error.localizedDescription)"
-    }
-  }
+  //   case .failure(let error):
+  //     // Handle cancellation gracefully - don't show error for user cancellation
+  //     if let authError = error as? ASAuthorizationError, authError.code == .canceled {
+  //       // User cancelled - don't show error message
+  //       return
+  //     }
+  //     errorMessage = "Apple Sign In failed: \(error.localizedDescription)"
+  //   }
+  // }
 
   private func handleGoogleSignIn() {
     guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

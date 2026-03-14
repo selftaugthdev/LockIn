@@ -3,14 +3,20 @@ import SwiftUI
 struct ContentView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
+  @EnvironmentObject var programService: ProgramService
   @State private var paywallService: PaywallService?
 
   var body: some View {
     Group {
       if authService.isAuthenticated && !authService.forceOnboarding {
         if let paywallService = paywallService {
-          MainTabView()
-            .environmentObject(paywallService)
+          if programService.activeProgram == nil {
+            ProgramSelectionView()
+              .environmentObject(paywallService)
+          } else {
+            MainTabView()
+              .environmentObject(paywallService)
+          }
         } else {
           ProgressView()
             .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
@@ -23,6 +29,7 @@ struct ContentView: View {
       if paywallService == nil {
         paywallService = PaywallService(authService: authService)
       }
+      Task { await programService.loadActiveProgram() }
     }
   }
 }
@@ -30,10 +37,10 @@ struct ContentView: View {
 struct MainTabView: View {
   var body: some View {
     TabView {
-      DailyChallengeView()
+      ProgramDayView()
         .tabItem {
           Image(systemName: "target")
-          Text("Challenge")
+          Text("Today")
         }
 
       ProgressView()
@@ -59,7 +66,9 @@ struct MainTabView: View {
 }
 
 #Preview {
+  let auth = AuthService()
   ContentView()
-    .environmentObject(AuthService())
-    .environmentObject(ChallengeService(auth: AuthService()))
+    .environmentObject(auth)
+    .environmentObject(ChallengeService(auth: auth))
+    .environmentObject(ProgramService(auth: auth))
 }

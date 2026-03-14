@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3138932B2F65910A003DCD43 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3138932A2F65910A003DCD43 /* GoogleService-Info.plist */; };
+		AA1111122E6F000000000001 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111112E6F000000000001 /* Program.swift */; };
+		AA1111142E6F000000000001 /* UserProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111132E6F000000000001 /* UserProgram.swift */; };
+		AA1111162E6F000000000001 /* ProgramCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111152E6F000000000001 /* ProgramCompletion.swift */; };
+		AA1111182E6F000000000001 /* foundation_30.json in Resources */ = {isa = PBXBuildFile; fileRef = AA1111172E6F000000000001 /* foundation_30.json */; };
+		AA1111202E6F000000000001 /* ProgramService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111212E6F000000000001 /* ProgramService.swift */; };
+		AA1111222E6F000000000001 /* ProgramSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111232E6F000000000001 /* ProgramSelectionView.swift */; };
+		AA1111242E6F000000000001 /* ProgramDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111252E6F000000000001 /* ProgramDayView.swift */; };
 		E45D7D942E7ABE0400553764 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = E45D7D932E7ABE0400553764 /* GoogleSignIn */; };
 		E45D7D962E7ABE0400553764 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E45D7D952E7ABE0400553764 /* GoogleSignInSwift */; };
 		E4689B7A2E6EE26B00A89328 /* LockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4689B792E6EE26B00A89328 /* LockInApp.swift */; };
@@ -53,6 +61,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3138932A2F65910A003DCD43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AA1111112E6F000000000001 /* Program.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
+		AA1111132E6F000000000001 /* UserProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgram.swift; sourceTree = "<group>"; };
+		AA1111152E6F000000000001 /* ProgramCompletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramCompletion.swift; sourceTree = "<group>"; };
+		AA1111172E6F000000000001 /* foundation_30.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = foundation_30.json; sourceTree = "<group>"; };
+		AA1111212E6F000000000001 /* ProgramService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramService.swift; sourceTree = "<group>"; };
+		AA1111232E6F000000000001 /* ProgramSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramSelectionView.swift; sourceTree = "<group>"; };
+		AA1111252E6F000000000001 /* ProgramDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramDayView.swift; sourceTree = "<group>"; };
 		E45D7D972E7ABE6E00553764 /* LockIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LockIn.entitlements; sourceTree = "<group>"; };
 		E45D7D982E7AC08200553764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E4689B762E6EE26B00A89328 /* LockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +130,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA1111192E6F000000000001 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				AA11111A2E6F000000000001 /* Programs */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AA11111A2E6F000000000001 /* Programs */ = {
+			isa = PBXGroup;
+			children = (
+				AA1111172E6F000000000001 /* foundation_30.json */,
+			);
+			path = Programs;
+			sourceTree = "<group>";
+		};
 		E4689B6D2E6EE26B00A89328 = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +206,9 @@
 				E4AB28F52E6F092A0024607D /* Completion.swift */,
 				E4AB28F62E6F092A0024607D /* User.swift */,
 				E4AB291D2E6F092A0024607D /* UserRow.swift */,
+				AA1111112E6F000000000001 /* Program.swift */,
+				AA1111132E6F000000000001 /* UserProgram.swift */,
+				AA1111152E6F000000000001 /* ProgramCompletion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -187,6 +222,7 @@
 				E4AB28F92E6F092A0024607D /* AuthService.swift */,
 				E4AB28FA2E6F092A0024607D /* ChallengeService.swift */,
 				E4AB291E2E6F092A0024607D /* LeaderboardService.swift */,
+				AA1111212E6F000000000001 /* ProgramService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -211,6 +247,8 @@
 				E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */,
 				E4F5BB122E71B257001560F7 /* PaywallView.swift */,
 				E4F5BB132E71B257001560F7 /* ProCard.swift */,
+				AA1111232E6F000000000001 /* ProgramSelectionView.swift */,
+				AA1111252E6F000000000001 /* ProgramDayView.swift */,
 				E4AB28FE2E6F092A0024607D /* DailyChallengeView.swift */,
 				E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */,
 				E4AB29002E6F092A0024607D /* OnboardingView.swift */,
@@ -237,7 +275,9 @@
 				E4AB29042E6F092A0024607D /* .gitignore */,
 				E4AB29052E6F092A0024607D /* GoogleService-Info.plist */,
 				E4AB29062E6F092A0024607D /* PreloadedChallenges.json */,
+				AA1111192E6F000000000001 /* Resources */,
 				E4689B7F2E6EE26B00A89328 /* Preview Content */,
+				3138932A2F65910A003DCD43 /* GoogleService-Info.plist */,
 			);
 			path = LockIn;
 			sourceTree = "<group>";
@@ -326,6 +366,8 @@
 				E4689B7E2E6EE26B00A89328 /* Assets.xcassets in Resources */,
 				E4AB29172E6F092A0024607D /* GoogleService-Info.plist in Resources */,
 				E4AB29192E6F092A0024607D /* PreloadedChallenges.json in Resources */,
+				AA1111182E6F000000000001 /* foundation_30.json in Resources */,
+				3138932B2F65910A003DCD43 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +409,12 @@
 				E4AB29132E6F092A0024607D /* Typography.swift in Sources */,
 				E4AB29142E6F092A0024607D /* LeaderboardView.swift in Sources */,
 				E4AB29152E6F092A0024607D /* ProgressView.swift in Sources */,
+				AA1111122E6F000000000001 /* Program.swift in Sources */,
+				AA1111142E6F000000000001 /* UserProgram.swift in Sources */,
+				AA1111162E6F000000000001 /* ProgramCompletion.swift in Sources */,
+				AA1111202E6F000000000001 /* ProgramService.swift in Sources */,
+				AA1111222E6F000000000001 /* ProgramSelectionView.swift in Sources */,
+				AA1111242E6F000000000001 /* ProgramDayView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,7 +563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.thierrydb.LockIn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -547,7 +595,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.thierrydb.LockIn;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

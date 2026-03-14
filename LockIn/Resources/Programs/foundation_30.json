@@ -1,0 +1,252 @@
+{
+  "id": "foundation_30",
+  "title": "30-Day Foundation",
+  "subtitle": "Build the discipline you lost",
+  "description": "Thirty days. One challenge each day. No excuses, no shortcuts. This program is the starting line — whether you're rebuilding from zero or just getting back on track. By day 30, discipline won't be something you find. It'll be something you are.",
+  "durationDays": 30,
+  "category": "rebuild",
+  "difficulty": "beginner",
+  "isPremium": false,
+  "days": [
+    {
+      "dayNumber": 1,
+      "challengeTitle": "Make your bed the moment you wake up",
+      "challengeDescription": "Before your phone, before coffee, before anything. Make your bed. It's the smallest possible win — and it proves you can follow through on something.",
+      "category": "productivity",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 2,
+      "challengeTitle": "No phone for the first 30 minutes of your day",
+      "challengeDescription": "Your morning shapes your entire day. Protect the first 30 minutes. No scrolling, no checking, nothing. Just you and the day ahead.",
+      "category": "productivity",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 3,
+      "challengeTitle": "Drink 2 liters of water today",
+      "challengeDescription": "Simple. Non-negotiable. Most men are chronically dehydrated and don't notice. Track it today — bottle by bottle.",
+      "category": "wellness",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 4,
+      "challengeTitle": "Write down 3 things you will do today — and do them",
+      "challengeDescription": "Not a wish list. A contract with yourself. Write three specific things before 9am, then execute. No carry-overs.",
+      "category": "productivity",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 5,
+      "challengeTitle": "Go for a 20-minute walk — no headphones",
+      "challengeDescription": "Just you and your thoughts. No podcast, no music. Walk and think. Let your mind process without input for once.",
+      "category": "mindfulness",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 6,
+      "challengeTitle": "Read 10 pages of a real book",
+      "challengeDescription": "Not an article. Not a thread. A book. 10 pages minimum. If you don't have one, get one today — that's also part of the challenge.",
+      "category": "learning",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 7,
+      "challengeTitle": "Cold shower — full minute",
+      "challengeDescription": "Step in, turn it cold, stay for 60 seconds. It's uncomfortable. That's the point. You are practicing doing hard things on purpose.",
+      "category": "fitness",
+      "xpReward": 10,
+      "phase": "foundation"
+    },
+    {
+      "dayNumber": 8,
+      "challengeTitle": "Do 50 pushups throughout the day",
+      "challengeDescription": "Doesn't have to be all at once. 10 in the morning, 20 at lunch, 20 before bed. Just hit 50. Your body keeps score.",
+      "category": "fitness",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 9,
+      "challengeTitle": "No social media until after 6pm",
+      "challengeDescription": "Your attention is your most valuable resource. Guard it for one full day. Notice what happens to your focus.",
+      "category": "productivity",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 10,
+      "challengeTitle": "Cook every meal you eat today",
+      "challengeDescription": "No delivery, no takeout, no skipping meals. Prepare everything yourself. It's a form of self-respect.",
+      "category": "wellness",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 11,
+      "challengeTitle": "Clean and organize one space in your home completely",
+      "challengeDescription": "Pick one room, one desk, one drawer — but finish it completely. Your environment reflects your mental state. Change one, change the other.",
+      "category": "productivity",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 12,
+      "challengeTitle": "Reach out to someone you've been meaning to contact",
+      "challengeDescription": "Not a text, not a like. A real message or call to someone important. Relationships need maintenance. Don't be the person who only shows up in crisis.",
+      "category": "social",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 13,
+      "challengeTitle": "Journal for 15 minutes — no filter",
+      "challengeDescription": "Write whatever is in your head. Problems, fears, goals, frustrations. Get it out of your head and onto paper. Clarity lives on the other side of honesty.",
+      "category": "mindfulness",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 14,
+      "challengeTitle": "Run or walk 5km",
+      "challengeDescription": "Halfway through the program. Celebrate it by doing something your body will remember. Pace doesn't matter. Completion does.",
+      "category": "fitness",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 15,
+      "challengeTitle": "Spend 30 minutes on a skill you want to develop",
+      "challengeDescription": "Something you've been putting off. A language, an instrument, a craft, a tool. 30 focused minutes. Show up for the person you're becoming.",
+      "category": "learning",
+      "xpReward": 20,
+      "phase": "build"
+    },
+    {
+      "dayNumber": 16,
+      "challengeTitle": "No complaints — for the entire day",
+      "challengeDescription": "Every time you catch yourself about to complain — stop. Reframe or say nothing. This is one of the hardest days in the program. It's supposed to be.",
+      "category": "productivity",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 17,
+      "challengeTitle": "Do 100 bodyweight reps — your choice of exercise",
+      "challengeDescription": "Pushups, squats, lunges, burpees — pick one or mix them. Hit 100 total. Track every rep. Your body is capable of more than you think.",
+      "category": "fitness",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 18,
+      "challengeTitle": "Wake up one hour earlier than usual",
+      "challengeDescription": "Use that hour for yourself — not for work. Read, move, think, plan. Guard it. The person who owns their morning owns their day.",
+      "category": "productivity",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 19,
+      "challengeTitle": "Write a letter to your future self — 1 year from now",
+      "challengeDescription": "Where do you want to be? What are you proud of? What did you stop doing? Write it honestly. Seal it somewhere and don't read it for a year.",
+      "category": "mindfulness",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 20,
+      "challengeTitle": "Cut out sugar completely for today",
+      "challengeDescription": "No added sugar. No sweetened drinks. No dessert. One day of control proves that you have it.",
+      "category": "wellness",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 21,
+      "challengeTitle": "Do something that scares you slightly",
+      "challengeDescription": "Not reckless. Just outside your comfort zone. A conversation you've been avoiding. A class you signed up for but never went to. A call you've been delaying. Do it.",
+      "category": "productivity",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 22,
+      "challengeTitle": "Spend 1 hour completely offline — no screens at all",
+      "challengeDescription": "One hour. No phone, no laptop, no TV. Read, walk, sit, think. Prove you can exist without a screen.",
+      "category": "mindfulness",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 23,
+      "challengeTitle": "Write down everything you eat and drink today",
+      "challengeDescription": "No judgement, no diet. Just awareness. Most men have no idea what they actually consume in a day. Know your inputs.",
+      "category": "wellness",
+      "xpReward": 30,
+      "phase": "push"
+    },
+    {
+      "dayNumber": 24,
+      "challengeTitle": "Do something for someone else with no expectation of return",
+      "challengeDescription": "Help a neighbor. Cook for someone. Handle a task for a family member without being asked. Generosity is a discipline too.",
+      "category": "social",
+      "xpReward": 40,
+      "phase": "peak"
+    },
+    {
+      "dayNumber": 25,
+      "challengeTitle": "Write down your top 3 values — then audit your week against them",
+      "challengeDescription": "What do you actually value most? Honesty, health, family, focus? Write them. Then ask: did your actions this week match these values? Be ruthlessly honest.",
+      "category": "mindfulness",
+      "xpReward": 40,
+      "phase": "peak"
+    },
+    {
+      "dayNumber": 26,
+      "challengeTitle": "Do a 45-minute workout of your choice",
+      "challengeDescription": "Gym, run, home workout — your call. 45 continuous minutes of movement. This close to the end, there are no more excuses.",
+      "category": "fitness",
+      "xpReward": 40,
+      "phase": "peak"
+    },
+    {
+      "dayNumber": 27,
+      "challengeTitle": "Eliminate your biggest time-wasting habit for one day",
+      "challengeDescription": "You know what it is. The app, the show, the habit you do when you're avoiding something real. One day without it. See what fills the space.",
+      "category": "productivity",
+      "xpReward": 40,
+      "phase": "peak"
+    },
+    {
+      "dayNumber": 28,
+      "challengeTitle": "Plan your next 90 days",
+      "challengeDescription": "One goal for your health. One goal for your work or finances. One goal for your relationships. Write the goal and one concrete next step for each. Direction before momentum.",
+      "category": "productivity",
+      "xpReward": 40,
+      "phase": "peak"
+    },
+    {
+      "dayNumber": 29,
+      "challengeTitle": "Tell someone about a struggle you haven't talked about",
+      "challengeDescription": "One person you trust. Something real. Carrying things alone gets heavy. Saying it out loud is the first step to actually dealing with it.",
+      "category": "social",
+      "xpReward": 40,
+      "phase": "peak"
+    },
+    {
+      "dayNumber": 30,
+      "challengeTitle": "Reflect — write down who you were on day 1 vs who you are today",
+      "challengeDescription": "Not a celebration, an honest assessment. What changed? What didn't? What are you going to carry forward? Thirty days ago you started. Today you finish. This is just the beginning.",
+      "category": "mindfulness",
+      "xpReward": 50,
+      "phase": "peak"
+    }
+  ]
+}

@@ -17,7 +17,7 @@ struct ProgressView: View {
                 .titleStyle()
                 .foregroundColor(.brandYellow)
 
-              Text("Track your streak and aura journey")
+              Text("Track your streak and XP journey")
                 .bodyStyle()
                 .foregroundColor(.secondary)
             }
@@ -119,12 +119,12 @@ struct ProgressView: View {
           icon: "flame"
         )
 
-        // Aura Points (estimated: 10 points per completion)
-        let auraPoints = user.totalCount * 10
+        // XP (estimated: 10 points per completion)
+        let xpPoints = user.totalCount * 10
         progressBar(
-          title: "Earned Aura",
-          value: auraPoints,
-          maxValue: max(auraPoints, 100),
+          title: "XP Earned",
+          value: xpPoints,
+          maxValue: max(xpPoints, 100),
           color: .brandYellow,
           icon: "sparkles"
         )

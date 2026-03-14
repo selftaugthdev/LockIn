@@ -4,9 +4,10 @@ import SwiftUI
 
 @main
 struct LockInApp: App {
-  @StateObject private var authService = AuthService()
+  @StateObject private var authService: AuthService
   @StateObject private var challengeService: ChallengeService
   @StateObject private var programService: ProgramService
+  @StateObject private var paywallService: PaywallService
 
   init() {
     FirebaseApp.configure()
@@ -25,6 +26,7 @@ struct LockInApp: App {
     _authService = StateObject(wrappedValue: auth)
     _challengeService = StateObject(wrappedValue: ChallengeService(auth: auth))
     _programService = StateObject(wrappedValue: ProgramService(auth: auth))
+    _paywallService = StateObject(wrappedValue: PaywallService(authService: auth))
   }
 
   var body: some Scene {
@@ -33,6 +35,7 @@ struct LockInApp: App {
         .environmentObject(authService)
         .environmentObject(challengeService)
         .environmentObject(programService)
+        .environmentObject(paywallService)
         .onAppear {
           AnalyticsService.shared.logAppOpen()
         }

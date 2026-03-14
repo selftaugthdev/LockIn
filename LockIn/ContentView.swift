@@ -4,31 +4,21 @@ struct ContentView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
   @EnvironmentObject var programService: ProgramService
-  @State private var paywallService: PaywallService?
+  @EnvironmentObject var paywallService: PaywallService
 
   var body: some View {
     Group {
       if authService.isAuthenticated && !authService.forceOnboarding {
-        if let paywallService = paywallService {
-          if programService.activeProgram == nil {
-            ProgramSelectionView()
-              .environmentObject(paywallService)
-          } else {
-            MainTabView()
-              .environmentObject(paywallService)
-          }
+        if programService.activeProgram == nil {
+          ProgramSelectionView()
         } else {
-          ProgressView()
-            .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
+          MainTabView()
         }
       } else {
         OnboardingView()
       }
     }
     .onAppear {
-      if paywallService == nil {
-        paywallService = PaywallService(authService: authService)
-      }
       Task { await programService.loadActiveProgram() }
     }
   }
@@ -71,4 +61,5 @@ struct MainTabView: View {
     .environmentObject(auth)
     .environmentObject(ChallengeService(auth: auth))
     .environmentObject(ProgramService(auth: auth))
+    .environmentObject(PaywallService(authService: auth))
 }

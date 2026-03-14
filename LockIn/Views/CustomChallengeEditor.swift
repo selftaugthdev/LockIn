@@ -152,16 +152,16 @@ struct CustomChallengeEditor: View {
 
   private var auraSection: some View {
     VStack(alignment: .leading, spacing: 8) {
-      Text("Aura")
+      Text("XP")
         .headlineStyle()
         .foregroundColor(.white)
 
       VStack(alignment: .leading, spacing: 8) {
-        TextField("Enter Aura (10-50)", text: $customAura)
+        TextField("Enter XP (10-50)", text: $customAura)
           .textFieldStyle(CustomTextFieldStyle())
           .keyboardType(.numberPad)
 
-        Text("Choose Aura between 10-50 for fair friend comparisons")
+        Text("Choose XP between 10-50 for fair friend comparisons")
           .font(.caption)
           .foregroundColor(.secondary)
       }

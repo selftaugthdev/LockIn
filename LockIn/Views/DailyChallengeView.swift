@@ -223,7 +223,7 @@ struct DailyChallengeView: View {
       HStack {
         Image(systemName: "sparkles")
           .foregroundColor(.brandYellow)
-        Text("+ \(challenge.auraPoints) Aura")
+        Text("+ \(challenge.auraPoints) XP")
           .headlineStyle()
           .foregroundColor(.brandYellow)
       }
@@ -326,14 +326,14 @@ struct DailyChallengeView: View {
     .cornerRadius(16)
   }
 
-  // MARK: - Total Aura Section
+  // MARK: - Total XP Section
 
   private func totalAuraSection(_ user: User) -> some View {
     VStack(spacing: 16) {
       HStack {
         Image(systemName: "sparkles")
           .foregroundColor(.brandYellow)
-        Text("Your Total Aura")
+        Text("Your Total XP")
           .headlineStyle()
           .foregroundColor(.white)
         Spacer()
@@ -379,7 +379,7 @@ struct DailyChallengeView: View {
             Circle()
               .fill(Color.brandYellow)
               .frame(width: 8, height: 8)
-            Text("Today: +\(challengeService.todaysChallenge?.auraPoints ?? 0)")
+            Text("Today: +\(challengeService.todaysChallenge?.auraPoints ?? 0) XP")
               .bodyStyle()
               .foregroundColor(.white)
           }
@@ -388,13 +388,13 @@ struct DailyChallengeView: View {
             Circle()
               .fill(Color.brandGreen)
               .frame(width: 8, height: 8)
-            Text("Total: \(user.totalAura ?? 0)")
+            Text("Total: \(user.totalAura ?? 0) XP")
               .bodyStyle()
               .foregroundColor(.white)
           }
 
           if (user.totalAura ?? 0) < 1000 {
-            Text("Next milestone: \(1000 - (user.totalAura ?? 0)) to go")
+            Text("Next milestone: \(1000 - (user.totalAura ?? 0)) XP to go")
               .captionStyle()
               .foregroundColor(.secondary)
           } else {

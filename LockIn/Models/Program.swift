@@ -61,7 +61,7 @@ enum ProgramDifficulty: String, Codable, CaseIterable {
   }
 }
 
-enum ProgramPhase: String, Codable {
+enum ProgramPhase: String, Codable, CaseIterable {
   case foundation = "foundation"
   case build = "build"
   case push = "push"

@@ -1,40 +1,28 @@
 import SwiftUI
 
 struct ProgressView: View {
+  @EnvironmentObject var programService: ProgramService
   @EnvironmentObject var authService: AuthService
 
   var body: some View {
     NavigationView {
       ZStack {
-        Color.brandInk
-          .ignoresSafeArea()
+        Color.brandInk.ignoresSafeArea()
 
         ScrollView {
-          VStack(spacing: 24) {
-            // Header
-            VStack(spacing: 8) {
-              Text("Your Progress")
-                .titleStyle()
-                .foregroundColor(.brandYellow)
-
-              Text("Track your streak and XP journey")
-                .bodyStyle()
-                .foregroundColor(.secondary)
+          VStack(spacing: 20) {
+            if let program = programService.activeProgram {
+              programArcCard(program)
+              phaseCard(program)
+              statsGrid(program)
+            } else {
+              emptyState
             }
 
-            // Streak Stats
-            if let user = authService.currentUser {
-              streakStatsCard(user)
-            }
-
-            // Progress Graph
-            if let user = authService.currentUser {
-              progressGraphCard(user)
-            }
-
-            Spacer(minLength: 100)
+            Spacer(minLength: 80)
           }
-          .padding()
+          .padding(.horizontal, 20)
+          .padding(.top, 8)
         }
       }
       .navigationTitle("Progress")
@@ -43,160 +31,200 @@ struct ProgressView: View {
     }
   }
 
-  private func streakStatsCard(_ user: User) -> some View {
+  // MARK: - Program Arc (hero card)
+
+  private func programArcCard(_ program: UserProgram) -> some View {
     VStack(spacing: 20) {
-      HStack {
-        Text("Current Streak")
-          .headlineStyle()
-          .foregroundColor(.white)
-        Spacer()
-        Text("\(user.streakCount) days")
-          .titleStyle()
-          .foregroundColor(.brandYellow)
-      }
-
-      HStack {
-        Text("Status")
-          .headlineStyle()
-          .foregroundColor(.white)
-        Spacer()
-        HStack {
-          Circle()
-            .fill(user.streakStatus == .active ? Color.brandGreen : Color.brandRed)
-            .frame(width: 8, height: 8)
-          Text(user.streakStatus == .active ? "Active" : "Broken")
-            .bodyStyle()
-            .foregroundColor(.secondary)
-        }
-      }
-
-      if let lastCompleted = user.lastCompleted {
-        HStack {
-          Text("Last Completed")
-            .headlineStyle()
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(program.programTitle)
+            .font(Typography.headline)
+            .foregroundColor(.white.opacity(0.5))
+          Text("Day \(program.currentDay) of \(program.programDurationDays)")
+            .font(Typography.largeTitle)
             .foregroundColor(.white)
-          Spacer()
-          Text(lastCompleted, style: .date)
-            .bodyStyle()
-            .foregroundColor(.secondary)
+        }
+        Spacer()
+        VStack(alignment: .trailing, spacing: 4) {
+          Text("\(program.totalXPEarned)")
+            .font(Typography.title2)
+            .fontWeight(.bold)
+            .foregroundColor(.brandYellow)
+          Text("XP earned")
+            .font(Typography.caption)
+            .foregroundColor(.white.opacity(0.35))
         }
       }
+
+      // Full program arc bar — dots for each day
+      programArcBar(program)
+
+      HStack {
+        Text("\(program.completedDays.count) days completed")
+          .font(Typography.caption)
+          .foregroundColor(.white.opacity(0.4))
+        Spacer()
+        Text("\(program.daysRemaining) to go")
+          .font(Typography.caption)
+          .foregroundColor(.white.opacity(0.4))
+      }
     }
-    .padding(24)
+    .padding(20)
     .background(Color.brandGray)
     .cornerRadius(20)
   }
 
-  private func progressGraphCard(_ user: User) -> some View {
-    VStack(spacing: 20) {
-      // Header
-      HStack {
-        Text("Progress Overview")
-          .headlineStyle()
-          .foregroundColor(.white)
-        Spacer()
-        Image(systemName: "chart.line.uptrend.xyaxis")
-          .foregroundColor(.brandYellow)
-      }
+  private func programArcBar(_ program: UserProgram) -> some View {
+    GeometryReader { geo in
+      let total = program.programDurationDays
+      let dotSize: CGFloat = 6
+      let spacing = (geo.size.width - dotSize) / CGFloat(max(total - 1, 1))
 
-      // Simple Progress Bars
-      VStack(spacing: 16) {
-        // Days Locked In
-        progressBar(
-          title: "Days Locked In",
-          value: user.totalCount,
-          maxValue: max(user.totalCount, 30),
-          color: .brandBlue,
-          icon: "calendar"
-        )
+      ZStack(alignment: .leading) {
+        // Track line
+        Rectangle()
+          .fill(Color.white.opacity(0.07))
+          .frame(height: 2)
+          .frame(maxWidth: .infinity)
+          .padding(.top, dotSize / 2 - 1)
 
-        // Current Streak
-        progressBar(
-          title: "Current Streak",
-          value: user.streakCount,
-          maxValue: max(user.streakCount, 7),
-          color: .brandGreen,
-          icon: "flame"
-        )
+        // Filled line up to current
+        Rectangle()
+          .fill(Color.brandYellow)
+          .frame(
+            width: total > 1
+              ? spacing * CGFloat(min(program.completedDays.count, total - 1))
+              : 0,
+            height: 2
+          )
+          .padding(.top, dotSize / 2 - 1)
 
-        // XP (estimated: 10 points per completion)
-        let xpPoints = user.totalCount * 10
-        progressBar(
-          title: "XP Earned",
-          value: xpPoints,
-          maxValue: max(xpPoints, 100),
-          color: .brandYellow,
-          icon: "sparkles"
-        )
-      }
+        // Dots
+        ForEach(1...total, id: \.self) { day in
+          let completed = program.completedDays.contains(day)
+          let isCurrent = day == program.currentDay
 
-      // Motivational Message
-      if user.streakCount > 0 {
-        Text(motivationalMessage(for: user.streakCount))
-          .bodyStyle()
-          .foregroundColor(.brandYellow)
-          .multilineTextAlignment(.center)
-          .padding(.top, 8)
-      }
-    }
-    .padding(24)
-    .background(Color.brandGray)
-    .cornerRadius(20)
-  }
-
-  private func progressBar(title: String, value: Int, maxValue: Int, color: Color, icon: String)
-    -> some View
-  {
-    VStack(alignment: .leading, spacing: 8) {
-      HStack {
-        Image(systemName: icon)
-          .foregroundColor(color)
-          .frame(width: 16)
-        Text(title)
-          .bodyStyle()
-          .foregroundColor(.white)
-        Spacer()
-        Text("\(value)")
-          .bodyStyle()
-          .foregroundColor(color)
-      }
-
-      GeometryReader { geometry in
-        ZStack(alignment: .leading) {
-          // Background
-          RoundedRectangle(cornerRadius: 4)
-            .fill(Color.black.opacity(0.3))
-            .frame(height: 8)
-
-          // Progress
-          RoundedRectangle(cornerRadius: 4)
-            .fill(color)
-            .frame(width: geometry.size.width * CGFloat(value) / CGFloat(maxValue), height: 8)
+          Circle()
+            .fill(completed ? Color.brandYellow : (isCurrent ? Color.white : Color.white.opacity(0.12)))
+            .frame(width: isCurrent ? 10 : dotSize, height: isCurrent ? 10 : dotSize)
+            .overlay(
+              Circle()
+                .stroke(isCurrent ? Color.brandYellow : Color.clear, lineWidth: 1.5)
+                .frame(width: 14, height: 14)
+            )
+            .offset(x: spacing * CGFloat(day - 1) - (isCurrent ? 2 : 0))
         }
       }
-      .frame(height: 8)
+    }
+    .frame(height: 16)
+  }
+
+  // MARK: - Phase Card
+
+  private func phaseCard(_ program: UserProgram) -> some View {
+    guard let day = programService.todaysProgramDay else { return AnyView(EmptyView()) }
+
+    return AnyView(
+      HStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 6) {
+          Text("CURRENT PHASE")
+            .font(Typography.caption2)
+            .fontWeight(.semibold)
+            .foregroundColor(.brandYellow.opacity(0.7))
+            .tracking(1.5)
+          Text(day.phase.displayName)
+            .font(Typography.title2)
+            .foregroundColor(.white)
+          Text(day.phase.tagline)
+            .font(Typography.caption)
+            .foregroundColor(.white.opacity(0.4))
+        }
+
+        Spacer()
+
+        // Phase position indicator
+        VStack(spacing: 3) {
+          ForEach(ProgramPhase.allCases, id: \.self) { phase in
+            RoundedRectangle(cornerRadius: 2)
+              .fill(phase == day.phase ? Color.brandYellow : Color.white.opacity(0.1))
+              .frame(width: 4, height: phase == day.phase ? 24 : 12)
+              .animation(.easeInOut(duration: 0.3), value: day.phase)
+          }
+        }
+      }
+      .padding(20)
+      .background(Color.brandGray)
+      .cornerRadius(16)
+    )
+  }
+
+  // MARK: - Stats Grid
+
+  private func statsGrid(_ program: UserProgram) -> some View {
+    HStack(spacing: 12) {
+      statTile(
+        icon: "flame.fill",
+        color: .brandYellow,
+        value: "\(program.longestStreakInProgram)",
+        label: "Best streak"
+      )
+      statTile(
+        icon: "checkmark.circle.fill",
+        color: .brandGreen,
+        value: "\(program.completedDays.count)",
+        label: "Days done"
+      )
+      statTile(
+        icon: "arrow.counterclockwise",
+        color: .brandRed,
+        value: "\(program.recoveryDays.count)",
+        label: "Recovery days"
+      )
     }
   }
 
-  private func motivationalMessage(for streak: Int) -> String {
-    switch streak {
-    case 1...2:
-      return "Great start! Keep the momentum going! 🔥"
-    case 3...6:
-      return "You're building a solid habit! 💪"
-    case 7...13:
-      return "One week strong! You're on fire! 🚀"
-    case 14...29:
-      return "Two weeks! You're unstoppable! ⭐"
-    case 30...:
-      return "A full month! You're a habit master! 🏆"
-    default:
-      return "Every day counts! Keep going! 💫"
+  private func statTile(icon: String, color: Color, value: String, label: String) -> some View {
+    VStack(spacing: 8) {
+      Image(systemName: icon)
+        .font(.title3)
+        .foregroundColor(color)
+      Text(value)
+        .font(Typography.title2)
+        .fontWeight(.bold)
+        .foregroundColor(.white)
+      Text(label)
+        .font(Typography.caption2)
+        .foregroundColor(.white.opacity(0.35))
+        .multilineTextAlignment(.center)
     }
+    .frame(maxWidth: .infinity)
+    .padding(.vertical, 20)
+    .background(Color.brandGray)
+    .cornerRadius(16)
+  }
+
+  // MARK: - Empty State
+
+  private var emptyState: some View {
+    VStack(spacing: 12) {
+      Image(systemName: "chart.line.uptrend.xyaxis")
+        .font(.largeTitle)
+        .foregroundColor(.white.opacity(0.15))
+      Text("No active program")
+        .font(Typography.headline)
+        .foregroundColor(.white.opacity(0.4))
+      Text("Enroll in a program to start tracking your progress.")
+        .font(Typography.subheadline)
+        .foregroundColor(.white.opacity(0.25))
+        .multilineTextAlignment(.center)
+    }
+    .frame(maxWidth: .infinity, minHeight: 250)
   }
 }
 
 #Preview {
+  let auth = AuthService()
   ProgressView()
-    .environmentObject(AuthService())
+    .environmentObject(auth)
+    .environmentObject(ProgramService(auth: auth))
 }

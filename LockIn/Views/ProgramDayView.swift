@@ -6,6 +6,9 @@ struct ProgramDayView: View {
   @EnvironmentObject var paywallService: PaywallService
   @State private var isCompleting = false
   @State private var showConfetti = false
+  @State private var showCompletionModal = false
+  @State private var completedDay: Int = 0
+  @State private var completedXP: Int = 0
 
   var body: some View {
     NavigationView {
@@ -61,6 +64,13 @@ struct ProgramDayView: View {
         }
       }
       .preferredColorScheme(.dark)
+      .sheet(isPresented: $showCompletionModal) {
+        DayCompletionSheet(
+          dayNumber: completedDay,
+          xpEarned: completedXP,
+          totalDays: programService.activeProgram?.programDurationDays ?? 30
+        )
+      }
     }
     .task {
       await programService.loadActiveProgram()
@@ -359,12 +369,23 @@ struct ProgramDayView: View {
   // MARK: - Actions
 
   private func complete() async {
+    guard let userProgram = programService.activeProgram,
+          let day = programService.todaysProgramDay else { return }
+
+    let dayNumber = userProgram.currentDay
+    let xpEarned = day.xpReward
+
     isCompleting = true
     do {
       try await programService.completeProgramDay()
+      completedDay = dayNumber
+      completedXP = xpEarned
       showConfetti = true
       if let uid = authService.uid {
         await authService.loadUserData(uid: uid)
+      }
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+        showCompletionModal = true
       }
       if !paywallService.isPro {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -381,6 +402,130 @@ struct ProgramDayView: View {
 
   private func categoryColor(_ type: ChallengeType) -> Color {
     Color(hex: type.color)
+  }
+}
+
+// MARK: - Day Completion Sheet
+
+struct DayCompletionSheet: View {
+  @Environment(\.dismiss) private var dismiss
+  let dayNumber: Int
+  let xpEarned: Int
+  let totalDays: Int
+
+  var body: some View {
+    ZStack {
+      Color.brandInk.ignoresSafeArea()
+
+      VStack(spacing: 0) {
+        Spacer()
+
+        // Icon
+        ZStack {
+          Circle()
+            .fill(Color.brandYellow.opacity(0.1))
+            .frame(width: 80, height: 80)
+          Image(systemName: "checkmark.circle.fill")
+            .font(.system(size: 40))
+            .foregroundColor(.brandYellow)
+        }
+        .padding(.bottom, 24)
+
+        // Headline
+        Text("Day \(dayNumber) done.")
+          .font(Typography.largeTitle)
+          .foregroundColor(.white)
+          .padding(.bottom, 8)
+
+        Text("+\(xpEarned) XP earned")
+          .font(Typography.subheadline)
+          .foregroundColor(.brandYellow)
+          .padding(.bottom, 36)
+
+        // Encouraging line
+        Text(encouragement)
+          .font(Typography.body)
+          .foregroundColor(.white.opacity(0.6))
+          .multilineTextAlignment(.center)
+          .lineSpacing(5)
+          .padding(.horizontal, 32)
+          .padding(.bottom, 32)
+
+        // Until tomorrow tip
+        VStack(alignment: .leading, spacing: 10) {
+          Text("Until tomorrow")
+            .font(Typography.caption)
+            .fontWeight(.semibold)
+            .foregroundColor(.brandYellow.opacity(0.7))
+            .tracking(1)
+
+          Text(untilTomorrowTip)
+            .font(Typography.subheadline)
+            .foregroundColor(.white.opacity(0.55))
+            .lineSpacing(4)
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(20)
+        .background(Color.brandGray)
+        .cornerRadius(14)
+        .padding(.horizontal, 24)
+
+        Spacer()
+
+        // CTA
+        Button {
+          dismiss()
+        } label: {
+          Text("Got it")
+            .font(Typography.headline)
+            .foregroundColor(.brandInk)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 18)
+            .background(Color.brandYellow)
+            .cornerRadius(14)
+        }
+        .padding(.horizontal, 24)
+        .padding(.bottom, 44)
+      }
+    }
+    .preferredColorScheme(.dark)
+  }
+
+  private var encouragement: String {
+    switch dayNumber {
+    case 1:
+      return "Day 1 is the one most people never take. You took it."
+    case 2...6:
+      return "The first week is about showing up. You are showing up."
+    case 7:
+      return "One week. Most people quit before here. You did not."
+    case 8...14:
+      return "You are past the easy part. This is where it gets real."
+    case 15:
+      return "Halfway. The version of you on Day 1 would not recognise this."
+    case 16...22:
+      return "This is the stretch most people never see. You are in it."
+    case 23...29:
+      return "The final push. Every day here is proof."
+    case 30:
+      return "Thirty days. You said you would, and you did."
+    default:
+      return "Every day you show up, it gets harder to quit. That is the point."
+    }
+  }
+
+  private var untilTomorrowTip: String {
+    let tips = [
+      "Read tomorrow's challenge tonight so it is already in your head when you wake up.",
+      "Stay off your phone for the next hour. Let the win land without distraction.",
+      "Write one sentence about how today felt. You do not need an app for that.",
+      "Tell no one about today. This one is for you.",
+      "Use the rest of today to do one small thing you have been putting off.",
+      "Sleep before midnight. Tomorrow starts tonight.",
+      "Eat a real meal tonight. You earned it, and tomorrow deserves a clean start.",
+    ]
+    return tips[(dayNumber - 1) % tips.count]
   }
 }
 

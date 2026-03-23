@@ -1,8 +1,10 @@
 // Gen2 + Node 20
 import { setGlobalOptions } from "firebase-functions/v2";
 import { onDocumentCreated } from "firebase-functions/v2/firestore";
+import { onRequest } from "firebase-functions/v2/https";
 import { initializeApp } from "firebase-admin/app";
 import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
+import Anthropic from "@anthropic-ai/sdk";
 
 // Region for Firestore in nam5 (US multi-region) ⇒ us-central1
 setGlobalOptions({ region: "us-central1", timeoutSeconds: 60 });
@@ -25,6 +27,66 @@ function isYesterdayUtc(a: Timestamp, b: Timestamp): boolean {
       && A.getUTCMonth() === prev.getUTCMonth()
       && A.getUTCDate() === prev.getUTCDate();
 }
+
+// MARK: - Advisor Function
+
+export const advisor = onRequest(
+  { timeoutSeconds: 60, memory: "256MiB", secrets: ["ANTHROPIC_API_KEY"] },
+  async (req, res) => {
+    // CORS
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    if (req.method === "OPTIONS") { res.status(204).send(""); return; }
+
+    if (req.method !== "POST") {
+      res.status(405).json({ error: "Method not allowed" });
+      return;
+    }
+
+    const { figure, systemPrompt, situation } = req.body as {
+      figure?: string;
+      systemPrompt?: string;
+      situation?: string;
+    };
+
+    if (!figure || !systemPrompt || !situation) {
+      res.status(400).json({ error: "Missing required fields: figure, systemPrompt, situation" });
+      return;
+    }
+
+    if (situation.length > 2000) {
+      res.status(400).json({ error: "Situation text too long (max 2000 characters)" });
+      return;
+    }
+
+    try {
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+      const message = await client.messages.create({
+        model: "claude-sonnet-4-6",
+        max_tokens: 700,
+        system: systemPrompt,
+        messages: [
+          {
+            role: "user",
+            content: situation,
+          },
+        ],
+      });
+
+      const responseText = message.content
+        .filter((block) => block.type === "text")
+        .map((block) => (block as { type: "text"; text: string }).text)
+        .join("");
+
+      res.status(200).json({ response: responseText });
+    } catch (error) {
+      console.error("Advisor function error:", error);
+      res.status(500).json({ error: "Failed to get advisor response" });
+    }
+  }
+);
 
 // Keep the name NEW to avoid any Gen1 residue firing in parallel
 export const onCompletionCreateV6 = onDocumentCreated("completions/{completionId}", async (event) => {

@@ -9,6 +9,13 @@ struct ProgramDayView: View {
   @State private var showCompletionModal = false
   @State private var completedDay: Int = 0
   @State private var completedXP: Int = 0
+  @State private var reflectionText: String = ""
+  @State private var isSavingReflection = false
+  @State private var reflectionSaved = false
+
+  private var isNightlyReflectionUnlocked: Bool {
+    Calendar.current.component(.hour, from: Date()) >= 19
+  }
 
   var body: some View {
     NavigationView {
@@ -22,6 +29,7 @@ struct ProgramDayView: View {
             } else if let userProgram = programService.activeProgram,
               let day = programService.todaysProgramDay
             {
+              greetingCard
               programHeader(userProgram)
               if userProgram.isRecoveryDay {
                 recoveryBanner
@@ -34,6 +42,10 @@ struct ProgramDayView: View {
                 completedState(userProgram)
               } else {
                 completeButton(userProgram: userProgram, day: day)
+              }
+              mentalEdgeCard(day: day)
+              if isNightlyReflectionUnlocked || programService.isTodayCompleted {
+                nightlyReflectionCard(day: day)
               }
               xpProgressCard(userProgram)
             } else {
@@ -62,6 +74,12 @@ struct ProgramDayView: View {
             .font(Typography.headline)
             .foregroundColor(.brandYellow)
         }
+        ToolbarItem(placement: .navigationBarTrailing) {
+          NavigationLink(destination: SettingsView()) {
+            Image(systemName: "gear")
+              .foregroundColor(.white.opacity(0.5))
+          }
+        }
       }
       .preferredColorScheme(.dark)
       .sheet(isPresented: $showCompletionModal) {
@@ -72,8 +90,44 @@ struct ProgramDayView: View {
         )
       }
     }
-    .task {
-      await programService.loadActiveProgram()
+  }
+
+  // MARK: - Greeting Card
+
+  private var greetingCard: some View {
+    let user = authService.currentUser
+    let name = user?.displayName.flatMap { $0.isEmpty ? nil : $0 }
+    let areas = user?.onboardingWhatFellApart ?? []
+
+    return VStack(alignment: .leading, spacing: 6) {
+      Text(greetingLine(name: name))
+        .font(Typography.title2)
+        .foregroundColor(.white)
+
+      if !areas.isEmpty {
+        Text("You're here to rebuild your \(areas.formatted(.list(type: .and))).")
+          .font(Typography.subheadline)
+          .foregroundColor(.white.opacity(0.4))
+          .lineSpacing(2)
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .padding(.horizontal, 4)
+    .padding(.bottom, 4)
+  }
+
+  private func greetingLine(name: String?) -> String {
+    let hour = Calendar.current.component(.hour, from: Date())
+    let timeOfDay: String
+    switch hour {
+    case 5..<12:  timeOfDay = "Morning"
+    case 12..<17: timeOfDay = "Afternoon"
+    default:      timeOfDay = "Evening"
+    }
+    if let name = name {
+      return "\(timeOfDay), \(name)."
+    } else {
+      return "\(timeOfDay)."
     }
   }
 
@@ -101,7 +155,6 @@ struct ProgramDayView: View {
         }
       }
 
-      // Progress bar
       GeometryReader { geo in
         ZStack(alignment: .leading) {
           RoundedRectangle(cornerRadius: 4)
@@ -115,12 +168,11 @@ struct ProgramDayView: View {
       }
       .frame(height: 4)
 
-      // Phase label
       if let program = programService.program,
         let day = programService.todaysProgramDay
       {
         HStack {
-          Text(day.phase.displayName.uppercased())
+          Text(day.phase.displayName)
             .font(Typography.caption2)
             .fontWeight(.semibold)
             .foregroundColor(.brandYellow.opacity(0.7))
@@ -135,6 +187,7 @@ struct ProgramDayView: View {
             .font(Typography.caption2)
             .foregroundColor(.white.opacity(0.3))
         }
+        .opacity(program.id.isEmpty ? 0 : 1)  // silence unused warning
       }
     }
     .padding(20)
@@ -197,6 +250,23 @@ struct ProgramDayView: View {
         .foregroundColor(.white.opacity(0.55))
         .lineSpacing(4)
         .fixedSize(horizontal: false, vertical: true)
+
+      Divider()
+        .background(Color.white.opacity(0.08))
+
+      VStack(alignment: .leading, spacing: 8) {
+        Text("TODAY'S ACTION")
+          .font(Typography.caption2)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow.opacity(0.7))
+          .tracking(1.5)
+
+        Text(day.dailyAction)
+          .font(Typography.subheadline)
+          .foregroundColor(.white.opacity(0.75))
+          .lineSpacing(4)
+          .fixedSize(horizontal: false, vertical: true)
+      }
     }
     .padding(24)
     .background(Color.brandGray)
@@ -304,6 +374,178 @@ struct ProgramDayView: View {
     )
   }
 
+  // MARK: - Mental Edge Card
+
+  private func mentalEdgeCard(day: ProgramDay) -> some View {
+    let edge = day.mentalEdge
+    let isPro = paywallService.isPro
+
+    return VStack(alignment: .leading, spacing: 0) {
+      // Header
+      HStack(spacing: 10) {
+        VStack(alignment: .leading, spacing: 2) {
+          Text("MENTAL EDGE")
+            .font(Typography.caption2)
+            .fontWeight(.semibold)
+            .foregroundColor(.brandYellow.opacity(0.7))
+            .tracking(1.5)
+          HStack(spacing: 6) {
+            Text(edge.figure)
+              .font(Typography.headline)
+              .foregroundColor(.white)
+            Text("·")
+              .foregroundColor(.white.opacity(0.25))
+            Text(edge.sourceWork)
+              .font(Typography.caption)
+              .foregroundColor(.white.opacity(0.45))
+            Text(edge.year)
+              .font(Typography.caption)
+              .foregroundColor(.white.opacity(0.3))
+          }
+        }
+        Spacer()
+        if !isPro {
+          Image(systemName: "lock.fill")
+            .font(.caption)
+            .foregroundColor(.brandYellow.opacity(0.6))
+        }
+      }
+      .padding(20)
+
+      Divider()
+        .background(Color.white.opacity(0.06))
+
+      // Content
+      ZStack {
+        Text(edge.content)
+          .font(Typography.subheadline)
+          .foregroundColor(.white.opacity(0.65))
+          .lineSpacing(5)
+          .fixedSize(horizontal: false, vertical: true)
+          .padding(20)
+          .blur(radius: isPro ? 0 : 6)
+
+        if !isPro {
+          VStack(spacing: 12) {
+            Text("Unlock the Mental Edge")
+              .font(Typography.headline)
+              .foregroundColor(.white)
+            Text("Philosophical insight from history's sharpest minds — every day.")
+              .font(Typography.caption)
+              .foregroundColor(.white.opacity(0.5))
+              .multilineTextAlignment(.center)
+            Button {
+              paywallService.safeShowPaywall()
+            } label: {
+              Text("Go Pro")
+                .font(Typography.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.brandInk)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 10)
+                .background(Color.brandYellow)
+                .cornerRadius(10)
+            }
+          }
+          .padding(20)
+        }
+      }
+    }
+    .background(Color.brandGray)
+    .cornerRadius(16)
+    .overlay(
+      RoundedRectangle(cornerRadius: 16)
+        .stroke(Color.brandYellow.opacity(isPro ? 0.15 : 0.08), lineWidth: 1)
+    )
+    .fullScreenCover(isPresented: $paywallService.shouldShowPaywall) {
+      PaywallView()
+    }
+  }
+
+  // MARK: - Nightly Reflection Card
+
+  private func nightlyReflectionCard(day: ProgramDay) -> some View {
+    let isPro = paywallService.isPro
+
+    return VStack(alignment: .leading, spacing: 0) {
+      HStack {
+        VStack(alignment: .leading, spacing: 2) {
+          Text("NIGHTLY REFLECTION")
+            .font(Typography.caption2)
+            .fontWeight(.semibold)
+            .foregroundColor(.white.opacity(0.4))
+            .tracking(1.5)
+          Text(day.nightlyReflection)
+            .font(Typography.subheadline)
+            .foregroundColor(.white.opacity(isPro ? 0.75 : 0.3))
+            .lineSpacing(3)
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        Spacer()
+        if !isPro {
+          Image(systemName: "lock.fill")
+            .font(.caption)
+            .foregroundColor(.white.opacity(0.3))
+        }
+      }
+      .padding(20)
+
+      if isPro {
+        Divider()
+          .background(Color.white.opacity(0.06))
+
+        if reflectionSaved {
+          HStack(spacing: 8) {
+            Image(systemName: "checkmark.circle.fill")
+              .foregroundColor(.brandGreen)
+              .font(.caption)
+            Text("Saved.")
+              .font(Typography.caption)
+              .foregroundColor(.brandGreen)
+          }
+          .padding(20)
+        } else {
+          VStack(spacing: 12) {
+            TextEditor(text: $reflectionText)
+              .font(Typography.body)
+              .foregroundColor(.white)
+              .scrollContentBackground(.hidden)
+              .background(Color.clear)
+              .frame(minHeight: 80)
+
+            Button {
+              Task { await saveReflection(day: day) }
+            } label: {
+              HStack(spacing: 6) {
+                if isSavingReflection {
+                  ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
+                    .scaleEffect(0.7)
+                }
+                Text(isSavingReflection ? "Saving..." : "Save Reflection")
+                  .font(Typography.subheadline)
+                  .fontWeight(.semibold)
+                  .foregroundColor(.brandInk)
+              }
+              .frame(maxWidth: .infinity)
+              .padding(.vertical, 12)
+              .background(reflectionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.brandYellow.opacity(0.4) : Color.brandYellow)
+              .cornerRadius(10)
+            }
+            .disabled(reflectionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSavingReflection)
+          }
+          .padding(20)
+        }
+      }
+    }
+    .background(Color.brandGray)
+    .cornerRadius(16)
+    .overlay(
+      RoundedRectangle(cornerRadius: 16)
+        .stroke(Color.white.opacity(0.06), lineWidth: 1)
+    )
+  }
+
   // MARK: - XP Progress Card
 
   private func xpProgressCard(_ userProgram: UserProgram) -> some View {
@@ -398,6 +640,27 @@ struct ProgramDayView: View {
     isCompleting = false
   }
 
+  private func saveReflection(day: ProgramDay) async {
+    guard let uid = authService.uid,
+          let userProgram = programService.activeProgram else { return }
+    let text = reflectionText.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !text.isEmpty else { return }
+
+    isSavingReflection = true
+    do {
+      try await ReflectionService.shared.saveReflection(
+        userId: uid,
+        programId: userProgram.id,
+        dayNumber: day.dayNumber,
+        text: text
+      )
+      reflectionSaved = true
+    } catch {
+      print("ProgramDayView: failed to save reflection — \(error)")
+    }
+    isSavingReflection = false
+  }
+
   // MARK: - Helpers
 
   private func categoryColor(_ type: ChallengeType) -> Color {
@@ -420,7 +683,6 @@ struct DayCompletionSheet: View {
       VStack(spacing: 0) {
         Spacer()
 
-        // Icon
         ZStack {
           Circle()
             .fill(Color.brandYellow.opacity(0.1))
@@ -431,7 +693,6 @@ struct DayCompletionSheet: View {
         }
         .padding(.bottom, 24)
 
-        // Headline
         Text("Day \(dayNumber) done.")
           .font(Typography.largeTitle)
           .foregroundColor(.white)
@@ -442,7 +703,6 @@ struct DayCompletionSheet: View {
           .foregroundColor(.brandYellow)
           .padding(.bottom, 36)
 
-        // Encouraging line
         Text(encouragement)
           .font(Typography.body)
           .foregroundColor(.white.opacity(0.6))
@@ -451,13 +711,12 @@ struct DayCompletionSheet: View {
           .padding(.horizontal, 32)
           .padding(.bottom, 32)
 
-        // Until tomorrow tip
         VStack(alignment: .leading, spacing: 10) {
-          Text("Until tomorrow")
-            .font(Typography.caption)
+          Text("UNTIL TOMORROW")
+            .font(Typography.caption2)
             .fontWeight(.semibold)
             .foregroundColor(.brandYellow.opacity(0.7))
-            .tracking(1)
+            .tracking(1.5)
 
           Text(untilTomorrowTip)
             .font(Typography.subheadline)
@@ -473,7 +732,6 @@ struct DayCompletionSheet: View {
 
         Spacer()
 
-        // CTA
         Button {
           dismiss()
         } label: {
@@ -504,9 +762,9 @@ struct DayCompletionSheet: View {
       return "You are past the easy part. This is where it gets real."
     case 15:
       return "Halfway. The version of you on Day 1 would not recognise this."
-    case 16...22:
+    case 16...21:
       return "This is the stretch most people never see. You are in it."
-    case 23...29:
+    case 22...29:
       return "The final push. Every day here is proof."
     case 30:
       return "Thirty days. You said you would, and you did."

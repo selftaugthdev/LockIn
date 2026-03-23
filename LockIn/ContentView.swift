@@ -8,7 +8,13 @@ struct ContentView: View {
 
   var body: some View {
     Group {
-      if authService.isAuthenticated && !authService.forceOnboarding {
+      if authService.isInitializing {
+        ZStack {
+          Color.brandInk.ignoresSafeArea()
+          ProgressView()
+            .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
+        }
+      } else if authService.isAuthenticated && !authService.forceOnboarding {
         if programService.activeProgram == nil {
           ProgramSelectionView()
         } else {
@@ -18,8 +24,15 @@ struct ContentView: View {
         OnboardingView()
       }
     }
-    .onAppear {
-      Task { await programService.loadActiveProgram() }
+    .onChange(of: authService.isAuthenticated) { isAuthenticated in
+      if isAuthenticated && !authService.forceOnboarding {
+        Task { await programService.loadActiveProgram() }
+      }
+    }
+    .onChange(of: authService.forceOnboarding) { forceOnboarding in
+      if !forceOnboarding && authService.isAuthenticated {
+        Task { await programService.loadActiveProgram() }
+      }
     }
   }
 }
@@ -39,16 +52,16 @@ struct MainTabView: View {
           Text("Progress")
         }
 
-      LeaderboardView()
+      AdvisorView()
         .tabItem {
-          Image(systemName: "trophy")
-          Text("Leaderboard")
+          Image(systemName: "brain.head.profile")
+          Text("Advisor")
         }
 
-      SettingsView()
+      LibraryView()
         .tabItem {
-          Image(systemName: "gear")
-          Text("Settings")
+          Image(systemName: "books.vertical")
+          Text("Library")
         }
     }
     .accentColor(.brandYellow)

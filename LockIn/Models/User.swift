@@ -11,6 +11,8 @@ struct User: Codable, Identifiable {
   var premium: Bool
   var lastCompleted: Date?
   let friendCode: String?
+  var onboardingWhatFellApart: [String]?
+  var onboardingCompleted: Bool?
 
   init(
     id: String? = nil,
@@ -21,9 +23,9 @@ struct User: Codable, Identifiable {
     totalAura: Int? = 0,
     premium: Bool = false,
     lastCompleted: Date? = nil,
-    friendCode: String? = UUID().uuidString.prefix(8).uppercased()
+    friendCode: String? = UUID().uuidString.prefix(8).uppercased(),
+    onboardingWhatFellApart: [String]? = nil
   ) {
-    // Don't set @DocumentID manually - let Firestore handle it
     self.displayName = displayName
     self.createdAt = createdAt
     self.streakCount = streakCount
@@ -32,6 +34,7 @@ struct User: Codable, Identifiable {
     self.premium = premium
     self.lastCompleted = lastCompleted
     self.friendCode = friendCode
+    self.onboardingWhatFellApart = onboardingWhatFellApart
   }
 
   // Custom decoder to handle missing fields gracefully
@@ -47,6 +50,8 @@ struct User: Codable, Identifiable {
     premium = (try? container.decode(Bool.self, forKey: .premium)) ?? false
     lastCompleted = try? container.decodeIfPresent(Date.self, forKey: .lastCompleted)
     friendCode = try? container.decodeIfPresent(String.self, forKey: .friendCode)
+    onboardingWhatFellApart = try? container.decodeIfPresent([String].self, forKey: .onboardingWhatFellApart)
+    onboardingCompleted = try? container.decodeIfPresent(Bool.self, forKey: .onboardingCompleted)
   }
 }
 

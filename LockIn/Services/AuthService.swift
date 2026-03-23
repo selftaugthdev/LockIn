@@ -9,9 +9,9 @@ class AuthService: ObservableObject {
   @Published var currentUser: User?
   @Published var isAuthenticated = false
   @Published var isLoading = false
+  @Published var isInitializing = true
   @Published var uid: String?
 
-  // Temporary flag to force onboarding for testing
   @Published var forceOnboarding = false
 
   private let db = Firestore.firestore()
@@ -32,20 +32,15 @@ class AuthService: ObservableObject {
       Task { @MainActor in
         self?.uid = firebaseUser?.uid
         if let firebaseUser = firebaseUser {
-          // Only load user data if we're not forcing onboarding
-          if !(self?.forceOnboarding ?? false) {
-            // Add a small delay to allow auth state to stabilize during linking
-            try? await Task.sleep(nanoseconds: 500_000_000)  // 0.5 seconds
-            await self?.loadUserData(uid: firebaseUser.uid)
-          } else {
-            // If we're forcing onboarding, don't set authenticated state
-            self?.currentUser = nil
-            self?.isAuthenticated = false
-          }
+          // Add a small delay to allow auth state to stabilize during linking
+          try? await Task.sleep(nanoseconds: 500_000_000)  // 0.5 seconds
+          await self?.loadUserData(uid: firebaseUser.uid)
         } else {
           self?.currentUser = nil
           self?.isAuthenticated = false
+          self?.forceOnboarding = true  // no user = needs onboarding
         }
+        self?.isInitializing = false
       }
     }
   }
@@ -335,6 +330,7 @@ class AuthService: ObservableObject {
         if let user = try? document.data(as: User.self) {
           self.currentUser = user
           self.isAuthenticated = true
+          self.forceOnboarding = !(user.onboardingCompleted == true)
         } else {
           // Decode failed, create a fallback user
           print("Failed to decode user document, creating fallback user")
@@ -367,6 +363,7 @@ class AuthService: ObservableObject {
         try db.collection("users").document(uid).setData(from: newUser)
         self.currentUser = newUser
         self.isAuthenticated = true
+        self.forceOnboarding = true  // new user, needs onboarding
       }
     } catch {
       print("Error loading user data: \(error)")

@@ -15,6 +15,10 @@
 		AA1111202E6F000000000001 /* ProgramService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111212E6F000000000001 /* ProgramService.swift */; };
 		AA1111222E6F000000000001 /* ProgramSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111232E6F000000000001 /* ProgramSelectionView.swift */; };
 		AA1111242E6F000000000001 /* ProgramDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111252E6F000000000001 /* ProgramDayView.swift */; };
+		AA2222012F000000000001 /* AdvisorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2222022F000000000001 /* AdvisorService.swift */; };
+		AA2222032F000000000001 /* AdvisorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2222042F000000000001 /* AdvisorView.swift */; };
+		AA2222052F000000000001 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2222062F000000000001 /* LibraryView.swift */; };
+		AA2222072F000000000001 /* ReflectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2222082F000000000001 /* ReflectionService.swift */; };
 		E45D7D942E7ABE0400553764 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = E45D7D932E7ABE0400553764 /* GoogleSignIn */; };
 		E45D7D962E7ABE0400553764 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E45D7D952E7ABE0400553764 /* GoogleSignInSwift */; };
 		E4689B7A2E6EE26B00A89328 /* LockInApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4689B792E6EE26B00A89328 /* LockInApp.swift */; };
@@ -69,6 +73,10 @@
 		AA1111212E6F000000000001 /* ProgramService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramService.swift; sourceTree = "<group>"; };
 		AA1111232E6F000000000001 /* ProgramSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramSelectionView.swift; sourceTree = "<group>"; };
 		AA1111252E6F000000000001 /* ProgramDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramDayView.swift; sourceTree = "<group>"; };
+		AA2222022F000000000001 /* AdvisorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvisorService.swift; sourceTree = "<group>"; };
+		AA2222042F000000000001 /* AdvisorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvisorView.swift; sourceTree = "<group>"; };
+		AA2222062F000000000001 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		AA2222082F000000000001 /* ReflectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionService.swift; sourceTree = "<group>"; };
 		E45D7D972E7ABE6E00553764 /* LockIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LockIn.entitlements; sourceTree = "<group>"; };
 		E45D7D982E7AC08200553764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E4689B762E6EE26B00A89328 /* LockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -223,6 +231,8 @@
 				E4AB28FA2E6F092A0024607D /* ChallengeService.swift */,
 				E4AB291E2E6F092A0024607D /* LeaderboardService.swift */,
 				AA1111212E6F000000000001 /* ProgramService.swift */,
+				AA2222022F000000000001 /* AdvisorService.swift */,
+				AA2222082F000000000001 /* ReflectionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -249,6 +259,8 @@
 				E4F5BB132E71B257001560F7 /* ProCard.swift */,
 				AA1111232E6F000000000001 /* ProgramSelectionView.swift */,
 				AA1111252E6F000000000001 /* ProgramDayView.swift */,
+				AA2222042F000000000001 /* AdvisorView.swift */,
+				AA2222062F000000000001 /* LibraryView.swift */,
 				E4AB28FE2E6F092A0024607D /* DailyChallengeView.swift */,
 				E4AB28FF2E6F092A0024607D /* LeaderboardView.swift */,
 				E4AB29002E6F092A0024607D /* OnboardingView.swift */,
@@ -415,6 +427,10 @@
 				AA1111202E6F000000000001 /* ProgramService.swift in Sources */,
 				AA1111222E6F000000000001 /* ProgramSelectionView.swift in Sources */,
 				AA1111242E6F000000000001 /* ProgramDayView.swift in Sources */,
+				AA2222012F000000000001 /* AdvisorService.swift in Sources */,
+				AA2222032F000000000001 /* AdvisorView.swift in Sources */,
+				AA2222052F000000000001 /* LibraryView.swift in Sources */,
+				AA2222072F000000000001 /* ReflectionService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,7 +569,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LockIn/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In";
+				INFOPLIST_KEY_CFBundleDisplayName = "Forge App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -585,7 +602,8 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LockIn/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "The Great Lock In";
+				INFOPLIST_KEY_CFBundleDisplayName = "Forge App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

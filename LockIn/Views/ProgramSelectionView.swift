@@ -86,7 +86,7 @@ struct ProgramCard: View {
 
       // Phase indicators
       HStack(spacing: 4) {
-        ForEach([ProgramPhase.foundation, .build, .push, .peak], id: \.self) { phase in
+        ForEach([ProgramPhase.wakeUp, .armorUp, .sharpen, .operate], id: \.self) { phase in
           Text(phase.displayName)
             .font(Typography.caption2)
             .foregroundColor(.white.opacity(0.35))
@@ -159,7 +159,7 @@ struct ProgramDetailSheet: View {
               .font(Typography.headline)
               .foregroundColor(.white)
 
-            ForEach([ProgramPhase.foundation, .build, .push, .peak], id: \.self) { phase in
+            ForEach([ProgramPhase.wakeUp, .armorUp, .sharpen, .operate], id: \.self) { phase in
               PhaseRow(phase: phase, program: program)
             }
           }

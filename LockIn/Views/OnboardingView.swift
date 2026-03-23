@@ -62,9 +62,6 @@ struct OnboardingView: View {
         )
     }
     .preferredColorScheme(.dark)
-    .onAppear {
-      authService.forceOnboarding = true
-    }
   }
 
   // MARK: - Step Router

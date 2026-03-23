@@ -54,19 +54,32 @@ class ProgramService: ObservableObject {
       let snapshot = try await db.collection("userPrograms")
         .whereField("userId", isEqualTo: uid)
         .whereField("status", isEqualTo: ProgramStatus.active.rawValue)
-        .limit(to: 1)
         .getDocuments()
 
-      guard let doc = snapshot.documents.first else {
+      let allActive = snapshot.documents.compactMap { try? $0.data(as: UserProgram.self) }
+
+      guard !allActive.isEmpty else {
         activeProgram = nil
         todaysProgramDay = nil
         recoveryBonusDay = nil
         return
       }
 
-      var userProgram = try doc.data(as: UserProgram.self)
+      // Pick the program with the most progress (most completed days),
+      // falling back to the most recently started if tied.
+      let best = allActive.sorted {
+        if $0.completedDays.count != $1.completedDays.count {
+          return $0.completedDays.count > $1.completedDays.count
+        }
+        return $0.startDate > $1.startDate
+      }.first!
 
-      // Check if the day needs advancing before presenting today's challenge
+      // Abandon duplicates silently
+      for duplicate in allActive where duplicate.id != best.id {
+        try? await abandonProgram(duplicate)
+      }
+
+      var userProgram = best
       userProgram = await advanceDayIfNeeded(userProgram)
 
       activeProgram = userProgram
@@ -96,6 +109,7 @@ class ProgramService: ObservableObject {
     )
 
     let docRef = db.collection("userPrograms").document(userProgram.id)
+    
     try docRef.setData(from: userProgram)
 
     activeProgram = userProgram
@@ -120,6 +134,7 @@ class ProgramService: ObservableObject {
 
     // Save to Firestore
     let docRef = db.collection("userPrograms").document(userProgram.id)
+    
     try docRef.setData(from: userProgram)
 
     // If program is now complete, save the completion record
@@ -197,16 +212,15 @@ class ProgramService: ObservableObject {
   // MARK: - Recovery Challenges
 
   private func recoveryChallenge(for category: ProgramCategory) -> ProgramDay {
-    // Short physical/mental challenges used as the "tax" for missing a day
+    let placeholder = MentalEdge(figure: "", sourceWork: "", year: "", content: "")
     let challenges: [ProgramDay] = [
-      ProgramDay(dayNumber: 0, challengeTitle: "Do 20 pushups — right now", challengeDescription: "No equipment, no excuses. Drop and do 20. This is your recovery tax.", category: .fitness, xpReward: 0, phase: .foundation),
-      ProgramDay(dayNumber: 0, challengeTitle: "Write one honest sentence about why you missed yesterday", challengeDescription: "Not a paragraph. One sentence. Own it.", category: .mindfulness, xpReward: 0, phase: .foundation),
-      ProgramDay(dayNumber: 0, challengeTitle: "Take a 5-minute cold shower", challengeDescription: "Uncomfortable on purpose. Welcome back.", category: .wellness, xpReward: 0, phase: .foundation),
-      ProgramDay(dayNumber: 0, challengeTitle: "Do 30 bodyweight squats", challengeDescription: "Slow and controlled. Your body remembers what you owe it.", category: .fitness, xpReward: 0, phase: .foundation),
-      ProgramDay(dayNumber: 0, challengeTitle: "Put your phone in another room for 30 minutes", challengeDescription: "Sit with your thoughts. No distraction. This is the work.", category: .productivity, xpReward: 0, phase: .foundation),
+      ProgramDay(dayNumber: 0, challengeTitle: "Do 20 pushups — right now", challengeDescription: "No equipment, no excuses. Drop and do 20. This is your recovery tax.", dailyAction: "Drop and do 20 pushups before you do anything else today.", nightlyReflection: "Did you do them immediately, or did you wait? What does that tell you?", mentalEdge: placeholder, category: .fitness, xpReward: 0, phase: .wakeUp),
+      ProgramDay(dayNumber: 0, challengeTitle: "Write one honest sentence about why you missed yesterday", challengeDescription: "Not a paragraph. One sentence. Own it.", dailyAction: "Write the sentence. No justifications, no context. One sentence.", nightlyReflection: "Was the sentence honest, or was it still an excuse dressed up as honesty?", mentalEdge: placeholder, category: .mindfulness, xpReward: 0, phase: .wakeUp),
+      ProgramDay(dayNumber: 0, challengeTitle: "Take a 5-minute cold shower", challengeDescription: "Uncomfortable on purpose. Welcome back.", dailyAction: "Turn it all the way cold. Stay for 5 minutes. No negotiating with yourself.", nightlyReflection: "How did it feel to do something hard first thing? Hold onto that.", mentalEdge: placeholder, category: .wellness, xpReward: 0, phase: .wakeUp),
+      ProgramDay(dayNumber: 0, challengeTitle: "Do 30 bodyweight squats", challengeDescription: "Slow and controlled. Your body remembers what you owe it.", dailyAction: "30 squats. Slow on the way down. Full depth. Your body remembers what you owe it.", nightlyReflection: "Physical discomfort or mental resistance — which was harder today?", mentalEdge: placeholder, category: .fitness, xpReward: 0, phase: .wakeUp),
+      ProgramDay(dayNumber: 0, challengeTitle: "Put your phone in another room for 30 minutes", challengeDescription: "Sit with your thoughts. No distraction. This is the work.", dailyAction: "Phone in another room. 30 minutes. No exceptions. Sit with whatever comes up.", nightlyReflection: "What did you think about when there was nothing to scroll through?", mentalEdge: placeholder, category: .productivity, xpReward: 0, phase: .wakeUp),
     ]
 
-    // Rotate based on how many missed days there are — keeps it varied
     let index = Int.random(in: 0..<challenges.count)
     return challenges[index]
   }

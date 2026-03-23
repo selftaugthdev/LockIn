@@ -2,7 +2,7 @@
   "id": "foundation_30",
   "title": "30-Day Foundation",
   "subtitle": "Build the discipline you lost",
-  "description": "Thirty days. One challenge each day. No excuses, no shortcuts. This program is the starting line, whether you are rebuilding from zero or just getting back on track. By day 30, discipline won't be something you find. It'll be something you are.",
+  "description": "Thirty days. One challenge each day. No excuses, no shortcuts. By day 30, discipline won't be something you find. It'll be something you are.",
   "durationDays": 30,
   "category": "rebuild",
   "difficulty": "beginner",
@@ -10,243 +10,483 @@
   "days": [
     {
       "dayNumber": 1,
-      "challengeTitle": "Delete the app you waste the most time on",
-      "challengeDescription": "You know which one it is. You don't even have to think about it. Delete it for the next 30 days. You can reinstall it on Day 31. If you hesitate, that's your answer.",
-      "category": "productivity",
+      "challengeTitle": "Name It",
+      "challengeDescription": "You already know. You've known for a while. There's someone in your life who treats you as optional, as a resource, as someone whose time and respect don't really matter. Today you write their name down. Not to obsess. To stop pretending.",
+      "dailyAction": "Write one name. One person who has consistently disrespected, manipulated, or taken advantage of you. You don't need to show anyone. Just make it real by putting it on paper.",
+      "nightlyReflection": "Did writing the name feel uncomfortable? Why? What have you been telling yourself to justify their behavior?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"Men are so simple and so ready to obey present necessities, that one who deceives will always find those who allow themselves to be deceived.\" Machiavelli wasn't cynical — he was accurate. The people who have walked over you were not evil geniuses. They simply found that you allowed it. That ends here. The first move is not anger. It is clarity."
+      },
+      "category": "mindfulness",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 2,
-      "challengeTitle": "Have one conversation you have been avoiding",
-      "challengeDescription": "Not a text. A real conversation, phone call or in person. The one you keep postponing. The longer you wait, the heavier it gets. Do it today.",
-      "category": "social",
+      "challengeTitle": "Map the Battlefield",
+      "challengeDescription": "You don't fight a war you haven't mapped. Most men who feel pushed around have never actually sat down and identified the specific patterns being used against them. Today you do that. No drama. Just data.",
+      "dailyAction": "Write down 3 recurring situations where you feel diminished, ignored, or manipulated. Be specific: who, what, where. Not feelings — patterns.",
+      "nightlyReflection": "Looking at your list — is there a common theme? Is it the same person in different situations, or different people using the same tactic?",
+      "mentalEdge": {
+        "figure": "Schopenhauer",
+        "sourceWork": "The Art of Always Being Right",
+        "year": "1831",
+        "content": "Schopenhauer identified 38 rhetorical stratagems — manipulation tactics disguised as argument. His most important insight: most people don't argue to find truth, they argue to win. When someone talks over you, changes the subject, or makes you feel stupid for disagreeing — that's not a personality clash. That's a strategy. And now you know it."
+      },
+      "category": "mindfulness",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 3,
-      "challengeTitle": "Spend 20 minutes outside with no phone",
-      "challengeDescription": "Walk, sit, stand. Doesn't matter. No podcast, no music, no scrolling. Just you and your thoughts for 20 minutes. Most men haven't done this in years.",
-      "category": "mindfulness",
+      "challengeTitle": "Kill the Noise",
+      "challengeDescription": "You cannot think clearly when you are constantly reactive. Social media is engineered to make you compare, perform, and stay anxious. For the next 27 days, you are not on it. Delete the apps. Not mute. Delete.",
+      "dailyAction": "Delete or log out of every social media app on your phone. Instagram, TikTok, X, Reddit — all of it. Keep messaging apps if needed for work. Set a screen time limit on your browser for social sites: 0 minutes.",
+      "nightlyReflection": "What was the first moment today you reached for your phone out of habit? What were you feeling in that moment?",
+      "mentalEdge": {
+        "figure": "Pascal",
+        "sourceWork": "Pensées",
+        "year": "1670",
+        "content": "\"All of humanity's problems stem from man's inability to sit quietly in a room alone.\" Pascal wrote this 350 years ago. The men who manipulate you know you are distracted. They operate in the gap between your stimulus and your response. Today you start closing that gap."
+      },
+      "category": "productivity",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 4,
-      "challengeTitle": "Write down every recurring expense you pay for",
-      "challengeDescription": "Subscriptions, memberships, everything. Total it up. Most men are paying for 4-6 things they don't use. Awareness first, action later.",
-      "category": "productivity",
+      "challengeTitle": "Stand Like You Mean It",
+      "challengeDescription": "Before you change your mind, change your body. Research on posture and cortisol is clear — how you hold your body changes your hormone levels, which changes how you think, which changes how others respond to you. This is not motivational poster material. This is physiology.",
+      "dailyAction": "Every time you enter a room today, pause for one second before you speak. Feet shoulder-width apart. Shoulders back. Chin level. Hold eye contact two seconds longer than feels comfortable in every conversation.",
+      "nightlyReflection": "Did anyone respond differently to you today? Did you feel different in your own body? When did you slip back into old patterns?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "Thus Spoke Zarathustra",
+        "year": "1883",
+        "content": "Nietzsche's concept of the will to power is misunderstood. It was not about dominating others — it was about self-mastery. \"Become who you are.\" The man who slouches is broadcasting subordination before he speaks a word. The man who carries himself with controlled physical presence is broadcasting something else entirely. Bodies speak first."
+      },
+      "category": "fitness",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 5,
-      "challengeTitle": "Do 100 pushups before the day ends",
-      "challengeDescription": "Not all at once. Break it up however you want. 10 sets of 10, 20 sets of 5, whatever it takes. Just hit 100. Don't negotiate with yourself.",
-      "category": "fitness",
+      "challengeTitle": "You Don't Owe Anyone a Reason",
+      "challengeDescription": "\"No\" is a complete sentence. You have been trained — by parents, by social pressure, by wanting to be liked — to justify every decision you make. Manipulators exploit that. They ask \"why\" not to understand you, but to find the hole in your reasoning they can push through.",
+      "dailyAction": "Today, whenever you decline something or make a decision for yourself, do not explain it. \"I can't make it.\" Full stop. \"That doesn't work for me.\" Full stop. If someone pushes for a reason, say: \"I've made my decision.\" Once. Then silence.",
+      "nightlyReflection": "Where did you feel the pull to over-explain today? Who triggers that in you most — and why do you think that is?",
+      "mentalEdge": {
+        "figure": "Epictetus",
+        "sourceWork": "Enchiridion",
+        "year": "125 AD",
+        "content": "Epictetus was a slave who became one of the most powerful thinkers of his era. His core insight: the only thing you ever truly own is your response. When you over-explain, you are handing someone else your internal state to examine and attack. Your choices don't require a defense. This is not arrogance — it is sovereignty."
+      },
+      "category": "mindfulness",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 6,
-      "challengeTitle": "Cook a real meal from scratch",
-      "challengeDescription": "No delivery, no microwave, no ready meals. Buy the ingredients, cook the food, eat it. Taking care of what you put in your body is a basic act of self-respect.",
-      "category": "wellness",
+      "challengeTitle": "No",
+      "challengeDescription": "You have said yes to things that cost you time, energy, and self-respect because saying no felt too dangerous. Today you say no to something you would normally say yes to — not because it's useful, but because the muscle needs to be trained.",
+      "dailyAction": "Find one request today — from anyone — that you would normally accept out of obligation, guilt, or conflict avoidance. Decline it. No explanation required. If no opportunity arises naturally, manufacture one: cancel a low-value commitment on your calendar.",
+      "nightlyReflection": "What was the actual consequence of saying no? How did it compare to what you feared?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"It is better to be feared than loved, if you cannot be both.\" This line is always quoted out of context. Machiavelli's actual point was about dependency: the man who is universally loved is loved because he gives freely and never pushes back. That kind of love is conditional and fragile. Respect — the kind built by clear limits — is durable. The word \"no\" is not rejection. It is the foundation of respect."
+      },
+      "category": "mindfulness",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 7,
-      "challengeTitle": "Write one page about where you want to be in 12 months",
-      "challengeDescription": "Not goals. Not bullet points. A page of actual writing, like you are describing your life to a friend. Where do you live, what are you doing, how do you feel. Get specific.",
+      "challengeTitle": "Take Stock",
+      "challengeDescription": "One week in. You have named the problem, mapped the patterns, cut the noise, adjusted your physical presence, stopped over-explaining, and said no. That is more change in seven days than most men make in a year. Now you audit.",
+      "dailyAction": "Re-read your Day 1 and Day 2 notes. Write three sentences: What has shifted? What hasn't? What is the hardest thing you're facing going into week two?",
+      "nightlyReflection": "Are you doing this for yourself, or to impress someone? Be honest. The answer matters for what comes next.",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"Confine yourself to the present.\" Aurelius wrote this as the emperor of Rome — the most powerful man on earth — who still had to remind himself not to be consumed by what was behind him or ahead of him. Week 1 is behind you. You are not the same man who opened this app seven days ago. That is enough. Now continue."
+      },
       "category": "mindfulness",
       "xpReward": 10,
-      "phase": "foundation"
+      "phase": "wake_up"
     },
     {
       "dayNumber": 8,
-      "challengeTitle": "Take a full cold shower, minimum 90 seconds",
-      "challengeDescription": "Turn it all the way cold. Stay in for 90 seconds minimum. Your mind will tell you to get out at 20 seconds. Stay anyway. This is practice for every other hard thing.",
-      "category": "fitness",
+      "challengeTitle": "The Guilt Machine",
+      "challengeDescription": "Guilt is a useful emotion when it's earned. But the people who have been controlling you have learned to manufacture guilt in you on demand — to keep you compliant, available, and afraid to disappoint. Today you learn to distinguish real guilt from engineered guilt.",
+      "dailyAction": "Think of the last three times you felt guilt because of someone else's words or actions. For each one, ask: Did I actually do something wrong — by my own standards, not theirs? If not, write: \"That was manufactured guilt.\" Say it out loud.",
+      "nightlyReflection": "Who in your life makes you feel guilty most frequently? Is the guilt ever earned? What do they gain from your guilt?",
+      "mentalEdge": {
+        "figure": "Freud",
+        "sourceWork": "Civilization and Its Discontents",
+        "year": "1930",
+        "content": "Freud identified guilt as one of the primary mechanisms of social control — not just personal conscience, but a tool used by groups and individuals to enforce compliance. When someone says \"after everything I've done for you...\" they are not expressing pain. They are invoking debt. Recognizing the mechanism does not make you cold. It makes you free."
+      },
+      "category": "mindfulness",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 9,
-      "challengeTitle": "No alcohol today",
-      "challengeDescription": "One day. If one day feels hard, that's information worth having.",
-      "category": "wellness",
+      "challengeTitle": "Trust Your Perception",
+      "challengeDescription": "\"That never happened.\" \"You're too sensitive.\" \"You're imagining things.\" Gaslighting is the practice of making someone doubt their own perception of reality. It is one of the most effective and damaging manipulation tactics in existence — because it attacks your ability to trust yourself.",
+      "dailyAction": "Write down one incident where you were made to feel that your perception of events was wrong, crazy, or an overreaction. Describe what you observed. Describe what they told you you observed. Notice the gap.",
+      "nightlyReflection": "Have you started second-guessing your own memory or feelings around a specific person? That pattern is the signal.",
+      "mentalEdge": {
+        "figure": "Jung",
+        "sourceWork": "The Undiscovered Self",
+        "year": "1957",
+        "content": "Jung spent his career examining how individuals suppress their own authentic perception to maintain connection with others. He called it the Persona — the mask we wear to be acceptable. Gaslighting works because the victim already has a trained impulse to question themselves. The antidote is not aggression. It is grounding yourself in your own direct experience, repeatedly, until the doubt doesn't take hold."
+      },
+      "category": "mindfulness",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 10,
-      "challengeTitle": "Learn one thing you have been meaning to figure out for months",
-      "challengeDescription": "That skill, concept, tool or topic you keep saying you'll look into. Spend 45 minutes actually learning it today. Not watching videos about it. Learning it.",
-      "category": "learning",
+      "challengeTitle": "Become Boring",
+      "challengeDescription": "Some people feed on your reactions. Drama, emotion, defensiveness, anger — it all gives them something to work with. The grey rock method is simple: you become so uninteresting and unreactive that they stop targeting you. Not because you're weak. Because you've removed the reward.",
+      "dailyAction": "Identify one person in your life who thrives on provoking reactions from you. For the next 24 hours, every interaction with them is flat, brief, and boring. One-word answers. No emotion. No bait taken. You are a grey rock.",
+      "nightlyReflection": "How did they respond when the reaction didn't come? Did they escalate? How did it feel to not engage?",
+      "mentalEdge": {
+        "figure": "Sun Tzu",
+        "sourceWork": "The Art of War",
+        "year": "500 BC",
+        "content": "\"The supreme art of war is to subdue the enemy without fighting.\" Engaging with a provocateur on their terms is losing before the battle starts. The grey rock is not passivity — it is strategic withdrawal of the resource they need. When you do not react, you win by default. Sun Tzu would recognize this immediately."
+      },
+      "category": "mindfulness",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 11,
-      "challengeTitle": "Clean out your phone contacts",
-      "challengeDescription": "Go through every name. For each one ask: would I call this person if I needed help? If no, delete. Your network should be real, not just a list of people you once met.",
-      "category": "productivity",
+      "challengeTitle": "Observer Mode",
+      "challengeDescription": "You cannot think clearly when your nervous system is hijacked. When someone pushes your buttons, the emotional flood that follows is not weakness — it's biology. But you can train a gap between stimulus and response. Today you practice that gap.",
+      "dailyAction": "In every emotionally charged situation today, before you respond, count silently to 5. Not to suppress — to observe. Notice what emotion is firing, where you feel it in your body, and whether your about-to-happen response is strategic or reactive.",
+      "nightlyReflection": "When was the 5-count hardest today? What was the emotion and what was triggering it?",
+      "mentalEdge": {
+        "figure": "Epictetus",
+        "sourceWork": "Discourses",
+        "year": "108 AD",
+        "content": "\"Between stimulus and response there is a space. In that space is our power to choose our response.\" Epictetus did not have the luxury of reacting emotionally — as a slave, emotional reactivity could get him killed. What he discovered instead was a form of internal sovereignty that his masters could never touch. The gap is not a pause. It is where you become someone harder to manipulate."
+      },
+      "category": "mindfulness",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 12,
-      "challengeTitle": "Run or walk 5km (3 miles) without stopping",
-      "challengeDescription": "Pace doesn't matter. Stopping does. Pick a route, go, finish it. Your body will find reasons to quit. Give it none.",
-      "category": "fitness",
+      "challengeTitle": "Stop Being Free",
+      "challengeDescription": "People who have no respect for your time will keep taking it until you make it cost them something. Your time is not infinite. Every hour you spend on low-value people and obligations is an hour taken from something that matters. Today you audit and reclaim.",
+      "dailyAction": "Look at your calendar for the next 7 days. Identify every commitment that you agreed to out of obligation, guilt, or conflict avoidance rather than genuine desire or strategic value. Cancel or reschedule at least one. Do not apologize extensively.",
+      "nightlyReflection": "Who do you give the most time to? Is that allocation a choice or a default? What would you do with that time if it were yours again?",
+      "mentalEdge": {
+        "figure": "Seneca",
+        "sourceWork": "On the Shortness of Life",
+        "year": "49 AD",
+        "content": "\"It is not that we have a short time to live, but that we waste a great deal of it.\" Seneca wrote this to a friend who was endlessly available to everyone around him. His diagnosis: men who cannot say no to requests on their time are not generous. They are afraid. Generosity is a choice. What you've been doing is not generosity — it's compliance dressed up as virtue."
+      },
+      "category": "productivity",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 13,
-      "challengeTitle": "Write down the three biggest mistakes of the last two years",
-      "challengeDescription": "Not to beat yourself up. To look at them clearly. Most men avoid doing this, which is exactly why they keep repeating them. Write them down, read them back, then close the notebook.",
+      "challengeTitle": "Shut Up and Win",
+      "challengeDescription": "Most men lose power in conversations by talking too much. They over-explain, they fill silence, they justify, they elaborate. Silence is one of the most powerful tools in human interaction — and almost no one uses it deliberately.",
+      "dailyAction": "In every significant conversation today, practice the uncomfortable pause. After you speak, stop. Let silence exist. Do not fill it. See who speaks next and what they say. In any negotiation — state your position and go silent.",
+      "nightlyReflection": "How did people respond to your silence? Did anyone fill it with something revealing? What did the discomfort of silence tell you about your usual impulse to talk?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "Discourses on Livy",
+        "year": "1517",
+        "content": "Machiavelli observed that princes who spoke too freely were easily manipulated — their intentions were known before they acted. The man who speaks constantly is broadcasting his internal state in real time. Silence, by contrast, forces others to fill the gap — and in doing so, they reveal their own intentions, anxieties, and positions. Silence is intelligence gathering."
+      },
       "category": "mindfulness",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 14,
-      "challengeTitle": "Do something generous for someone with no reason and no announcement",
-      "challengeDescription": "No posting about it. No expecting anything back. Pay for someone's coffee, help a neighbor, handle a task for someone without being asked. Generosity you keep quiet is the only kind that matters.",
-      "category": "social",
+      "challengeTitle": "Your Armor Is Real Now",
+      "challengeDescription": "Two weeks. You have learned to identify guilt manipulation, gaslighting, emotional hijacking, and time theft. You have practiced observer mode, silence, and holding your position. You are not the same man who started Day 8.",
+      "dailyAction": "Write a short paragraph: How has a specific relationship or interaction changed since Day 1? It does not need to be dramatic. Even a small shift in dynamic counts.",
+      "nightlyReflection": "What is the biggest thing you are still struggling to defend? Be honest — that's what Phase III addresses.",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"The impediment to action advances action. What stands in the way becomes the way.\" Aurelius spent his reign dealing with people who tried to undermine, manipulate, and outmaneuver him. His armor was not aggression — it was clarity of principle combined with relentless self-examination. You have built two weeks of armor. Now you learn to think strategically."
+      },
+      "category": "mindfulness",
       "xpReward": 20,
-      "phase": "build"
+      "phase": "armor_up"
     },
     {
       "dayNumber": 15,
-      "challengeTitle": "Spend 45 minutes on a creative project you abandoned",
-      "challengeDescription": "The music, the writing, the business idea, the thing you stopped. 45 minutes. Not to finish it. Just to show up for it again.",
-      "category": "creativity",
-      "xpReward": 20,
-      "phase": "build"
+      "challengeTitle": "Play the Long Game",
+      "challengeDescription": "Reactive men are predictable. Predictable men get played. The most powerful shift you can make is moving from a reactive to a strategic mindset — asking not \"what do I feel right now?\" but \"what outcome do I actually want from this situation?\"",
+      "dailyAction": "Before your next significant conversation or decision, write down: What do I want the outcome to be in 3 months — not right now? Make one decision today based on that 3-month frame rather than your immediate emotional state.",
+      "nightlyReflection": "Where did your long-game thinking conflict with what you wanted to do in the moment? Which one did you choose?",
+      "mentalEdge": {
+        "figure": "Sun Tzu",
+        "sourceWork": "The Art of War",
+        "year": "500 BC",
+        "content": "\"Strategy without tactics is the slowest route to victory. Tactics without strategy is the noise before defeat.\" The men who manipulate you are usually playing a longer game than you realize. They are not reacting — they are executing. To beat them, you must also stop reacting and start executing. Today is where that begins."
+      },
+      "category": "mindfulness",
+      "xpReward": 30,
+      "phase": "sharpen"
     },
     {
       "dayNumber": 16,
-      "challengeTitle": "No complaints for the entire day",
-      "challengeDescription": "Every time you are about to complain, stop. Reframe or say nothing. Count how many times you catch yourself. This is one of the hardest days in this program and it should be.",
+      "challengeTitle": "Watch More, Interpret Less",
+      "challengeDescription": "Most men interpret people through what they say. Sharp men watch what they do — specifically, the gap between the two. Body language, micro-expressions, changes in behavior after you set a limit — these are the real signals. Today you practice observation.",
+      "dailyAction": "In your most significant interaction today, focus 80% of your attention on non-verbal signals: tone shifts, eye contact changes, physical positioning, response timing. After the conversation, write down three things you noticed that weren't communicated verbally.",
+      "nightlyReflection": "Was there a gap between what someone said and how they said it today? What do you think that gap was communicating?",
+      "mentalEdge": {
+        "figure": "Schopenhauer",
+        "sourceWork": "The Art of Always Being Right",
+        "year": "1831",
+        "content": "Schopenhauer wrote that people's first instinct in any interaction is to protect their position, not to find truth. Once you understand that, everything changes. That colleague who \"agrees with you\" in the meeting but then undermines you afterward? He was protecting his position the whole time. Reading people means reading what they are protecting — not what they are saying."
+      },
       "category": "mindfulness",
       "xpReward": 30,
-      "phase": "push"
+      "phase": "sharpen"
     },
     {
       "dayNumber": 17,
-      "challengeTitle": "Wake up one hour earlier than usual and protect that hour",
-      "challengeDescription": "Not for work. For you. Read, move, think, plan. No phone for that first hour. The person who owns their morning owns their day. Try it once and see.",
-      "category": "productivity",
+      "challengeTitle": "Cold Anger Is Power. Hot Anger Is Weakness.",
+      "challengeDescription": "Anger is not the problem. Uncontrolled anger is. The man who loses his temper has handed his opponent the controls. But cold anger — channeled, directed, purposeful — is one of the most effective forces available to you. Today you learn the difference.",
+      "dailyAction": "Think of something that genuinely makes you angry — a situation, a person, a pattern. Sit with that anger for 5 minutes without doing anything about it. Just feel it without acting. Then write one strategic action you could take that channels that anger productively, with zero emotional display.",
+      "nightlyReflection": "Is there something you've been angry about for months that you've never addressed strategically? What would the cold, calculated version of addressing it look like?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "On the Genealogy of Morality",
+        "year": "1887",
+        "content": "Nietzsche distinguished between ressentiment — the impotent anger of men who cannot act, which festers into bitterness and self-destruction — and the righteous anger of the man who knows his own power. He argued that most moral arguments are actually disguised ressentiment: weak men convincing themselves that their inability to act is a virtue. Hot anger is ressentiment. Cold anger is will to power."
+      },
+      "category": "mindfulness",
       "xpReward": 30,
-      "phase": "push"
+      "phase": "sharpen"
     },
     {
       "dayNumber": 18,
-      "challengeTitle": "Do a workout that actually challenges you",
-      "challengeDescription": "Not a walk. Not a light session. Something that makes you question whether you can finish it. 45 minutes minimum. You should feel it tomorrow.",
-      "category": "fitness",
+      "challengeTitle": "Money Is Not Everything. Dependence Is Weakness.",
+      "challengeDescription": "Financial dependence — on a partner, a job, a family member — is the most common chain that keeps men from walking away from situations they should walk away from. This is not about being rich. It is about building enough of a base that leaving is always an option.",
+      "dailyAction": "Calculate your real financial position: monthly income, monthly expenses, months of runway you currently have if your primary income source disappeared tomorrow. Write the number down. If it's less than 3 months, that becomes a strategic priority.",
+      "nightlyReflection": "Is there a relationship or situation in your life you would handle differently if you had 12 months of financial runway? What does that tell you?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"A prince who relies entirely on fortune is ruined when fortune changes.\" Machiavelli was not talking about luck in the abstract — he was talking about dependency. The man who is financially dependent cannot negotiate from strength. He cannot leave. He cannot say no. Financial independence is not greed. It is the infrastructure of self-respect."
+      },
+      "category": "productivity",
       "xpReward": 30,
-      "phase": "push"
+      "phase": "sharpen"
     },
     {
       "dayNumber": 19,
-      "challengeTitle": "Cut out sugar completely for 24 hours",
-      "challengeDescription": "No added sugar, no sweetened drinks, no dessert, no hidden sugar in sauces. One day of total control. Proves you have it.",
-      "category": "wellness",
+      "challengeTitle": "Audit Your People",
+      "challengeDescription": "You become the average of the five people you spend the most time with. This is not a motivational cliché — it is an observable pattern in social psychology. If three of your five people diminish you, you will keep being diminished. Today you audit with zero sentimentality.",
+      "dailyAction": "List the five people you spend the most time with. For each one, write: Do they make me sharper or duller? More confident or less? Honest with me or just comfortable? Rate each one honestly. You don't have to cut anyone today. But you must see the data.",
+      "nightlyReflection": "Who in your current circle is most worth investing in? Who have you been maintaining out of history rather than value?",
+      "mentalEdge": {
+        "figure": "Seneca",
+        "sourceWork": "Letters to Lucilius",
+        "year": "65 AD",
+        "content": "\"Associate with those who will make a better man of you. Welcome those whom you yourself can improve.\" Seneca's letters reveal a man who was ruthlessly intentional about relationships while being genuinely warm within them. He did not ghost people. He simply allocated his deepest energy to those who returned it. This is not coldness. It is wisdom operating as affection."
+      },
+      "category": "social",
       "xpReward": 30,
-      "phase": "push"
+      "phase": "sharpen"
     },
     {
       "dayNumber": 20,
-      "challengeTitle": "Apologize to someone you owe one to",
-      "challengeDescription": "You know who. Not a text message. A real apology with no excuses attached. You don't get to know how they'll respond. That's not the point.",
-      "category": "social",
+      "challengeTitle": "You Are the Author, Not the Character",
+      "challengeDescription": "Someone else has been writing your story — your ex, your boss, your family. You've been playing a character in their narrative: the pushover, the reliable one, the guy who \"can take it.\" Today you rewrite that. Not through argument. Through behavior.",
+      "dailyAction": "Identify one story someone else has been telling about you — directly or through how they treat you. Write the counter-narrative: who you actually are, as you intend to be. Then take one concrete action today that aligns with the counter-narrative, not the old one.",
+      "nightlyReflection": "What has held you back from living the counter-narrative you wrote today? Fear, habit, or someone specific?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "Ecce Homo",
+        "year": "1888",
+        "content": "\"Become who you are.\" Nietzsche's most repeated instruction sounds simple until you realize what it demands: the destruction of the version of yourself built by other people's expectations. He called this self-overcoming — not self-improvement, but a fundamental break with the old identity. The man others have been pushing around is not you. He is a role you were handed and accepted. You can put it down."
+      },
+      "category": "mindfulness",
       "xpReward": 30,
-      "phase": "push"
+      "phase": "sharpen"
     },
     {
       "dayNumber": 21,
-      "challengeTitle": "Spend one full hour with your phone in another room",
-      "challengeDescription": "No exceptions, no quick checks. One hour of being unreachable. Notice what you feel. Boredom, anxiety, relief. All of it is useful information.",
+      "challengeTitle": "The Man Emerging",
+      "challengeDescription": "Three weeks in. You have built awareness, armor, and strategic intelligence. This is the last phase before the final push. Take stock of what you've built and what you're walking into.",
+      "dailyAction": "Re-read all of your reflection notes from Days 1–20. Write three sentences about who you were on Day 1 and who you are today. Then write one sentence about what you want the man on Day 30 to look like.",
+      "nightlyReflection": "Which of the 20 days has been the most impactful? Why?",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"You have power over your mind — not outside events. Realize this, and you will find strength.\" Aurelius wrote his Meditations for himself, not for publication. They were private reminders that he was still in process — still working on himself — despite commanding an empire. Greatness is not a destination. It is a practice. Week 3 done. One more phase."
+      },
       "category": "mindfulness",
       "xpReward": 30,
-      "phase": "push"
+      "phase": "sharpen"
     },
     {
       "dayNumber": 22,
-      "challengeTitle": "Read 50 pages of a non-fiction book in one sitting",
-      "challengeDescription": "Not an article. Not a summary. A real book, 50 pages, no interruptions. If you don't own one, that's today's first task.",
-      "category": "learning",
-      "xpReward": 30,
-      "phase": "push"
+      "challengeTitle": "Everything Is Negotiable",
+      "challengeDescription": "Most men accept the first number, the first offer, the first condition — because negotiating feels confrontational. That instinct has cost you more than you know: salary, rent, prices, relationships. Today you negotiate something.",
+      "dailyAction": "Find one thing today to negotiate — literally anything: a service price, a deadline, a bill, a work arrangement. Make one counter-offer. You do not need to win. You need to practice not accepting the first offer without question.",
+      "nightlyReflection": "What was the result of your negotiation? Even if you didn't get what you asked for — how did it feel to ask?",
+      "mentalEdge": {
+        "figure": "Schopenhauer",
+        "sourceWork": "The Art of Always Being Right",
+        "year": "1831",
+        "content": "Schopenhauer documented how arguments are typically won not by the best reasoning but by the most confident delivery. In negotiation, this translates directly: the person who states their position calmly and without apology wins more often than the person who argues harder. Your ask is not a request for permission. State it like a fact and let the silence work."
+      },
+      "category": "productivity",
+      "xpReward": 40,
+      "phase": "operate"
     },
     {
       "dayNumber": 23,
-      "challengeTitle": "Write your personal rules",
-      "challengeDescription": "Not goals. Rules. Things you will and won't do, regardless of how you feel. Minimum five, maximum ten. These become your operating system. Write them like you mean them.",
+      "challengeTitle": "He Who Waits, Wins",
+      "challengeDescription": "Urgency is almost always manufactured by someone who benefits from your rushed decision. The person who says \"I need an answer today\" wants to prevent you from thinking clearly. Strategic patience — the willingness to wait — is one of the most powerful positions available.",
+      "dailyAction": "Find one situation in your life where you're getting pressure to decide quickly. Buy yourself 48 hours. Tell whoever is pushing: \"I'll have an answer for you by [day after tomorrow].\" Do not elaborate.",
+      "nightlyReflection": "Who is currently creating artificial urgency in your life? What do they gain from your speed?",
+      "mentalEdge": {
+        "figure": "Sun Tzu",
+        "sourceWork": "The Art of War",
+        "year": "500 BC",
+        "content": "\"Victorious warriors win first and then go to war, while defeated warriors go to war first and then seek to win.\" Sun Tzu's concept of preparation is also a concept of timing. The man who moves before he is ready loses. The man who can sit in discomfort and wait until the moment is right — that man is genuinely dangerous to those who would manipulate him."
+      },
       "category": "mindfulness",
-      "xpReward": 30,
-      "phase": "push"
+      "xpReward": 40,
+      "phase": "operate"
     },
     {
       "dayNumber": 24,
-      "challengeTitle": "Do 200 bodyweight reps today",
-      "challengeDescription": "Pushups, squats, lunges, dips. Mix it however you want. Hit 200 total. Track every single rep. Your body is capable of more than your mind will tell you.",
-      "category": "fitness",
+      "challengeTitle": "What Do People Say When You Leave the Room?",
+      "challengeDescription": "Your reputation is a strategic asset — or a liability. It precedes you in every room you walk into. Men who are taken advantage of often have reputations that communicate availability: he's a good guy, he'll help, he won't make a fuss. Today you decide what your reputation should communicate.",
+      "dailyAction": "Ask yourself honestly: what do people say about me when I'm not there? Write it down. Then write what you want them to say. Identify one behavioral change that moves you from the first to the second.",
+      "nightlyReflection": "Has your reputation worked against you in a specific situation? How?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"Everyone sees what you appear to be, few experience what you really are.\" Machiavelli understood that perception management is not deception — it is leadership. The man who controls his reputation controls how others approach him. You cannot control what people think, but you can control what you show them and what you don't. Reputation is not vanity. It is armor."
+      },
+      "category": "social",
       "xpReward": 40,
-      "phase": "peak"
+      "phase": "operate"
     },
     {
       "dayNumber": 25,
-      "challengeTitle": "Tell someone in your life something true that you have been holding back",
-      "challengeDescription": "Not to hurt anyone. Something honest that you have been swallowing. A boundary, a feeling, an appreciation you never expressed. One true thing said out loud.",
+      "challengeTitle": "Strength Includes Knowing When to Open Up",
+      "challengeDescription": "This is the day that surprises most men. True strength is not permanent armor. It is choosing when to be open versus when to be guarded. The man who cannot be vulnerable with anyone is not strong — he is isolated. And isolation is its own kind of trap.",
+      "dailyAction": "Identify one person in your life who has earned your trust. Have one real conversation with them today — not about strategy or self-improvement, but about how you actually are. Not performance. Actual contact.",
+      "nightlyReflection": "Is there someone in your life you have pushed away in the name of \"not being weak\"? Is that actually strength — or is it avoidance?",
+      "mentalEdge": {
+        "figure": "Jung",
+        "sourceWork": "Memories, Dreams, Reflections",
+        "year": "1962",
+        "content": "Jung's concept of individuation — becoming whole — required integrating both the shadow (the dark, suppressed parts) and the capacity for genuine connection. He was suspicious of men who claimed to need no one. \"The most terrifying thing,\" he wrote, \"is to accept oneself completely.\" Selective, earned vulnerability is not weakness. It is the mark of a man who knows himself well enough to choose when to be open."
+      },
       "category": "social",
       "xpReward": 40,
-      "phase": "peak"
+      "phase": "operate"
     },
     {
       "dayNumber": 26,
-      "challengeTitle": "Eliminate your single biggest time-wasting habit for 24 hours",
-      "challengeDescription": "You already know what it is. The thing you do when you are avoiding something real. One day without it. See what fills the space. That thing is probably more important.",
-      "category": "productivity",
+      "challengeTitle": "Lead. Don't Trick.",
+      "challengeDescription": "You have spent 25 days learning how manipulation works. Now comes the most important distinction: you are not going to become a manipulator. Manipulation corrodes everyone involved, including the manipulator. What you're building is influence — the ability to move people honestly, through respect, clarity, and genuine value.",
+      "dailyAction": "Think of one situation where you want someone to do something differently. Instead of complaining, demanding, or working around them — make a direct, respectful ask that explains what you need and why. No guilt. No pressure. Just clarity.",
+      "nightlyReflection": "What is the difference between manipulation and persuasion, in your own words? Has this program changed that definition for you?",
+      "mentalEdge": {
+        "figure": "Aristotle",
+        "sourceWork": "Rhetoric",
+        "year": "322 BC",
+        "content": "Aristotle identified three pillars of genuine persuasion: ethos (your credibility), pathos (emotional connection), and logos (logical argument). He was describing influence through truth, not manipulation through deception. The man who understands psychology can use it to exploit or to lead. You are choosing to lead. That choice is what separates you from the people who played you."
+      },
+      "category": "social",
       "xpReward": 40,
-      "phase": "peak"
+      "phase": "operate"
     },
     {
       "dayNumber": 27,
-      "challengeTitle": "Cook every single meal you eat today from scratch",
-      "challengeDescription": "Breakfast, lunch, dinner. No exceptions. Treating your body like it deserves real food is not optional, it is the baseline.",
-      "category": "wellness",
+      "challengeTitle": "You Shouldn't Have to Ask for It",
+      "challengeDescription": "Respect is not requested. It is established through consistent behavior over time. By now — 27 days in — your behavior has been changing. Today you assess whether respect has followed and what adjustments still need to be made.",
+      "dailyAction": "Think about three interactions this week. In each one, ask: Did I behave like a man who respects himself? Not aggressively. Not arrogantly. With quiet self-assurance. Write one specific thing you did well and one thing you would do differently.",
+      "nightlyReflection": "Is there a relationship where you are still not receiving the respect you deserve — despite the work you've done? What's the remaining barrier?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "Beyond Good and Evil",
+        "year": "1886",
+        "content": "\"He who fights with monsters should look to it that he himself does not become a monster.\" Nietzsche's warning is relevant here: 27 days of studying manipulation and power can harden a man in ways that aren't useful. Respect commanded through genuine presence is durable. Respect extracted through fear is temporary and isolating. Know the difference."
+      },
+      "category": "mindfulness",
       "xpReward": 40,
-      "phase": "peak"
+      "phase": "operate"
     },
     {
       "dayNumber": 28,
-      "challengeTitle": "Write a brutally honest self-assessment",
-      "challengeDescription": "Two columns. What you are doing well. What you are still avoiding. No softening, no excuses. This is the gap between who you are and who you said you wanted to be on Day 7. Close it.",
+      "challengeTitle": "Look Forward, Not Back",
+      "challengeDescription": "You have done the hard work. The man you were on Day 1 — the one who let things slide, who said yes when he meant no, who got played and pretended not to notice — that man is not coming back. Today you look forward.",
+      "dailyAction": "Write a short letter from yourself on Day 30 to yourself on Day 1. What do you want your Day 1 self to know? What changed? What surprised you?",
+      "nightlyReflection": "What is the one area of your life where the work you've done in 30 days will have the most impact? What's your first real-world move after this program ends?",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"Waste no more time arguing about what a good man should be. Be one.\" Aurelius wrote this to himself after years of philosophical study and introspection. At some point the thinking has to become being. You are two days from the end of this program. The question is not what you have learned. It is what you will do with it."
+      },
       "category": "mindfulness",
       "xpReward": 40,
-      "phase": "peak"
+      "phase": "operate"
     },
     {
       "dayNumber": 29,
-      "challengeTitle": "Do one thing today that the version of you from Day 1 couldn't have done",
-      "challengeDescription": "You decide what that is. Physical, social, mental. You know yourself better than this app does. Pick something that proves something to yourself.",
-      "category": "productivity",
+      "challengeTitle": "He's Gone",
+      "challengeDescription": "The man who was pushed around, manipulated, played, and overlooked — you don't need to be angry at him. He didn't have the tools. Now you do. Today you formally release him. Not through ceremony. Through decision.",
+      "dailyAction": "Write one paragraph covering everything you are leaving behind. The apologies you didn't owe. The relationships that were draining. The version of yourself that shrank to keep others comfortable. Write it down. Then close the notebook. He's gone.",
+      "nightlyReflection": "Is there anything from the old version you want to keep? Most people find there is — empathy, warmth, loyalty. Those aren't weaknesses. They're assets, now properly defended.",
+      "mentalEdge": {
+        "figure": "Schopenhauer",
+        "sourceWork": "The World as Will and Representation",
+        "year": "1818",
+        "content": "Schopenhauer believed that most human suffering came from the gap between what we are and what we want to be — and that most people choose to manage that gap through distraction rather than confrontation. You chose confrontation. Thirty days of it. The suffering that brought you here was not a life sentence. It was a signal. You answered it."
+      },
+      "category": "mindfulness",
       "xpReward": 40,
-      "phase": "peak"
+      "phase": "operate"
     },
     {
       "dayNumber": 30,
-      "challengeTitle": "Write a letter to the person who starts this program next",
-      "challengeDescription": "What would you tell them? What was harder than expected? What surprised you? What actually changed? You don't have to send it to anyone. Write it like you mean it. This is the last day. You showed up.",
+      "challengeTitle": "This Is Who You Are Now",
+      "challengeDescription": "Day 30. This is not a graduation. This is not a finish line. This is the day you lock in — permanently — a different operating mode. The tools are yours. The awareness is yours. The patterns you've broken are not coming back unless you let them. You decide.",
+      "dailyAction": "Define three non-negotiable personal standards you are carrying forward from today. Not goals. Standards. Behavior minimums that define who you are now. Write them somewhere you'll see them.",
+      "nightlyReflection": "What do you need to do tomorrow — Day 31 — that reflects the man you've built over the last 30 days? Make it concrete. Make it real.",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"Never was anything great achieved without danger.\" Machiavelli was not talking about physical danger. He was talking about the danger of becoming someone different — which requires the destruction of someone familiar. You have done that work. The man you are now is not safer or more comfortable. He is sovereign. That is worth more than comfortable."
+      },
       "category": "mindfulness",
       "xpReward": 50,
-      "phase": "peak"
+      "phase": "operate"
     }
   ]
 }

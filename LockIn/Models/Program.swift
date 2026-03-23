@@ -14,12 +14,24 @@ struct Program: Codable, Identifiable {
   let days: [ProgramDay]
 }
 
+// MARK: - Mental Edge (philosopher insight for each day)
+
+struct MentalEdge: Codable {
+  let figure: String
+  let sourceWork: String
+  let year: String
+  let content: String
+}
+
 // MARK: - Program Day (self-contained challenge content)
 
 struct ProgramDay: Codable, Identifiable {
   let dayNumber: Int
   let challengeTitle: String
   let challengeDescription: String
+  let dailyAction: String
+  let nightlyReflection: String
+  let mentalEdge: MentalEdge
   let category: ChallengeType
   let xpReward: Int
   let phase: ProgramPhase
@@ -62,26 +74,26 @@ enum ProgramDifficulty: String, Codable, CaseIterable {
 }
 
 enum ProgramPhase: String, Codable, CaseIterable {
-  case foundation = "foundation"
-  case build = "build"
-  case push = "push"
-  case peak = "peak"
+  case wakeUp = "wake_up"
+  case armorUp = "armor_up"
+  case sharpen = "sharpen"
+  case operate = "operate"
 
   var displayName: String {
     switch self {
-    case .foundation: return "Foundation"
-    case .build: return "Build"
-    case .push: return "Push"
-    case .peak: return "Peak"
+    case .wakeUp: return "WAKE UP"
+    case .armorUp: return "ARMOR UP"
+    case .sharpen: return "SHARPEN"
+    case .operate: return "OPERATE"
     }
   }
 
   var tagline: String {
     switch self {
-    case .foundation: return "Build the habit"
-    case .build: return "Add the pressure"
-    case .push: return "Test your limits"
-    case .peak: return "This is who you are now"
+    case .wakeUp: return "See what's been happening to you"
+    case .armorUp: return "Build your psychological defenses"
+    case .sharpen: return "Develop strategic intelligence"
+    case .operate: return "Become the man who can't be played"
     }
   }
 }
@@ -95,7 +107,6 @@ extension Program {
 }
 
 extension ProgramDay {
-  // Which week this day falls in (1-indexed)
   var weekNumber: Int {
     ((dayNumber - 1) / 7) + 1
   }

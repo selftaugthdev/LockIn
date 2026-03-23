@@ -9,6 +9,7 @@ class ProgramService: ObservableObject {
   @Published var todaysProgramDay: ProgramDay?
   @Published var recoveryBonusDay: ProgramDay?   // only set on recovery days
   @Published var isLoading = false
+  @Published var hasFetchedActiveProgram = false
   @Published var errorMessage: String?
 
   private let db = Firestore.firestore()
@@ -46,9 +47,17 @@ class ProgramService: ObservableObject {
   // MARK: - Load Active Program
 
   func loadActiveProgram() async {
-    guard let uid = auth.uid else { return }
+    guard let uid = auth.uid else {
+      print("ProgramService: loadActiveProgram — uid is nil, skipping")
+      return
+    }
     isLoading = true
-    defer { isLoading = false }
+    defer {
+      isLoading = false
+      hasFetchedActiveProgram = true
+    }
+
+    print("ProgramService: loading active program for uid \(uid)")
 
     do {
       let snapshot = try await db.collection("userPrograms")
@@ -56,7 +65,18 @@ class ProgramService: ObservableObject {
         .whereField("status", isEqualTo: ProgramStatus.active.rawValue)
         .getDocuments()
 
-      let allActive = snapshot.documents.compactMap { try? $0.data(as: UserProgram.self) }
+      print("ProgramService: found \(snapshot.documents.count) raw docs, \(snapshot.documents.map { $0.documentID })")
+
+      let allActive = snapshot.documents.compactMap { doc -> UserProgram? in
+        do {
+          return try doc.data(as: UserProgram.self)
+        } catch {
+          print("ProgramService: failed to decode doc \(doc.documentID) — \(error)")
+          return nil
+        }
+      }
+
+      print("ProgramService: decoded \(allActive.count) active program(s)")
 
       guard !allActive.isEmpty else {
         activeProgram = nil
@@ -147,10 +167,35 @@ class ProgramService: ObservableObject {
     activeProgram = userProgram
     recoveryBonusDay = nil
 
-    // Also update user's total XP in Firestore
+    // Update user XP and streak
+    let today = Date()
+    let calendar = Calendar.current
+    var newStreakCount = 1
+
+    if let user = auth.currentUser, let lastCompleted = user.lastCompleted {
+      if calendar.isDate(lastCompleted, inSameDayAs: today) {
+        // Already completed something today — preserve streak
+        newStreakCount = user.streakCount
+      } else if let yesterday = calendar.date(byAdding: .day, value: -1, to: today),
+                calendar.isDate(lastCompleted, inSameDayAs: yesterday) {
+        // Completed yesterday — extend streak
+        newStreakCount = user.streakCount + 1
+      }
+      // else: gap of 2+ days — reset to 1
+    }
+
     try await db.collection("users").document(uid).updateData([
-      "totalXP": FieldValue.increment(Int64(xpEarned))
+      "totalXP": FieldValue.increment(Int64(xpEarned)),
+      "streakCount": newStreakCount,
+      "lastCompleted": Timestamp(date: today)
     ])
+
+    // Reflect streak update locally
+    if var user = auth.currentUser {
+      user.streakCount = newStreakCount
+      user.lastCompleted = today
+      auth.currentUser = user
+    }
   }
 
   // MARK: - Day Advancement

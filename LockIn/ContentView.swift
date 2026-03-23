@@ -15,7 +15,22 @@ struct ContentView: View {
             .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
         }
       } else if authService.isAuthenticated && !authService.forceOnboarding {
-        if programService.activeProgram == nil {
+        if !programService.hasFetchedActiveProgram {
+          ZStack {
+            Color.brandInk.ignoresSafeArea()
+            VStack(spacing: 16) {
+              ProgressView()
+                .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
+              if let error = programService.errorMessage {
+                Text(error)
+                  .font(.caption)
+                  .foregroundColor(.red)
+                  .padding(.horizontal, 32)
+                  .multilineTextAlignment(.center)
+              }
+            }
+          }
+        } else if programService.activeProgram == nil {
           ProgramSelectionView()
         } else {
           MainTabView()
@@ -24,9 +39,9 @@ struct ContentView: View {
         OnboardingView()
       }
     }
-    .onChange(of: authService.isAuthenticated) { isAuthenticated in
-      if isAuthenticated && !authService.forceOnboarding {
-        Task { await programService.loadActiveProgram() }
+    .task(id: authService.isAuthenticated) {
+      if authService.isAuthenticated && !authService.forceOnboarding {
+        await programService.loadActiveProgram()
       }
     }
     .onChange(of: authService.forceOnboarding) { forceOnboarding in

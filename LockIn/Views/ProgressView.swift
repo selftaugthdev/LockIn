@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProgressView: View {
-  @EnvironmentObject var programService: ProgramService
+  @EnvironmentObject var moduleService: ModuleService
   @EnvironmentObject var authService: AuthService
 
   var body: some View {
@@ -11,10 +11,10 @@ struct ProgressView: View {
 
         ScrollView {
           VStack(spacing: 20) {
-            if let program = programService.activeProgram {
-              programArcCard(program)
-              phaseCard(program)
-              statsGrid(program)
+            if let userModule = moduleService.activeModule {
+              moduleArcCard(userModule)
+              pathProgressCard
+              statsGrid(userModule)
             } else {
               emptyState
             }
@@ -31,22 +31,22 @@ struct ProgressView: View {
     }
   }
 
-  // MARK: - Program Arc (hero card)
+  // MARK: - Module Arc (hero card)
 
-  private func programArcCard(_ program: UserProgram) -> some View {
+  private func moduleArcCard(_ userModule: UserModule) -> some View {
     VStack(spacing: 20) {
       HStack(alignment: .top) {
         VStack(alignment: .leading, spacing: 4) {
-          Text(program.programTitle)
+          Text(userModule.moduleTitle)
             .font(Typography.headline)
             .foregroundColor(.white.opacity(0.5))
-          Text("Day \(program.currentDay) of \(program.programDurationDays)")
+          Text("Day \(userModule.currentDay) of \(UserModule.durationDays)")
             .font(Typography.largeTitle)
             .foregroundColor(.white)
         }
         Spacer()
         VStack(alignment: .trailing, spacing: 4) {
-          Text("\(program.totalXPEarned)")
+          Text("\(userModule.totalXPEarned)")
             .font(Typography.title2)
             .fontWeight(.bold)
             .foregroundColor(.brandYellow)
@@ -56,15 +56,14 @@ struct ProgressView: View {
         }
       }
 
-      // Full program arc bar — dots for each day
-      programArcBar(program)
+      moduleArcBar(userModule)
 
       HStack {
-        Text("\(program.completedDays.count) days completed")
+        Text("\(userModule.completedDays.count) days completed")
           .font(Typography.caption)
           .foregroundColor(.white.opacity(0.4))
         Spacer()
-        Text("\(program.daysRemaining) to go")
+        Text("\(userModule.daysRemaining) to go")
           .font(Typography.caption)
           .foregroundColor(.white.opacity(0.4))
       }
@@ -74,35 +73,32 @@ struct ProgressView: View {
     .cornerRadius(20)
   }
 
-  private func programArcBar(_ program: UserProgram) -> some View {
+  private func moduleArcBar(_ userModule: UserModule) -> some View {
     GeometryReader { geo in
-      let total = program.programDurationDays
+      let total = UserModule.durationDays
       let dotSize: CGFloat = 6
       let spacing = (geo.size.width - dotSize) / CGFloat(max(total - 1, 1))
 
       ZStack(alignment: .leading) {
-        // Track line
         Rectangle()
           .fill(Color.white.opacity(0.07))
           .frame(height: 2)
           .frame(maxWidth: .infinity)
           .padding(.top, dotSize / 2 - 1)
 
-        // Filled line up to current
         Rectangle()
           .fill(Color.brandYellow)
           .frame(
             width: total > 1
-              ? spacing * CGFloat(min(program.completedDays.count, total - 1))
+              ? spacing * CGFloat(min(userModule.completedDays.count, total - 1))
               : 0,
             height: 2
           )
           .padding(.top, dotSize / 2 - 1)
 
-        // Dots
         ForEach(1...total, id: \.self) { day in
-          let completed = program.completedDays.contains(day)
-          let isCurrent = day == program.currentDay
+          let completed = userModule.completedDays.contains(day)
+          let isCurrent = day == userModule.currentDay
 
           Circle()
             .fill(completed ? Color.brandYellow : (isCurrent ? Color.white : Color.white.opacity(0.12)))
@@ -119,66 +115,78 @@ struct ProgressView: View {
     .frame(height: 16)
   }
 
-  // MARK: - Phase Card
+  // MARK: - Path Progress Card
 
-  private func phaseCard(_ program: UserProgram) -> some View {
-    guard let day = programService.todaysProgramDay else { return AnyView(EmptyView()) }
+  @ViewBuilder
+  private var pathProgressCard: some View {
+    if let path = moduleService.currentPath {
+      VStack(alignment: .leading, spacing: 14) {
+        Text("PATH PROGRESS")
+          .font(Typography.caption2)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow.opacity(0.7))
+          .tracking(1.5)
 
-    return AnyView(
-      HStack(spacing: 16) {
-        VStack(alignment: .leading, spacing: 6) {
-          Text("CURRENT PHASE")
-            .font(Typography.caption2)
-            .fontWeight(.semibold)
-            .foregroundColor(.brandYellow.opacity(0.7))
-            .tracking(1.5)
-          Text(day.phase.displayName)
-            .font(Typography.title2)
-            .foregroundColor(.white)
-          Text(day.phase.tagline)
-            .font(Typography.caption)
-            .foregroundColor(.white.opacity(0.4))
-        }
+        HStack(spacing: 8) {
+          ForEach(path.moduleIds, id: \.self) { moduleId in
+            let isCompleted = moduleService.completedModuleIds.contains(moduleId)
+            let isActive = moduleService.activeModule?.moduleId == moduleId
+            let module = moduleService.availableModules.first { $0.id == moduleId }
 
-        Spacer()
+            VStack(spacing: 6) {
+              RoundedRectangle(cornerRadius: 4)
+                .fill(
+                  isCompleted ? Color.brandYellow
+                    : isActive ? Color.brandYellow.opacity(0.3)
+                    : Color.white.opacity(0.08)
+                )
+                .frame(height: 4)
 
-        // Phase position indicator
-        VStack(spacing: 3) {
-          ForEach(ProgramPhase.allCases, id: \.self) { phase in
-            RoundedRectangle(cornerRadius: 2)
-              .fill(phase == day.phase ? Color.brandYellow : Color.white.opacity(0.1))
-              .frame(width: 4, height: phase == day.phase ? 24 : 12)
-              .animation(.easeInOut(duration: 0.3), value: day.phase)
+              if let module {
+                Text(module.title)
+                  .font(Typography.caption2)
+                  .foregroundColor(
+                    isCompleted ? .white.opacity(0.6)
+                      : isActive ? .white.opacity(0.4)
+                      : .white.opacity(0.2)
+                  )
+                  .lineLimit(1)
+              }
+            }
           }
         }
+
+        Text("\(moduleService.completedModuleIds.count) of \(path.moduleIds.count) modules done")
+          .font(Typography.caption)
+          .foregroundColor(.white.opacity(0.35))
       }
       .padding(20)
       .background(Color.brandGray)
       .cornerRadius(16)
-    )
+    }
   }
 
   // MARK: - Stats Grid
 
-  private func statsGrid(_ program: UserProgram) -> some View {
+  private func statsGrid(_ userModule: UserModule) -> some View {
     HStack(spacing: 12) {
       statTile(
         icon: "flame.fill",
         color: .brandYellow,
-        value: "\(program.longestStreakInProgram)",
-        label: "Best streak"
+        value: "\(authService.currentUser?.streakCount ?? 0)",
+        label: "Day streak"
       )
       statTile(
         icon: "checkmark.circle.fill",
         color: .brandGreen,
-        value: "\(program.completedDays.count)",
+        value: "\(userModule.completedDays.count)",
         label: "Days done"
       )
       statTile(
-        icon: "arrow.counterclockwise",
-        color: .brandRed,
-        value: "\(program.recoveryDays.count)",
-        label: "Recovery days"
+        icon: "moon.zzz.fill",
+        color: .white.opacity(0.4),
+        value: "\(userModule.missedDays.count)",
+        label: "Days missed"
       )
     }
   }
@@ -210,10 +218,10 @@ struct ProgressView: View {
       Image(systemName: "chart.line.uptrend.xyaxis")
         .font(.largeTitle)
         .foregroundColor(.white.opacity(0.15))
-      Text("No active program")
+      Text("No active module")
         .font(Typography.headline)
         .foregroundColor(.white.opacity(0.4))
-      Text("Enroll in a program to start tracking your progress.")
+      Text("Enroll in a module to start tracking your progress.")
         .font(Typography.subheadline)
         .foregroundColor(.white.opacity(0.25))
         .multilineTextAlignment(.center)
@@ -226,5 +234,5 @@ struct ProgressView: View {
   let auth = AuthService()
   ProgressView()
     .environmentObject(auth)
-    .environmentObject(ProgramService(auth: auth))
+    .environmentObject(ModuleService(auth: auth))
 }

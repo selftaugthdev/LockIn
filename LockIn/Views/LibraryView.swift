@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LibraryView: View {
-  @EnvironmentObject var programService: ProgramService
+  @EnvironmentObject var moduleService: ModuleService
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var paywallService: PaywallService
   @ObservedObject private var advisor = AdvisorService.shared
@@ -100,32 +100,30 @@ struct LibraryView: View {
   // MARK: - Mental Edge Section
 
   private var mentalEdgeSection: some View {
-    let completedDays = completedDaysWithEdges
+    let grouped = completedDaysByModule
 
     return Group {
-      if completedDays.isEmpty {
+      if grouped.isEmpty {
         emptyMentalEdge
       } else {
+        let totalDays = grouped.reduce(0) { $0 + $1.days.count }
         VStack(alignment: .leading, spacing: 20) {
-          Text("\(completedDays.count) insight\(completedDays.count == 1 ? "" : "s") unlocked")
+          Text("\(totalDays) insight\(totalDays == 1 ? "" : "s") unlocked")
             .font(Typography.caption)
             .foregroundColor(.white.opacity(0.35))
 
-          ForEach(ProgramPhase.allCases, id: \.self) { phase in
-            let phaseDays = completedDays.filter { $0.phase == phase }
-            if !phaseDays.isEmpty {
-              phaseSection(phase: phase, days: phaseDays)
-            }
+          ForEach(grouped, id: \.module.id) { item in
+            moduleSection(module: item.module, days: item.days)
           }
         }
       }
     }
   }
 
-  private func phaseSection(phase: ProgramPhase, days: [ProgramDay]) -> some View {
+  private func moduleSection(module: Module, days: [ModuleDay]) -> some View {
     VStack(alignment: .leading, spacing: 12) {
       HStack(spacing: 8) {
-        Text(phase.displayName)
+        Text(module.title.uppercased())
           .font(Typography.caption2)
           .fontWeight(.semibold)
           .foregroundColor(.brandYellow.opacity(0.7))
@@ -141,10 +139,24 @@ struct LibraryView: View {
     }
   }
 
-  private var completedDaysWithEdges: [ProgramDay] {
-    guard let program = programService.program,
-          let userProgram = programService.activeProgram else { return [] }
-    return program.days.filter { userProgram.completedDays.contains($0.dayNumber) }
+  private var completedDaysByModule: [(module: Module, days: [ModuleDay])] {
+    var result: [(module: Module, days: [ModuleDay])] = []
+
+    for moduleId in moduleService.completedModuleIds {
+      guard let module = moduleService.availableModules.first(where: { $0.id == moduleId }) else { continue }
+      result.append((module: module, days: module.days))
+    }
+
+    if let userModule = moduleService.activeModule,
+       !moduleService.completedModuleIds.contains(userModule.moduleId),
+       let module = moduleService.activeModuleContent {
+      let completed = module.days.filter { userModule.completedDays.contains($0.dayNumber) }
+      if !completed.isEmpty {
+        result.append((module: module, days: completed))
+      }
+    }
+
+    return result
   }
 
   private var emptyMentalEdge: some View {
@@ -240,7 +252,7 @@ struct LibraryView: View {
 // MARK: - Mental Edge Library Card
 
 struct MentalEdgeLibraryCard: View {
-  let day: ProgramDay
+  let day: ModuleDay
   @State private var isExpanded = false
 
   var body: some View {
@@ -315,6 +327,6 @@ struct MentalEdgeLibraryCard: View {
   let auth = AuthService()
   LibraryView()
     .environmentObject(auth)
-    .environmentObject(ProgramService(auth: auth))
+    .environmentObject(ModuleService(auth: auth))
     .environmentObject(PaywallService(authService: auth))
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProgramDayView: View {
-  @EnvironmentObject var programService: ProgramService
+  @EnvironmentObject var moduleService: ModuleService
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var paywallService: PaywallService
   @State private var isCompleting = false
@@ -24,30 +24,27 @@ struct ProgramDayView: View {
 
         ScrollView {
           VStack(spacing: 20) {
-            if programService.isLoading {
+            if moduleService.isLoading {
               loadingView
-            } else if let userProgram = programService.activeProgram,
-              let day = programService.todaysProgramDay
+            } else if let userModule = moduleService.activeModule,
+              let day = moduleService.todaysModuleDay
             {
               greetingCard
-              programHeader(userProgram)
-              if userProgram.isRecoveryDay {
-                recoveryBanner
-              }
-              mainChallengeCard(day: day, userProgram: userProgram)
-              if userProgram.isRecoveryDay, let bonus = programService.recoveryBonusDay {
-                bonusChallengeCard(bonus)
-              }
-              if programService.isTodayCompleted {
-                completedState(userProgram)
+              moduleHeader(userModule)
+              mainChallengeCard(day: day, userModule: userModule)
+              if moduleService.isTodayCompleted {
+                completedState(userModule)
               } else {
-                completeButton(userProgram: userProgram, day: day)
+                completeButton(userModule: userModule, day: day)
               }
               mentalEdgeCard(day: day)
-              if isNightlyReflectionUnlocked || programService.isTodayCompleted {
+              if isNightlyReflectionUnlocked || moduleService.isTodayCompleted {
                 nightlyReflectionCard(day: day)
               }
-              xpProgressCard(userProgram)
+              statsCard(userModule)
+            } else if let userModule = moduleService.activeModule, userModule.isComplete {
+              greetingCard
+              moduleCompleteState(userModule)
             } else {
               errorView
             }
@@ -85,8 +82,7 @@ struct ProgramDayView: View {
       .sheet(isPresented: $showCompletionModal) {
         DayCompletionSheet(
           dayNumber: completedDay,
-          xpEarned: completedXP,
-          totalDays: programService.activeProgram?.programDurationDays ?? 30
+          xpEarned: completedXP
         )
       }
     }
@@ -124,29 +120,28 @@ struct ProgramDayView: View {
     case 12..<17: timeOfDay = "Afternoon"
     default:      timeOfDay = "Evening"
     }
-    if let name = name {
-      return "\(timeOfDay), \(name)."
-    } else {
-      return "\(timeOfDay)."
-    }
+    if let name { return "\(timeOfDay), \(name)." }
+    return "\(timeOfDay)."
   }
 
-  // MARK: - Program Header
+  // MARK: - Module Header
 
-  private func programHeader(_ userProgram: UserProgram) -> some View {
-    VStack(spacing: 12) {
+  private func moduleHeader(_ userModule: UserModule) -> some View {
+    let module = moduleService.activeModuleContent
+
+    return VStack(spacing: 12) {
       HStack(alignment: .bottom) {
         VStack(alignment: .leading, spacing: 4) {
-          Text("Day \(userProgram.currentDay) of \(userProgram.programDurationDays)")
+          Text("Day \(userModule.currentDay) of \(UserModule.durationDays)")
             .font(Typography.largeTitle)
             .foregroundColor(.white)
-          Text(userProgram.programTitle)
+          Text(userModule.moduleTitle)
             .font(Typography.subheadline)
             .foregroundColor(.white.opacity(0.45))
         }
         Spacer()
         VStack(alignment: .trailing, spacing: 4) {
-          Text("\(userProgram.totalXPEarned) XP")
+          Text("\(userModule.totalXPEarned) XP")
             .font(Typography.title3)
             .foregroundColor(.brandYellow)
           Text("earned")
@@ -162,32 +157,27 @@ struct ProgramDayView: View {
             .frame(height: 4)
           RoundedRectangle(cornerRadius: 4)
             .fill(Color.brandYellow)
-            .frame(width: geo.size.width * userProgram.progressPercentage, height: 4)
-            .animation(.easeInOut(duration: 0.6), value: userProgram.progressPercentage)
+            .frame(width: geo.size.width * userModule.progressPercentage, height: 4)
+            .animation(.easeInOut(duration: 0.6), value: userModule.progressPercentage)
         }
       }
       .frame(height: 4)
 
-      if let program = programService.program,
-        let day = programService.todaysProgramDay
-      {
-        HStack {
-          Text(day.phase.displayName)
-            .font(Typography.caption2)
-            .fontWeight(.semibold)
-            .foregroundColor(.brandYellow.opacity(0.7))
-            .tracking(1.5)
-          Text("·")
-            .foregroundColor(.white.opacity(0.2))
-          Text(day.phase.tagline)
-            .font(Typography.caption2)
-            .foregroundColor(.white.opacity(0.35))
-          Spacer()
-          Text("\(userProgram.daysRemaining) days left")
-            .font(Typography.caption2)
-            .foregroundColor(.white.opacity(0.3))
-        }
-        .opacity(program.id.isEmpty ? 0 : 1)  // silence unused warning
+      HStack {
+        Text(module?.title.uppercased() ?? "")
+          .font(Typography.caption2)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow.opacity(0.7))
+          .tracking(1.5)
+        Text("·")
+          .foregroundColor(.white.opacity(0.2))
+        Text(module?.tagline ?? "")
+          .font(Typography.caption2)
+          .foregroundColor(.white.opacity(0.35))
+        Spacer()
+        Text("\(userModule.daysRemaining) days left")
+          .font(Typography.caption2)
+          .foregroundColor(.white.opacity(0.3))
       }
     }
     .padding(20)
@@ -195,39 +185,11 @@ struct ProgramDayView: View {
     .cornerRadius(16)
   }
 
-  // MARK: - Recovery Banner
-
-  private var recoveryBanner: some View {
-    HStack(spacing: 12) {
-      Image(systemName: "arrow.counterclockwise.circle.fill")
-        .font(.title3)
-        .foregroundColor(.brandRed)
-      VStack(alignment: .leading, spacing: 2) {
-        Text("Recovery Day")
-          .font(Typography.subheadline)
-          .fontWeight(.semibold)
-          .foregroundColor(.white)
-        Text("You missed yesterday. Two challenges today — same XP. Earn it back.")
-          .font(Typography.caption)
-          .foregroundColor(.white.opacity(0.5))
-      }
-      Spacer()
-    }
-    .padding(16)
-    .background(Color.brandRed.opacity(0.1))
-    .cornerRadius(12)
-    .overlay(
-      RoundedRectangle(cornerRadius: 12)
-        .stroke(Color.brandRed.opacity(0.25), lineWidth: 1)
-    )
-  }
-
   // MARK: - Main Challenge Card
 
-  private func mainChallengeCard(day: ProgramDay, userProgram: UserProgram) -> some View {
+  private func mainChallengeCard(day: ModuleDay, userModule: UserModule) -> some View {
     VStack(alignment: .leading, spacing: 20) {
       HStack {
-        Badge(text: day.category.displayName, color: categoryColor(day.category))
         Spacer()
         HStack(spacing: 4) {
           Image(systemName: "bolt.fill")
@@ -274,7 +236,7 @@ struct ProgramDayView: View {
     .overlay(
       RoundedRectangle(cornerRadius: 20)
         .stroke(
-          programService.isTodayCompleted
+          moduleService.isTodayCompleted
             ? Color.brandGreen.opacity(0.4)
             : Color.brandYellow.opacity(0.12),
           lineWidth: 1
@@ -282,44 +244,9 @@ struct ProgramDayView: View {
     )
   }
 
-  // MARK: - Bonus Challenge Card (recovery days only)
-
-  private func bonusChallengeCard(_ day: ProgramDay) -> some View {
-    VStack(alignment: .leading, spacing: 16) {
-      HStack {
-        Text("Recovery Challenge")
-          .font(Typography.caption)
-          .fontWeight(.semibold)
-          .foregroundColor(.brandRed)
-          .tracking(0.5)
-        Spacer()
-        Text("No bonus XP")
-          .font(Typography.caption2)
-          .foregroundColor(.white.opacity(0.3))
-      }
-
-      Text(day.challengeTitle)
-        .font(Typography.headline)
-        .foregroundColor(.white)
-
-      Text(day.challengeDescription)
-        .font(Typography.subheadline)
-        .foregroundColor(.white.opacity(0.5))
-        .lineSpacing(3)
-        .fixedSize(horizontal: false, vertical: true)
-    }
-    .padding(20)
-    .background(Color.brandRed.opacity(0.07))
-    .cornerRadius(16)
-    .overlay(
-      RoundedRectangle(cornerRadius: 16)
-        .stroke(Color.brandRed.opacity(0.2), lineWidth: 1)
-    )
-  }
-
   // MARK: - Complete Button
 
-  private func completeButton(userProgram: UserProgram, day: ProgramDay) -> some View {
+  private func completeButton(userModule: UserModule, day: ModuleDay) -> some View {
     Button {
       Task { await complete() }
     } label: {
@@ -332,7 +259,7 @@ struct ProgramDayView: View {
           Image(systemName: "checkmark.circle.fill")
             .font(.title3)
         }
-        Text(isCompleting ? "Completing..." : completeButtonLabel(userProgram))
+        Text(isCompleting ? "Completing..." : "Complete Day \(userModule.currentDay)")
           .font(Typography.headline)
           .foregroundColor(.brandInk)
       }
@@ -344,24 +271,22 @@ struct ProgramDayView: View {
     .disabled(isCompleting)
   }
 
-  private func completeButtonLabel(_ userProgram: UserProgram) -> String {
-    userProgram.isRecoveryDay ? "Complete Both Challenges" : "Complete Day \(userProgram.currentDay)"
-  }
-
   // MARK: - Completed State
 
-  private func completedState(_ userProgram: UserProgram) -> some View {
+  private func completedState(_ userModule: UserModule) -> some View {
     HStack(spacing: 14) {
       Image(systemName: "checkmark.seal.fill")
         .font(.title2)
         .foregroundColor(.brandGreen)
       VStack(alignment: .leading, spacing: 3) {
-        Text("Day \(userProgram.currentDay) complete")
+        Text("Day \(userModule.currentDay) complete")
           .font(Typography.headline)
           .foregroundColor(.white)
-        Text("Come back tomorrow for Day \(userProgram.currentDay + 1).")
-          .font(Typography.caption)
-          .foregroundColor(.white.opacity(0.45))
+        if userModule.currentDay < UserModule.durationDays {
+          Text("Come back tomorrow for Day \(userModule.currentDay + 1).")
+            .font(Typography.caption)
+            .foregroundColor(.white.opacity(0.45))
+        }
       }
       Spacer()
     }
@@ -374,14 +299,74 @@ struct ProgramDayView: View {
     )
   }
 
+  // MARK: - Module Complete State
+
+  private func moduleCompleteState(_ userModule: UserModule) -> some View {
+    let nextModule = moduleService.nextModule(after: userModule.moduleId)
+
+    return VStack(spacing: 24) {
+      VStack(spacing: 12) {
+        ZStack {
+          Circle()
+            .fill(Color.brandYellow.opacity(0.1))
+            .frame(width: 72, height: 72)
+          Image(systemName: "flame.fill")
+            .font(.system(size: 32))
+            .foregroundColor(.brandYellow)
+        }
+
+        Text("\(userModule.moduleTitle) complete.")
+          .font(Typography.title2)
+          .foregroundColor(.white)
+          .multilineTextAlignment(.center)
+
+        Text("7 days. \(userModule.totalXPEarned) XP earned.")
+          .font(Typography.subheadline)
+          .foregroundColor(.brandYellow)
+      }
+
+      if let next = nextModule {
+        Button {
+          Task {
+            try? await moduleService.enrollInModule(next, pathId: userModule.pathId)
+          }
+        } label: {
+          VStack(spacing: 4) {
+            Text("Start Next Module")
+              .font(Typography.headline)
+              .foregroundColor(.brandInk)
+            Text(next.title)
+              .font(Typography.caption)
+              .foregroundColor(.brandInk.opacity(0.6))
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 18)
+          .background(Color.brandYellow)
+          .cornerRadius(14)
+        }
+      } else {
+        Text("You've completed the Foundation path.")
+          .font(Typography.subheadline)
+          .foregroundColor(.white.opacity(0.5))
+          .multilineTextAlignment(.center)
+      }
+    }
+    .padding(24)
+    .background(Color.brandGray)
+    .cornerRadius(20)
+    .overlay(
+      RoundedRectangle(cornerRadius: 20)
+        .stroke(Color.brandYellow.opacity(0.2), lineWidth: 1)
+    )
+  }
+
   // MARK: - Mental Edge Card
 
-  private func mentalEdgeCard(day: ProgramDay) -> some View {
+  private func mentalEdgeCard(day: ModuleDay) -> some View {
     let edge = day.mentalEdge
     let isPro = paywallService.isPro
 
     return VStack(alignment: .leading, spacing: 0) {
-      // Header
       HStack(spacing: 10) {
         VStack(alignment: .leading, spacing: 2) {
           Text("MENTAL EDGE")
@@ -415,7 +400,6 @@ struct ProgramDayView: View {
       Divider()
         .background(Color.white.opacity(0.06))
 
-      // Content
       ZStack {
         Text(edge.content)
           .font(Typography.subheadline)
@@ -464,7 +448,7 @@ struct ProgramDayView: View {
 
   // MARK: - Nightly Reflection Card
 
-  private func nightlyReflectionCard(day: ProgramDay) -> some View {
+  private func nightlyReflectionCard(day: ModuleDay) -> some View {
     let isPro = paywallService.isPro
 
     return VStack(alignment: .leading, spacing: 0) {
@@ -529,10 +513,17 @@ struct ProgramDayView: View {
               }
               .frame(maxWidth: .infinity)
               .padding(.vertical, 12)
-              .background(reflectionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.brandYellow.opacity(0.4) : Color.brandYellow)
+              .background(
+                reflectionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                  ? Color.brandYellow.opacity(0.4)
+                  : Color.brandYellow
+              )
               .cornerRadius(10)
             }
-            .disabled(reflectionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || isSavingReflection)
+            .disabled(
+              reflectionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                || isSavingReflection
+            )
           }
           .padding(20)
         }
@@ -546,18 +537,17 @@ struct ProgramDayView: View {
     )
   }
 
-  // MARK: - XP Progress Card
+  // MARK: - Stats Card
 
-  private func xpProgressCard(_ userProgram: UserProgram) -> some View {
-    HStack(spacing: 0) {
-      statCell(
-        label: "Day",
-        value: "\(userProgram.currentDay)/\(userProgram.programDurationDays)"
-      )
+  private func statsCard(_ userModule: UserModule) -> some View {
+    let streak = authService.currentUser?.streakCount ?? 0
+
+    return HStack(spacing: 0) {
+      statCell(label: "Day", value: "\(userModule.currentDay)/\(UserModule.durationDays)")
       Divider().background(Color.white.opacity(0.08)).frame(height: 40)
-      statCell(label: "XP Earned", value: "\(userProgram.totalXPEarned)")
+      statCell(label: "XP Earned", value: "\(userModule.totalXPEarned)")
       Divider().background(Color.white.opacity(0.08)).frame(height: 40)
-      statCell(label: "Streak", value: "\(userProgram.longestStreakInProgram)")
+      statCell(label: "Streak", value: "\(streak)")
     }
     .padding(.vertical, 16)
     .background(Color.brandGray)
@@ -583,7 +573,7 @@ struct ProgramDayView: View {
       ProgressView()
         .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
         .scaleEffect(1.2)
-      Text("Loading your program...")
+      Text("Loading your module...")
         .font(Typography.body)
         .foregroundColor(.white.opacity(0.4))
     }
@@ -598,7 +588,7 @@ struct ProgramDayView: View {
       Text("Something went wrong")
         .font(Typography.headline)
         .foregroundColor(.white)
-      if let msg = programService.errorMessage {
+      if let msg = moduleService.errorMessage {
         Text(msg)
           .font(Typography.subheadline)
           .foregroundColor(.white.opacity(0.4))
@@ -611,15 +601,16 @@ struct ProgramDayView: View {
   // MARK: - Actions
 
   private func complete() async {
-    guard let userProgram = programService.activeProgram,
-          let day = programService.todaysProgramDay else { return }
+    guard let userModule = moduleService.activeModule,
+      let day = moduleService.todaysModuleDay
+    else { return }
 
-    let dayNumber = userProgram.currentDay
+    let dayNumber = userModule.currentDay
     let xpEarned = day.xpReward
 
     isCompleting = true
     do {
-      try await programService.completeProgramDay()
+      try await moduleService.completeModuleDay()
       completedDay = dayNumber
       completedXP = xpEarned
       showConfetti = true
@@ -640,9 +631,10 @@ struct ProgramDayView: View {
     isCompleting = false
   }
 
-  private func saveReflection(day: ProgramDay) async {
+  private func saveReflection(day: ModuleDay) async {
     guard let uid = authService.uid,
-          let userProgram = programService.activeProgram else { return }
+      let userModule = moduleService.activeModule
+    else { return }
     let text = reflectionText.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !text.isEmpty else { return }
 
@@ -650,7 +642,7 @@ struct ProgramDayView: View {
     do {
       try await ReflectionService.shared.saveReflection(
         userId: uid,
-        programId: userProgram.id,
+        programId: userModule.moduleId,
         dayNumber: day.dayNumber,
         text: text
       )
@@ -660,12 +652,6 @@ struct ProgramDayView: View {
     }
     isSavingReflection = false
   }
-
-  // MARK: - Helpers
-
-  private func categoryColor(_ type: ChallengeType) -> Color {
-    Color(hex: type.color)
-  }
 }
 
 // MARK: - Day Completion Sheet
@@ -674,7 +660,6 @@ struct DayCompletionSheet: View {
   @Environment(\.dismiss) private var dismiss
   let dayNumber: Int
   let xpEarned: Int
-  let totalDays: Int
 
   var body: some View {
     ZStack {
@@ -754,20 +739,12 @@ struct DayCompletionSheet: View {
     switch dayNumber {
     case 1:
       return "Day 1 is the one most people never take. You took it."
-    case 2...6:
-      return "The first week is about showing up. You are showing up."
+    case 2...5:
+      return "The middle is where most people fade. You're still here."
+    case 6:
+      return "One day left. Most people never make it this far."
     case 7:
-      return "One week. Most people quit before here. You did not."
-    case 8...14:
-      return "You are past the easy part. This is where it gets real."
-    case 15:
-      return "Halfway. The version of you on Day 1 would not recognise this."
-    case 16...21:
-      return "This is the stretch most people never see. You are in it."
-    case 22...29:
-      return "The final push. Every day here is proof."
-    case 30:
-      return "Thirty days. You said you would, and you did."
+      return "Seven days. You said you would. And you did."
     default:
       return "Every day you show up, it gets harder to quit. That is the point."
     }
@@ -790,7 +767,7 @@ struct DayCompletionSheet: View {
 #Preview {
   let auth = AuthService()
   ProgramDayView()
-    .environmentObject(ProgramService(auth: auth))
+    .environmentObject(ModuleService(auth: auth))
     .environmentObject(auth)
     .environmentObject(PaywallService(authService: auth))
 }

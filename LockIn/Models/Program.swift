@@ -14,15 +14,6 @@ struct Program: Codable, Identifiable {
   let days: [ProgramDay]
 }
 
-// MARK: - Mental Edge (philosopher insight for each day)
-
-struct MentalEdge: Codable {
-  let figure: String
-  let sourceWork: String
-  let year: String
-  let content: String
-}
-
 // MARK: - Program Day (self-contained challenge content)
 
 struct ProgramDay: Codable, Identifiable {

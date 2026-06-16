@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3138932B2F65910A003DCD43 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3138932A2F65910A003DCD43 /* GoogleService-Info.plist */; };
+		3169CDEF2FE1DDB00085417E /* module_armor_up.json in Resources */ = {isa = PBXBuildFile; fileRef = 3169CDEA2FE1DDB00085417E /* module_armor_up.json */; };
+		3169CDF02FE1DDB00085417E /* module_operate.json in Resources */ = {isa = PBXBuildFile; fileRef = 3169CDEB2FE1DDB00085417E /* module_operate.json */; };
+		3169CDF12FE1DDB00085417E /* module_wake_up.json in Resources */ = {isa = PBXBuildFile; fileRef = 3169CDED2FE1DDB00085417E /* module_wake_up.json */; };
+		3169CDF22FE1DDB00085417E /* path_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = 3169CDEE2FE1DDB00085417E /* path_foundation.json */; };
+		3169CDF32FE1DDB00085417E /* module_sharpen.json in Resources */ = {isa = PBXBuildFile; fileRef = 3169CDEC2FE1DDB00085417E /* module_sharpen.json */; };
 		AA1111122E6F000000000001 /* Program.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111112E6F000000000001 /* Program.swift */; };
 		AA1111142E6F000000000001 /* UserProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111132E6F000000000001 /* UserProgram.swift */; };
 		AA1111162E6F000000000001 /* ProgramCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1111152E6F000000000001 /* ProgramCompletion.swift */; };
@@ -62,10 +67,18 @@
 		E4F5BB152E71B257001560F7 /* CustomChallengeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB112E71B257001560F7 /* CustomChallengeEditor.swift */; };
 		E4F5BB162E71B257001560F7 /* ProCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB132E71B257001560F7 /* ProCard.swift */; };
 		E4F5BB182E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4F5BB172E71FDE6001560F7 /* LockIn/Views/ChallengeSelectionView.swift */; };
+		AA3333022F000000000001 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3333012F000000000001 /* Module.swift */; };
+		AA3333042F000000000001 /* UserModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3333032F000000000001 /* UserModule.swift */; };
+		AA3333062F000000000001 /* ModuleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3333052F000000000001 /* ModuleService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3138932A2F65910A003DCD43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3169CDEA2FE1DDB00085417E /* module_armor_up.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = module_armor_up.json; sourceTree = "<group>"; };
+		3169CDEB2FE1DDB00085417E /* module_operate.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = module_operate.json; sourceTree = "<group>"; };
+		3169CDEC2FE1DDB00085417E /* module_sharpen.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = module_sharpen.json; sourceTree = "<group>"; };
+		3169CDED2FE1DDB00085417E /* module_wake_up.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = module_wake_up.json; sourceTree = "<group>"; };
+		3169CDEE2FE1DDB00085417E /* path_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = path_foundation.json; sourceTree = "<group>"; };
 		AA1111112E6F000000000001 /* Program.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Program.swift; sourceTree = "<group>"; };
 		AA1111132E6F000000000001 /* UserProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProgram.swift; sourceTree = "<group>"; };
 		AA1111152E6F000000000001 /* ProgramCompletion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramCompletion.swift; sourceTree = "<group>"; };
@@ -77,6 +90,9 @@
 		AA2222042F000000000001 /* AdvisorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvisorView.swift; sourceTree = "<group>"; };
 		AA2222062F000000000001 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		AA2222082F000000000001 /* ReflectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectionService.swift; sourceTree = "<group>"; };
+		AA3333012F000000000001 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
+		AA3333032F000000000001 /* UserModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModule.swift; sourceTree = "<group>"; };
+		AA3333052F000000000001 /* ModuleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleService.swift; sourceTree = "<group>"; };
 		E45D7D972E7ABE6E00553764 /* LockIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LockIn.entitlements; sourceTree = "<group>"; };
 		E45D7D982E7AC08200553764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E4689B762E6EE26B00A89328 /* LockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -142,8 +158,21 @@
 			isa = PBXGroup;
 			children = (
 				AA11111A2E6F000000000001 /* Programs */,
+				3169CE002FE1DDB00085417E /* Modules */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		3169CE002FE1DDB00085417E /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				3169CDEA2FE1DDB00085417E /* module_armor_up.json */,
+				3169CDEB2FE1DDB00085417E /* module_operate.json */,
+				3169CDEC2FE1DDB00085417E /* module_sharpen.json */,
+				3169CDED2FE1DDB00085417E /* module_wake_up.json */,
+				3169CDEE2FE1DDB00085417E /* path_foundation.json */,
+			);
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		AA11111A2E6F000000000001 /* Programs */ = {
@@ -217,6 +246,8 @@
 				AA1111112E6F000000000001 /* Program.swift */,
 				AA1111132E6F000000000001 /* UserProgram.swift */,
 				AA1111152E6F000000000001 /* ProgramCompletion.swift */,
+				AA3333012F000000000001 /* Module.swift */,
+				AA3333032F000000000001 /* UserModule.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -233,6 +264,7 @@
 				AA1111212E6F000000000001 /* ProgramService.swift */,
 				AA2222022F000000000001 /* AdvisorService.swift */,
 				AA2222082F000000000001 /* ReflectionService.swift */,
+				AA3333052F000000000001 /* ModuleService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -379,6 +411,11 @@
 				E4AB29172E6F092A0024607D /* GoogleService-Info.plist in Resources */,
 				E4AB29192E6F092A0024607D /* PreloadedChallenges.json in Resources */,
 				AA1111182E6F000000000001 /* foundation_30.json in Resources */,
+				3169CDEF2FE1DDB00085417E /* module_armor_up.json in Resources */,
+				3169CDF02FE1DDB00085417E /* module_operate.json in Resources */,
+				3169CDF12FE1DDB00085417E /* module_wake_up.json in Resources */,
+				3169CDF22FE1DDB00085417E /* path_foundation.json in Resources */,
+				3169CDF32FE1DDB00085417E /* module_sharpen.json in Resources */,
 				3138932B2F65910A003DCD43 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +468,9 @@
 				AA2222032F000000000001 /* AdvisorView.swift in Sources */,
 				AA2222052F000000000001 /* LibraryView.swift in Sources */,
 				AA2222072F000000000001 /* ReflectionService.swift in Sources */,
+				AA3333022F000000000001 /* Module.swift in Sources */,
+				AA3333042F000000000001 /* UserModule.swift in Sources */,
+				AA3333062F000000000001 /* ModuleService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

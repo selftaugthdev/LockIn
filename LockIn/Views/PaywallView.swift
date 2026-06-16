@@ -7,191 +7,130 @@ struct PaywallView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var packages: [Package] = []
   @State private var selectedPackage: Package?
-  @State private var showingCustomEditor = false
 
   var body: some View {
     NavigationView {
       ZStack {
-        Color.brandInk
-          .ignoresSafeArea()
+        Color.brandInk.ignoresSafeArea()
 
         ScrollView {
           VStack(spacing: 32) {
-            // Header
             headerSection
-
-            // Features
             featuresSection
-
-            // Pricing
             pricingSection
-
-            // CTA Button
             ctaSection
-
-            // Footer
             footerSection
           }
-          .padding()
+          .padding(.horizontal, 20)
+          .padding(.bottom, 40)
         }
       }
-      .navigationTitle("Unlock Pro")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
-          Button("Close") {
-            dismiss()
-          }
-          .foregroundColor(.brandYellow)
+          Button("Close") { dismiss() }
+            .font(Typography.subheadline)
+            .foregroundColor(.brandYellow)
         }
       }
       .preferredColorScheme(.dark)
     }
-    .task {
-      await loadPackages()
-    }
-    .sheet(isPresented: $showingCustomEditor) {
-      CustomChallengeEditor()
-    }
+    .task { await loadPackages() }
     .onChange(of: paywallService.isPro) { _, isPro in
-      print("🔍 PaywallView: isPro changed to \(isPro)")
-      if isPro {
-        // Auto-open custom editor after successful purchase
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-          print("🔍 PaywallView: Dismissing paywall and opening custom editor")
-          dismiss()
-          showingCustomEditor = true
-        }
-      }
-    }
-    .onChange(of: paywallService.isLoading) { _, isLoading in
-      print("🔍 PaywallView: isLoading changed to \(isLoading)")
-      // If loading finished and user is Pro, dismiss
-      if !isLoading && paywallService.isPro {
-        print("🔍 PaywallView: Purchase completed, user is Pro, dismissing")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-          dismiss()
-          showingCustomEditor = true
-        }
-      }
+      if isPro { dismiss() }
     }
   }
 
-  // MARK: - Header Section
+  // MARK: - Header
 
   private var headerSection: some View {
     VStack(spacing: 16) {
-      // Crown icon
-      Image(systemName: "crown.fill")
-        .font(.system(size: 60))
+      Image(systemName: "flame.fill")
+        .font(.system(size: 52))
         .foregroundColor(.brandYellow)
+        .padding(.top, 24)
 
-      VStack(spacing: 8) {
-        Text("Unlock Your Potential")
-          .titleStyle()
+      VStack(spacing: 12) {
+        Text("The real work\nstarts here.")
+          .font(Typography.largeTitle)
           .foregroundColor(.white)
           .multilineTextAlignment(.center)
 
-        Text("Create custom challenges that fit your unique goals and lifestyle")
-          .bodyStyle()
+        Text("Foundation gives you the map.\nPro gives you the weapons.")
+          .font(Typography.body)
           .foregroundColor(.secondary)
           .multilineTextAlignment(.center)
       }
     }
   }
 
-  // MARK: - Features Section
+  // MARK: - Features
 
   private var featuresSection: some View {
-    VStack(spacing: 20) {
-      Text("What's Included")
-        .headlineStyle()
-        .foregroundColor(.white)
-
-      VStack(spacing: 16) {
-        ProFeatureRow(
-          icon: "plus.circle.fill",
-          title: "Custom Challenges",
-          description: "Create unlimited personal challenges tailored to your goals"
-        )
-
-        ProFeatureRow(
-          icon: "bell.fill",
-          title: "Smart Reminders",
-          description: "Get personalized notifications to keep you on track"
-        )
-
-        ProFeatureRow(
-          icon: "paintbrush.fill",
-          title: "Premium Themes",
-          description: "Beautiful themes to personalize your experience"
-        )
-
-        ProFeatureRow(
-          icon: "chart.bar.fill",
-          title: "Advanced Analytics",
-          description: "Detailed insights into your progress and patterns"
-        )
-
-        ProFeatureRow(
-          icon: "infinity",
-          title: "Unlimited Everything",
-          description: "No limits on challenges, reminders, or customizations"
-        )
-      }
+    VStack(spacing: 0) {
+      ForgeFeatureRow(
+        icon: "bolt.fill",
+        title: "Mental Edge",
+        description: "A philosopher's insight every day. The edge most men never develop."
+      )
+      Divider().background(Color.white.opacity(0.08))
+      ForgeFeatureRow(
+        icon: "bubble.left.fill",
+        title: "Advisor",
+        description: "Ask any philosopher anything. Direct, unfiltered strategic counsel — on demand."
+      )
+      Divider().background(Color.white.opacity(0.08))
+      ForgeFeatureRow(
+        icon: "moon.fill",
+        title: "Nightly Reflection",
+        description: "End each day with a reckoning. Lock in what you learned before it fades."
+      )
+      Divider().background(Color.white.opacity(0.08))
+      ForgeFeatureRow(
+        icon: "books.vertical.fill",
+        title: "Library",
+        description: "Every Mental Edge. Every Advisor session. Your arsenal — always within reach."
+      )
     }
-    .padding(24)
     .background(Color.brandGray)
-    .cornerRadius(20)
+    .cornerRadius(16)
   }
 
-  // MARK: - Pricing Section
+  // MARK: - Pricing
 
   private var pricingSection: some View {
-    VStack(spacing: 16) {
-      Text("Choose Your Plan")
-        .headlineStyle()
-        .foregroundColor(.white)
-
+    VStack(spacing: 10) {
       if packages.isEmpty {
         ProgressView()
           .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
+          .frame(height: 120)
       } else {
-        VStack(spacing: 12) {
-          ForEach(packages, id: \.identifier) { package in
-            PackageRow(
-              package: package,
-              isSelected: selectedPackage?.identifier == package.identifier,
-              onTap: {
-                selectedPackage = package
-              }
-            )
-          }
+        ForEach(sortedPackages, id: \.identifier) { package in
+          ForgePlanRow(
+            package: package,
+            isSelected: selectedPackage?.identifier == package.identifier,
+            isRecommended: package.packageType == .annual,
+            onTap: { selectedPackage = package }
+          )
         }
-      }
-
-      // Trial info
-      HStack {
-        Image(systemName: "checkmark.circle.fill")
-          .foregroundColor(.brandGreen)
-        Text(
-          "3-day free trial, then \(selectedPackage?.storeProduct.localizedPriceString ?? "$3.99")/week"
-        )
-        .font(.caption)
-        .foregroundColor(.secondary)
-        Spacer()
       }
     }
   }
 
-  // MARK: - CTA Section
+  private var sortedPackages: [Package] {
+    let order: [PackageType] = [.weekly, .monthly, .annual, .lifetime]
+    return packages.sorted {
+      (order.firstIndex(of: $0.packageType) ?? 99) < (order.firstIndex(of: $1.packageType) ?? 99)
+    }
+  }
+
+  // MARK: - CTA
 
   private var ctaSection: some View {
-    VStack(spacing: 16) {
+    VStack(spacing: 14) {
       Button(action: {
-        if let package = selectedPackage {
-          paywallService.purchase(package: package)
-        }
+        guard let package = selectedPackage else { return }
+        paywallService.purchase(package: package)
       }) {
         HStack {
           if paywallService.isLoading {
@@ -199,58 +138,83 @@ struct PaywallView: View {
               .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
               .scaleEffect(0.8)
           } else {
-            Text("Start Free Trial")
-              .fontWeight(.semibold)
+            Text(ctaLabel)
+              .font(Typography.headline)
           }
         }
         .foregroundColor(.brandInk)
         .frame(maxWidth: .infinity)
-        .padding()
+        .padding(.vertical, 16)
         .background(Color.brandYellow)
-        .cornerRadius(16)
+        .cornerRadius(14)
       }
       .disabled(paywallService.isLoading || selectedPackage == nil)
 
       Button("Restore Purchases") {
         paywallService.restorePurchases()
       }
-      .foregroundColor(.brandYellow)
-      .font(.subheadline)
+      .font(Typography.subheadline)
+      .foregroundColor(.brandYellow.opacity(0.6))
 
-      if let errorMessage = paywallService.errorMessage {
-        Text(errorMessage)
-          .font(.caption)
+      if let error = paywallService.errorMessage {
+        Text(error)
+          .font(Typography.caption)
           .foregroundColor(.brandRed)
           .multilineTextAlignment(.center)
       }
     }
   }
 
-  // MARK: - Footer Section
+  private var ctaLabel: String {
+    guard let package = selectedPackage else { return "Get Pro" }
+    if package.storeProduct.introductoryDiscount != nil { return "Start 7-Day Free Trial" }
+    if package.packageType == .lifetime { return "Get Lifetime Access" }
+    return "Get Pro"
+  }
+
+  // MARK: - Footer
 
   private var footerSection: some View {
     VStack(spacing: 12) {
-      Text("Cancel anytime. No commitment.")
-        .font(.caption)
-        .foregroundColor(.secondary)
+      if let package = selectedPackage, package.storeProduct.introductoryDiscount != nil {
+        Text("Try free for 7 days. Cancel before your trial ends and you won't be charged.")
+          .font(Typography.caption)
+          .foregroundColor(.secondary)
+          .multilineTextAlignment(.center)
+      } else {
+        Text("Cancel anytime.")
+          .font(Typography.caption)
+          .foregroundColor(.secondary)
+      }
 
       HStack(spacing: 20) {
-        Button("Privacy Policy") {
-          openPrivacyPolicy()
-        }
-        .font(.caption)
-        .foregroundColor(.brandYellow)
-
-        Button("Terms of Service") {
-          openTermsOfService()
-        }
-        .font(.caption)
-        .foregroundColor(.brandYellow)
+        Button("Privacy Policy") { openPrivacyPolicy() }
+          .font(Typography.caption)
+          .foregroundColor(.secondary)
+        Button("Terms") { openTermsOfService() }
+          .font(Typography.caption)
+          .foregroundColor(.secondary)
       }
     }
   }
 
-  // MARK: - Helper Methods
+  // MARK: - Helpers
+
+  private func loadPackages() async {
+    do {
+      let offerings = try await Purchases.shared.offerings()
+      if let current = offerings.current {
+        await MainActor.run {
+          self.packages = current.availablePackages
+          self.selectedPackage =
+            current.availablePackages.first { $0.packageType == .annual }
+            ?? current.availablePackages.first
+        }
+      }
+    } catch {
+      print("Error loading packages: \(error)")
+    }
+  }
 
   private func openPrivacyPolicy() {
     if let url = URL(
@@ -266,94 +230,125 @@ struct PaywallView: View {
       UIApplication.shared.open(url)
     }
   }
+}
 
-  private func loadPackages() async {
-    do {
-      let offerings = try await Purchases.shared.offerings()
-      if let currentOffering = offerings.current {
-        await MainActor.run {
-          self.packages = currentOffering.availablePackages
-          // Prefer weekly package, fallback to first available
-          self.selectedPackage =
-            currentOffering.availablePackages.first { $0.packageType == .weekly }
-            ?? currentOffering.availablePackages.first
-        }
+// MARK: - Feature Row
+
+struct ForgeFeatureRow: View {
+  let icon: String
+  let title: String
+  let description: String
+
+  var body: some View {
+    HStack(alignment: .top, spacing: 14) {
+      Image(systemName: icon)
+        .font(.system(size: 18))
+        .foregroundColor(.brandYellow)
+        .frame(width: 24)
+        .padding(.top, 2)
+
+      VStack(alignment: .leading, spacing: 4) {
+        Text(title)
+          .font(Typography.headline)
+          .foregroundColor(.white)
+        Text(description)
+          .font(Typography.subheadline)
+          .foregroundColor(.secondary)
       }
-    } catch {
-      print("Error loading packages: \(error)")
+
+      Spacer()
     }
+    .padding(.horizontal, 18)
+    .padding(.vertical, 16)
   }
 }
 
-struct PackageRow: View {
+// MARK: - Plan Row
+
+struct ForgePlanRow: View {
   let package: Package
   let isSelected: Bool
+  let isRecommended: Bool
   let onTap: () -> Void
 
   var body: some View {
     Button(action: onTap) {
-      HStack {
-        VStack(alignment: .leading, spacing: 4) {
-          Text(packageTypeLabel(for: package.packageType))
-            .font(.title3)
-            .fontWeight(.bold)
-            .foregroundColor(.primary)
+      HStack(spacing: 12) {
+        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+          .font(.system(size: 20))
+          .foregroundColor(isSelected ? .brandYellow : .secondary)
 
-          Text(package.storeProduct.localizedDescription)
-            .font(.caption)
-            .foregroundColor(.secondary)
+        VStack(alignment: .leading, spacing: 3) {
+          HStack(spacing: 8) {
+            Text(planLabel)
+              .font(Typography.headline)
+              .foregroundColor(.white)
+            if isRecommended {
+              Text("BEST VALUE")
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.brandInk)
+                .padding(.horizontal, 7)
+                .padding(.vertical, 3)
+                .background(Color.brandYellow)
+                .cornerRadius(4)
+            }
+          }
+          if let subtitle = planSubtitle {
+            Text(subtitle)
+              .font(Typography.caption)
+              .foregroundColor(.secondary)
+          }
         }
 
         Spacer()
 
-        VStack(alignment: .trailing, spacing: 4) {
+        VStack(alignment: .trailing, spacing: 2) {
           Text(package.storeProduct.localizedPriceString)
-            .font(.title2)
-            .fontWeight(.bold)
-            .foregroundColor(.brandYellow)
-
-          Text(package.storeProduct.localizedTitle)
-            .font(.caption2)
+            .font(Typography.headline)
+            .foregroundColor(.white)
+          Text(billingPeriod)
+            .font(Typography.caption2)
             .foregroundColor(.secondary)
         }
-
-        Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-          .foregroundColor(isSelected ? .brandYellow : .secondary)
       }
-      .padding()
+      .padding(.horizontal, 16)
+      .padding(.vertical, 14)
       .background(
         RoundedRectangle(cornerRadius: 12)
-          .fill(isSelected ? Color.brandYellow.opacity(0.1) : Color.brandGray)
+          .fill(isSelected ? Color.brandYellow.opacity(0.08) : Color.brandGray)
           .overlay(
             RoundedRectangle(cornerRadius: 12)
-              .stroke(isSelected ? Color.brandYellow : Color.clear, lineWidth: 1)
+              .stroke(isSelected ? Color.brandYellow : Color.clear, lineWidth: 1.5)
           )
       )
     }
   }
 
-  private func packageTypeLabel(for packageType: PackageType) -> String {
-    switch packageType {
-    case .annual:
-      return "Yearly"
-    case .monthly:
-      return "Monthly"
-    case .weekly:
-      return "Weekly (With a 3-day Free Trial)"
-    case .twoMonth:
-      return "2 Months"
-    case .threeMonth:
-      return "3 Months"
-    case .sixMonth:
-      return "6 Months"
-    case .lifetime:
-      return "Lifetime"
-    case .custom:
-      return "Custom"
-    case .unknown:
-      return "Unknown"
-    @unknown default:
-      return "Unknown"
+  private var planLabel: String {
+    switch package.packageType {
+    case .weekly: return "Weekly"
+    case .monthly: return "Monthly"
+    case .annual: return "Annual"
+    case .lifetime: return "Lifetime"
+    default: return package.storeProduct.localizedTitle
+    }
+  }
+
+  private var planSubtitle: String? {
+    switch package.packageType {
+    case .weekly: return "7-day free trial included"
+    case .annual: return "~€5/mo · save 50%"
+    default: return nil
+    }
+  }
+
+  private var billingPeriod: String {
+    switch package.packageType {
+    case .weekly: return "per week"
+    case .monthly: return "per month"
+    case .annual: return "per year"
+    case .lifetime: return "one time"
+    default: return ""
     }
   }
 }

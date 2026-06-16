@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
   @EnvironmentObject var authService: AuthService
   @EnvironmentObject var challengeService: ChallengeService
-  @EnvironmentObject var programService: ProgramService
+  @EnvironmentObject var moduleService: ModuleService
   @EnvironmentObject var paywallService: PaywallService
 
   var body: some View {
@@ -15,13 +15,13 @@ struct ContentView: View {
             .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
         }
       } else if authService.isAuthenticated && !authService.forceOnboarding {
-        if !programService.hasFetchedActiveProgram {
+        if !moduleService.hasFetchedActiveModule {
           ZStack {
             Color.brandInk.ignoresSafeArea()
             VStack(spacing: 16) {
               ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: .brandYellow))
-              if let error = programService.errorMessage {
+              if let error = moduleService.errorMessage {
                 Text(error)
                   .font(.caption)
                   .foregroundColor(.red)
@@ -30,7 +30,7 @@ struct ContentView: View {
               }
             }
           }
-        } else if programService.activeProgram == nil {
+        } else if moduleService.activeModule == nil || moduleService.activeModule?.isComplete == true {
           ProgramSelectionView()
         } else {
           MainTabView()
@@ -41,12 +41,12 @@ struct ContentView: View {
     }
     .task(id: authService.isAuthenticated) {
       if authService.isAuthenticated && !authService.forceOnboarding {
-        await programService.loadActiveProgram()
+        await moduleService.loadActiveModule()
       }
     }
     .onChange(of: authService.forceOnboarding) { forceOnboarding in
       if !forceOnboarding && authService.isAuthenticated {
-        Task { await programService.loadActiveProgram() }
+        Task { await moduleService.loadActiveModule() }
       }
     }
   }
@@ -88,6 +88,6 @@ struct MainTabView: View {
   ContentView()
     .environmentObject(auth)
     .environmentObject(ChallengeService(auth: auth))
-    .environmentObject(ProgramService(auth: auth))
+    .environmentObject(ModuleService(auth: auth))
     .environmentObject(PaywallService(authService: auth))
 }

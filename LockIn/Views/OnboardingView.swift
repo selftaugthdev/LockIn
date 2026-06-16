@@ -355,7 +355,7 @@ struct OnboardingView: View {
           .lineSpacing(5)
 
         HStack(spacing: 16) {
-          statPill(value: "30", label: "days")
+          statPill(value: "7", label: "days per module")
           statPill(value: "1", label: "challenge a day")
           statPill(value: "0", label: "excuses")
         }
@@ -384,8 +384,8 @@ struct OnboardingView: View {
         )
         howItWorksRow(
           number: "03",
-          title: "Miss a day, earn it back",
-          body: "No streak-breaking, no starting over. Miss a day and the next one is a recovery day. Two challenges, same XP. You work harder, not less."
+          title: "Each module has a philosopher",
+          body: "Machiavelli. Nietzsche. Sun Tzu. Each 7-day module is built around one thinker. Their ideas shape your challenges."
         )
       }
     }
@@ -404,10 +404,10 @@ struct OnboardingView: View {
       VStack(alignment: .leading, spacing: 16) {
         VStack(alignment: .leading, spacing: 14) {
           HStack(spacing: 8) {
-            Badge(text: "30 Days", color: .brandYellow)
-            Badge(text: "Beginner", color: .brandGreen)
+            Badge(text: "4 Modules", color: .brandYellow)
+            Badge(text: "28 Days", color: .brandGreen)
           }
-          Text("30-Day Foundation")
+          Text("Foundation Path")
             .font(Typography.title2)
             .foregroundColor(.white)
           Text("Build the discipline you lost")
@@ -422,7 +422,7 @@ struct OnboardingView: View {
             .stroke(Color.brandYellow.opacity(0.2), lineWidth: 1)
         )
 
-        Text("Every man starts here. The Foundation program was designed for one thing: proving to yourself that you can show up every single day.")
+        Text("Every man starts here. Four 7-day modules, one philosopher per module. Finish each one to unlock the next.")
           .font(Typography.subheadline)
           .foregroundColor(.white.opacity(0.5))
           .lineSpacing(4)
@@ -602,7 +602,7 @@ struct OnboardingView: View {
           HStack(spacing: 8) {
             Image(systemName: "checkmark.seal.fill")
               .foregroundColor(.brandYellow)
-            Text("3 days free. Cancel any time.")
+            Text("7 days free. Cancel any time.")
               .font(Typography.subheadline)
               .fontWeight(.semibold)
               .foregroundColor(.brandYellow)
@@ -632,9 +632,9 @@ struct OnboardingView: View {
               .font(Typography.headline)
               .foregroundColor(.white)
 
-            paywallFeatureRow("Structured 30, 60, and 90-day programs")
+            paywallFeatureRow("7-day modules, one philosopher per module")
             paywallFeatureRow("One challenge per day, designed to push you")
-            paywallFeatureRow("Recovery system so you never have to start over")
+            paywallFeatureRow("Advisor: ask any philosopher any question")
             paywallFeatureRow("Certificate when you complete a program")
             paywallFeatureRow("New programs added every month")
           }
@@ -663,7 +663,7 @@ struct OnboardingView: View {
               ProgressView()
                 .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
             } else {
-              Text("Start 3 days free")
+              Text("Start 7 days free")
                 .font(Typography.headline)
                 .foregroundColor(.brandInk)
             }

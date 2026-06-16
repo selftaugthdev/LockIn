@@ -1,0 +1,108 @@
+{
+  "id": "sharpen",
+  "title": "Sharpen",
+  "tagline": "Develop strategic intelligence",
+  "philosopher": "Nietzsche",
+  "order": 3,
+  "isPremium": false,
+  "days": [
+    {
+      "dayNumber": 1,
+      "challengeTitle": "Play the Long Game",
+      "challengeDescription": "Reactive men are predictable. Predictable men get played. The most powerful shift you can make is moving from a reactive to a strategic mindset — asking not \"what do I feel right now?\" but \"what outcome do I actually want from this situation?\"",
+      "dailyAction": "Before your next significant conversation or decision, write down: What do I want the outcome to be in 3 months — not right now? Make one decision today based on that 3-month frame rather than your immediate emotional state.",
+      "nightlyReflection": "Where did your long-game thinking conflict with what you wanted to do in the moment? Which one did you choose?",
+      "mentalEdge": {
+        "figure": "Sun Tzu",
+        "sourceWork": "The Art of War",
+        "year": "500 BC",
+        "content": "\"Strategy without tactics is the slowest route to victory. Tactics without strategy is the noise before defeat.\" The men who manipulate you are usually playing a longer game than you realize. They are not reacting — they are executing. To beat them, you must also stop reacting and start executing. Today is where that begins."
+      },
+      "xpReward": 30
+    },
+    {
+      "dayNumber": 2,
+      "challengeTitle": "Watch More, Interpret Less",
+      "challengeDescription": "Most men interpret people through what they say. Sharp men watch what they do — specifically, the gap between the two. Body language, micro-expressions, changes in behavior after you set a limit — these are the real signals. Today you practice observation.",
+      "dailyAction": "In your most significant interaction today, focus 80% of your attention on non-verbal signals: tone shifts, eye contact changes, physical positioning, response timing. After the conversation, write down three things you noticed that weren't communicated verbally.",
+      "nightlyReflection": "Was there a gap between what someone said and how they said it today? What do you think that gap was communicating?",
+      "mentalEdge": {
+        "figure": "Schopenhauer",
+        "sourceWork": "The Art of Always Being Right",
+        "year": "1831",
+        "content": "Schopenhauer wrote that people's first instinct in any interaction is to protect their position, not to find truth. Once you understand that, everything changes. That colleague who \"agrees with you\" in the meeting but then undermines you afterward? He was protecting his position the whole time. Reading people means reading what they are protecting — not what they are saying."
+      },
+      "xpReward": 30
+    },
+    {
+      "dayNumber": 3,
+      "challengeTitle": "Cold Anger Is Power. Hot Anger Is Weakness.",
+      "challengeDescription": "Anger is not the problem. Uncontrolled anger is. The man who loses his temper has handed his opponent the controls. But cold anger — channeled, directed, purposeful — is one of the most effective forces available to you. Today you learn the difference.",
+      "dailyAction": "Think of something that genuinely makes you angry — a situation, a person, a pattern. Sit with that anger for 5 minutes without doing anything about it. Just feel it without acting. Then write one strategic action you could take that channels that anger productively, with zero emotional display.",
+      "nightlyReflection": "Is there something you've been angry about for months that you've never addressed strategically? What would the cold, calculated version of addressing it look like?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "On the Genealogy of Morality",
+        "year": "1887",
+        "content": "Nietzsche distinguished between ressentiment — the impotent anger of men who cannot act, which festers into bitterness and self-destruction — and the righteous anger of the man who knows his own power. He argued that most moral arguments are actually disguised ressentiment: weak men convincing themselves that their inability to act is a virtue. Hot anger is ressentiment. Cold anger is will to power."
+      },
+      "xpReward": 30
+    },
+    {
+      "dayNumber": 4,
+      "challengeTitle": "Money Is Not Everything. Dependence Is Weakness.",
+      "challengeDescription": "Financial dependence — on a partner, a job, a family member — is the most common chain that keeps men from walking away from situations they should walk away from. This is not about being rich. It is about building enough of a base that leaving is always an option.",
+      "dailyAction": "Calculate your real financial position: monthly income, monthly expenses, months of runway you currently have if your primary income source disappeared tomorrow. Write the number down. If it's less than 3 months, that becomes a strategic priority.",
+      "nightlyReflection": "Is there a relationship or situation in your life you would handle differently if you had 12 months of financial runway? What does that tell you?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"A prince who relies entirely on fortune is ruined when fortune changes.\" Machiavelli was not talking about luck in the abstract — he was talking about dependency. The man who is financially dependent cannot negotiate from strength. He cannot leave. He cannot say no. Financial independence is not greed. It is the infrastructure of self-respect."
+      },
+      "xpReward": 30
+    },
+    {
+      "dayNumber": 5,
+      "challengeTitle": "Audit Your People",
+      "challengeDescription": "You become the average of the five people you spend the most time with. This is not a motivational cliché — it is an observable pattern in social psychology. If three of your five people diminish you, you will keep being diminished. Today you audit with zero sentimentality.",
+      "dailyAction": "List the five people you spend the most time with. For each one, write: Do they make me sharper or duller? More confident or less? Honest with me or just comfortable? Rate each one honestly. You don't have to cut anyone today. But you must see the data.",
+      "nightlyReflection": "Who in your current circle is most worth investing in? Who have you been maintaining out of history rather than value?",
+      "mentalEdge": {
+        "figure": "Seneca",
+        "sourceWork": "Letters to Lucilius",
+        "year": "65 AD",
+        "content": "\"Associate with those who will make a better man of you. Welcome those whom you yourself can improve.\" Seneca's letters reveal a man who was ruthlessly intentional about relationships while being genuinely warm within them. He did not ghost people. He simply allocated his deepest energy to those who returned it. This is not coldness. It is wisdom operating as affection."
+      },
+      "xpReward": 30
+    },
+    {
+      "dayNumber": 6,
+      "challengeTitle": "You Are the Author, Not the Character",
+      "challengeDescription": "Someone else has been writing your story — your ex, your boss, your family. You've been playing a character in their narrative: the pushover, the reliable one, the guy who \"can take it.\" Today you rewrite that. Not through argument. Through behavior.",
+      "dailyAction": "Identify one story someone else has been telling about you — directly or through how they treat you. Write the counter-narrative: who you actually are, as you intend to be. Then take one concrete action today that aligns with the counter-narrative, not the old one.",
+      "nightlyReflection": "What has held you back from living the counter-narrative you wrote today? Fear, habit, or someone specific?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "Ecce Homo",
+        "year": "1888",
+        "content": "\"Become who you are.\" Nietzsche's most repeated instruction sounds simple until you realize what it demands: the destruction of the version of yourself built by other people's expectations. He called this self-overcoming — not self-improvement, but a fundamental break with the old identity. The man others have been pushing around is not you. He is a role you were handed and accepted. You can put it down."
+      },
+      "xpReward": 30
+    },
+    {
+      "dayNumber": 7,
+      "challengeTitle": "The Man Emerging",
+      "challengeDescription": "Three modules in. You have built awareness, armor, and strategic intelligence. This is the last checkpoint before Operate — the phase where everything you've built gets used in the real world. Take stock of what you've built and what you're walking into.",
+      "dailyAction": "Re-read all of your reflection notes from Wake Up and Armor Up. Write three sentences about who you were on Day 1 and who you are today. Then write one sentence about what you want the man at the end of Operate to look like.",
+      "nightlyReflection": "Which day across all three modules has been the most impactful? Why?",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"You have power over your mind — not outside events. Realize this, and you will find strength.\" Aurelius wrote his Meditations for himself, not for publication. They were private reminders that he was still in process — still working on himself — despite commanding an empire. Greatness is not a destination. It is a practice. Three modules done. One more."
+      },
+      "xpReward": 30
+    }
+  ]
+}

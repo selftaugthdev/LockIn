@@ -1,0 +1,108 @@
+{
+  "id": "armor_up",
+  "title": "Armor Up",
+  "tagline": "Build your psychological defenses",
+  "philosopher": "Sun Tzu",
+  "order": 2,
+  "isPremium": false,
+  "days": [
+    {
+      "dayNumber": 1,
+      "challengeTitle": "The Guilt Machine",
+      "challengeDescription": "Guilt is a useful emotion when it's earned. But the people who have been controlling you have learned to manufacture guilt in you on demand — to keep you compliant, available, and afraid to disappoint. Today you learn to distinguish real guilt from engineered guilt.",
+      "dailyAction": "Think of the last three times you felt guilt because of someone else's words or actions. For each one, ask: Did I actually do something wrong — by my own standards, not theirs? If not, write: \"That was manufactured guilt.\" Say it out loud.",
+      "nightlyReflection": "Who in your life makes you feel guilty most frequently? Is the guilt ever earned? What do they gain from your guilt?",
+      "mentalEdge": {
+        "figure": "Freud",
+        "sourceWork": "Civilization and Its Discontents",
+        "year": "1930",
+        "content": "Freud identified guilt as one of the primary mechanisms of social control — not just personal conscience, but a tool used by groups and individuals to enforce compliance. When someone says \"after everything I've done for you...\" they are not expressing pain. They are invoking debt. Recognizing the mechanism does not make you cold. It makes you free."
+      },
+      "xpReward": 20
+    },
+    {
+      "dayNumber": 2,
+      "challengeTitle": "Trust Your Perception",
+      "challengeDescription": "\"That never happened.\" \"You're too sensitive.\" \"You're imagining things.\" Gaslighting is the practice of making someone doubt their own perception of reality. It is one of the most effective and damaging manipulation tactics in existence — because it attacks your ability to trust yourself.",
+      "dailyAction": "Write down one incident where you were made to feel that your perception of events was wrong, crazy, or an overreaction. Describe what you observed. Describe what they told you you observed. Notice the gap.",
+      "nightlyReflection": "Have you started second-guessing your own memory or feelings around a specific person? That pattern is the signal.",
+      "mentalEdge": {
+        "figure": "Jung",
+        "sourceWork": "The Undiscovered Self",
+        "year": "1957",
+        "content": "Jung spent his career examining how individuals suppress their own authentic perception to maintain connection with others. He called it the Persona — the mask we wear to be acceptable. Gaslighting works because the victim already has a trained impulse to question themselves. The antidote is not aggression. It is grounding yourself in your own direct experience, repeatedly, until the doubt doesn't take hold."
+      },
+      "xpReward": 20
+    },
+    {
+      "dayNumber": 3,
+      "challengeTitle": "Become Boring",
+      "challengeDescription": "Some people feed on your reactions. Drama, emotion, defensiveness, anger — it all gives them something to work with. The grey rock method is simple: you become so uninteresting and unreactive that they stop targeting you. Not because you're weak. Because you've removed the reward.",
+      "dailyAction": "Identify one person in your life who thrives on provoking reactions from you. For the next 24 hours, every interaction with them is flat, brief, and boring. One-word answers. No emotion. No bait taken. You are a grey rock.",
+      "nightlyReflection": "How did they respond when the reaction didn't come? Did they escalate? How did it feel to not engage?",
+      "mentalEdge": {
+        "figure": "Sun Tzu",
+        "sourceWork": "The Art of War",
+        "year": "500 BC",
+        "content": "\"The supreme art of war is to subdue the enemy without fighting.\" Engaging with a provocateur on their terms is losing before the battle starts. The grey rock is not passivity — it is strategic withdrawal of the resource they need. When you do not react, you win by default. Sun Tzu would recognize this immediately."
+      },
+      "xpReward": 20
+    },
+    {
+      "dayNumber": 4,
+      "challengeTitle": "Observer Mode",
+      "challengeDescription": "You cannot think clearly when your nervous system is hijacked. When someone pushes your buttons, the emotional flood that follows is not weakness — it's biology. But you can train a gap between stimulus and response. Today you practice that gap.",
+      "dailyAction": "In every emotionally charged situation today, before you respond, count silently to 5. Not to suppress — to observe. Notice what emotion is firing, where you feel it in your body, and whether your about-to-happen response is strategic or reactive.",
+      "nightlyReflection": "When was the 5-count hardest today? What was the emotion and what was triggering it?",
+      "mentalEdge": {
+        "figure": "Epictetus",
+        "sourceWork": "Discourses",
+        "year": "108 AD",
+        "content": "\"Between stimulus and response there is a space. In that space is our power to choose our response.\" Epictetus did not have the luxury of reacting emotionally — as a slave, emotional reactivity could get him killed. What he discovered instead was a form of internal sovereignty that his masters could never touch. The gap is not a pause. It is where you become someone harder to manipulate."
+      },
+      "xpReward": 20
+    },
+    {
+      "dayNumber": 5,
+      "challengeTitle": "Stop Being Free",
+      "challengeDescription": "People who have no respect for your time will keep taking it until you make it cost them something. Your time is not infinite. Every hour you spend on low-value people and obligations is an hour taken from something that matters. Today you audit and reclaim.",
+      "dailyAction": "Look at your calendar for the next 7 days. Identify every commitment that you agreed to out of obligation, guilt, or conflict avoidance rather than genuine desire or strategic value. Cancel or reschedule at least one. Do not apologize extensively.",
+      "nightlyReflection": "Who do you give the most time to? Is that allocation a choice or a default? What would you do with that time if it were yours again?",
+      "mentalEdge": {
+        "figure": "Seneca",
+        "sourceWork": "On the Shortness of Life",
+        "year": "49 AD",
+        "content": "\"It is not that we have a short time to live, but that we waste a great deal of it.\" Seneca wrote this to a friend who was endlessly available to everyone around him. His diagnosis: men who cannot say no to requests on their time are not generous. They are afraid. Generosity is a choice. What you've been doing is not generosity — it's compliance dressed up as virtue."
+      },
+      "xpReward": 20
+    },
+    {
+      "dayNumber": 6,
+      "challengeTitle": "Shut Up and Win",
+      "challengeDescription": "Most men lose power in conversations by talking too much. They over-explain, they fill silence, they justify, they elaborate. Silence is one of the most powerful tools in human interaction — and almost no one uses it deliberately.",
+      "dailyAction": "In every significant conversation today, practice the uncomfortable pause. After you speak, stop. Let silence exist. Do not fill it. See who speaks next and what they say. In any negotiation — state your position and go silent.",
+      "nightlyReflection": "How did people respond to your silence? Did anyone fill it with something revealing? What did the discomfort of silence tell you about your usual impulse to talk?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "Discourses on Livy",
+        "year": "1517",
+        "content": "Machiavelli observed that princes who spoke too freely were easily manipulated — their intentions were known before they acted. The man who speaks constantly is broadcasting his internal state in real time. Silence, by contrast, forces others to fill the gap — and in doing so, they reveal their own intentions, anxieties, and positions. Silence is intelligence gathering."
+      },
+      "xpReward": 20
+    },
+    {
+      "dayNumber": 7,
+      "challengeTitle": "Your Armor Is Real Now",
+      "challengeDescription": "Two modules in. You have learned to identify guilt manipulation, gaslighting, emotional hijacking, and time theft. You have practiced observer mode, silence, and holding your position. You are not the same man who started this module.",
+      "dailyAction": "Write a short paragraph: How has a specific relationship or interaction changed since Day 1 of Wake Up? It does not need to be dramatic. Even a small shift in dynamic counts.",
+      "nightlyReflection": "What is the biggest thing you are still struggling to defend? Be honest — that's what Sharpen addresses.",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"The impediment to action advances action. What stands in the way becomes the way.\" Aurelius spent his reign dealing with people who tried to undermine, manipulate, and outmaneuver him. His armor was not aggression — it was clarity of principle combined with relentless self-examination. You have built two weeks of armor. Now you learn to think strategically."
+      },
+      "xpReward": 20
+    }
+  ]
+}

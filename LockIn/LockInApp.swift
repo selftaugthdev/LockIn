@@ -6,7 +6,8 @@ import SwiftUI
 struct LockInApp: App {
   @StateObject private var authService: AuthService
   @StateObject private var challengeService: ChallengeService
-  @StateObject private var programService: ProgramService
+  @StateObject private var moduleService: ModuleService
+  @StateObject private var programService: ProgramService  // kept while ProgressView/Library migrate
   @StateObject private var paywallService: PaywallService
 
   init() {
@@ -25,6 +26,7 @@ struct LockInApp: App {
     let auth = AuthService()
     _authService = StateObject(wrappedValue: auth)
     _challengeService = StateObject(wrappedValue: ChallengeService(auth: auth))
+    _moduleService = StateObject(wrappedValue: ModuleService(auth: auth))
     _programService = StateObject(wrappedValue: ProgramService(auth: auth))
     _paywallService = StateObject(wrappedValue: PaywallService(authService: auth))
   }
@@ -34,6 +36,7 @@ struct LockInApp: App {
       ContentView()
         .environmentObject(authService)
         .environmentObject(challengeService)
+        .environmentObject(moduleService)
         .environmentObject(programService)
         .environmentObject(paywallService)
         .onAppear {

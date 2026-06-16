@@ -1,8 +1,8 @@
 import SwiftUI
 
 struct ProgramSelectionView: View {
-  @EnvironmentObject var programService: ProgramService
-  @State private var selectedProgram: Program?
+  @EnvironmentObject var moduleService: ModuleService
+  @State private var selectedModule: Module?
 
   var body: some View {
     ZStack {
@@ -10,120 +10,204 @@ struct ProgramSelectionView: View {
 
       ScrollView {
         VStack(alignment: .leading, spacing: 32) {
-
-          // Header
-          VStack(alignment: .leading, spacing: 8) {
-            Text("Choose Your Program")
-              .font(Typography.largeTitle)
-              .foregroundColor(.white)
-
-            Text("Commit to one. See it through.")
-              .font(Typography.body)
-              .foregroundColor(.white.opacity(0.5))
-          }
-          .padding(.top, 8)
-
-          // Program cards
-          VStack(spacing: 16) {
-            ForEach(programService.availablePrograms) { program in
-              ProgramCard(program: program)
-                .onTapGesture {
-                  selectedProgram = program
-                }
-            }
-          }
-
-          if programService.availablePrograms.isEmpty {
-            Text("No programs available.")
-              .font(Typography.body)
-              .foregroundColor(.white.opacity(0.4))
-              .frame(maxWidth: .infinity, alignment: .center)
-              .padding(.top, 60)
-          }
+          headerSection
+          moduleList
         }
         .padding(.horizontal, 20)
-        .padding(.bottom, 40)
+        .padding(.top, 24)
+        .padding(.bottom, 48)
       }
     }
-    .sheet(item: $selectedProgram) { program in
-      ProgramDetailSheet(program: program)
+    .sheet(item: $selectedModule) { module in
+      ModuleDetailSheet(module: module)
     }
+  }
+
+  // MARK: - Header
+
+  private var headerSection: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      if let path = moduleService.currentPath {
+        Text(path.title.uppercased())
+          .font(Typography.caption2)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow.opacity(0.7))
+          .tracking(2)
+
+        Text("Choose your\nnext module.")
+          .font(Typography.largeTitle)
+          .foregroundColor(.white)
+
+        Text(path.subtitle)
+          .font(Typography.subheadline)
+          .foregroundColor(.white.opacity(0.4))
+      } else {
+        Text("Choose your\nnext module.")
+          .font(Typography.largeTitle)
+          .foregroundColor(.white)
+      }
+    }
+  }
+
+  // MARK: - Module List
+
+  private var moduleList: some View {
+    VStack(spacing: 12) {
+      if moduleService.availableModules.isEmpty {
+        Text("Loading modules...")
+          .font(Typography.body)
+          .foregroundColor(.white.opacity(0.4))
+          .frame(maxWidth: .infinity, alignment: .center)
+          .padding(.top, 60)
+      } else {
+        ForEach(orderedModules) { module in
+          let isLocked = moduleService.isModuleLocked(module)
+          let isCompleted = moduleService.completedModuleIds.contains(module.id)
+
+          ModuleCard(
+            module: module,
+            isLocked: isLocked,
+            isCompleted: isCompleted,
+            isNext: isNextModule(module)
+          )
+          .onTapGesture {
+            if !isLocked { selectedModule = module }
+          }
+        }
+      }
+    }
+  }
+
+  private var orderedModules: [Module] {
+    guard let path = moduleService.currentPath else {
+      return moduleService.availableModules.sorted { $0.order < $1.order }
+    }
+    return path.moduleIds.compactMap { id in
+      moduleService.availableModules.first { $0.id == id }
+    }
+  }
+
+  private func isNextModule(_ module: Module) -> Bool {
+    !moduleService.isModuleLocked(module)
+      && !moduleService.completedModuleIds.contains(module.id)
+      && orderedModules.first(where: {
+        !moduleService.isModuleLocked($0) && !moduleService.completedModuleIds.contains($0.id)
+      })?.id == module.id
   }
 }
 
-// MARK: - Program Card
+// MARK: - Module Card
 
-struct ProgramCard: View {
-  let program: Program
+struct ModuleCard: View {
+  let module: Module
+  let isLocked: Bool
+  let isCompleted: Bool
+  let isNext: Bool
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 16) {
+    HStack(spacing: 16) {
+      // Order number
+      Text(String(format: "%02d", module.order))
+        .font(.system(size: 28, weight: .bold, design: .monospaced))
+        .foregroundColor(numberColor)
+        .frame(width: 44, alignment: .leading)
 
-      // Top row — duration + difficulty badges
-      HStack(spacing: 8) {
-        Badge(text: "\(program.durationDays) Days", color: .brandYellow)
-        Badge(text: program.difficulty.displayName, color: difficultyColor)
-        if program.isPremium {
-          Badge(text: "PRO", color: .brandBlue)
-        }
-        Spacer()
-        Text("\(program.totalXP) XP")
+      // Content
+      VStack(alignment: .leading, spacing: 6) {
+        Text(module.title)
+          .font(Typography.title3)
+          .foregroundColor(isLocked ? .white.opacity(0.3) : .white)
+
+        Text(module.tagline)
           .font(Typography.caption)
-          .foregroundColor(.white.opacity(0.4))
-      }
-
-      // Title + subtitle
-      VStack(alignment: .leading, spacing: 4) {
-        Text(program.title)
-          .font(Typography.title2)
-          .foregroundColor(.white)
-
-        Text(program.subtitle)
-          .font(Typography.subheadline)
-          .foregroundColor(.white.opacity(0.55))
+          .foregroundColor(isLocked ? .white.opacity(0.2) : .white.opacity(0.5))
           .lineLimit(2)
+
+        HStack(spacing: 8) {
+          Text(module.philosopher)
+            .font(Typography.caption2)
+            .foregroundColor(isLocked ? .white.opacity(0.2) : .brandYellow.opacity(0.7))
+          Text("·")
+            .foregroundColor(.white.opacity(0.2))
+          Text("7 days")
+            .font(Typography.caption2)
+            .foregroundColor(isLocked ? .white.opacity(0.2) : .white.opacity(0.4))
+          Text("·")
+            .foregroundColor(.white.opacity(0.2))
+          Text("\(module.totalXP) XP")
+            .font(Typography.caption2)
+            .foregroundColor(isLocked ? .white.opacity(0.2) : .white.opacity(0.4))
+        }
       }
 
-      // Phase indicators
-      HStack(spacing: 4) {
-        ForEach([ProgramPhase.wakeUp, .armorUp, .sharpen, .operate], id: \.self) { phase in
-          Text(phase.displayName)
-            .font(Typography.caption2)
-            .foregroundColor(.white.opacity(0.35))
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(Color.white.opacity(0.06))
-            .cornerRadius(4)
-        }
-        Spacer()
-      }
+      Spacer()
+
+      // State indicator
+      stateIndicator
     }
     .padding(20)
-    .background(Color.brandGray)
+    .background(cardBackground)
     .cornerRadius(16)
     .overlay(
       RoundedRectangle(cornerRadius: 16)
-        .stroke(Color.white.opacity(0.07), lineWidth: 1)
+        .stroke(borderColor, lineWidth: 1)
     )
+    .opacity(isLocked ? 0.6 : 1)
   }
 
-  private var difficultyColor: Color {
-    switch program.difficulty {
-    case .beginner: return .brandGreen
-    case .intermediate: return .brandYellow
-    case .hard: return .brandRed
+  private var stateIndicator: some View {
+    Group {
+      if isCompleted {
+        Image(systemName: "checkmark.circle.fill")
+          .font(.title3)
+          .foregroundColor(.brandGreen)
+      } else if isLocked {
+        Image(systemName: "lock.fill")
+          .font(.subheadline)
+          .foregroundColor(.white.opacity(0.25))
+      } else if isNext {
+        Image(systemName: "chevron.right")
+          .font(.subheadline)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow)
+      } else {
+        Image(systemName: "chevron.right")
+          .font(.subheadline)
+          .foregroundColor(.white.opacity(0.3))
+      }
     }
+  }
+
+  private var numberColor: Color {
+    if isCompleted { return .brandGreen }
+    if isLocked { return .white.opacity(0.2) }
+    if isNext { return .brandYellow }
+    return .white.opacity(0.5)
+  }
+
+  private var cardBackground: Color {
+    isNext ? Color.brandYellow.opacity(0.06) : Color.brandGray
+  }
+
+  private var borderColor: Color {
+    if isCompleted { return .brandGreen.opacity(0.25) }
+    if isNext { return .brandYellow.opacity(0.25) }
+    return .white.opacity(0.07)
   }
 }
 
-// MARK: - Program Detail Sheet
+// MARK: - Module Detail Sheet
 
-struct ProgramDetailSheet: View {
-  let program: Program
-  @EnvironmentObject var programService: ProgramService
+struct ModuleDetailSheet: View {
+  let module: Module
+  @EnvironmentObject var moduleService: ModuleService
   @Environment(\.dismiss) var dismiss
   @State private var isEnrolling = false
   @State private var errorMessage: String?
+
+  private var isCompleted: Bool {
+    moduleService.completedModuleIds.contains(module.id)
+  }
 
   var body: some View {
     ZStack {
@@ -134,34 +218,56 @@ struct ProgramDetailSheet: View {
 
           // Badges
           HStack(spacing: 8) {
-            Badge(text: "\(program.durationDays) Days", color: .brandYellow)
-            Badge(text: program.difficulty.displayName, color: difficultyColor)
-            if program.isPremium {
+            Badge(text: "7 DAYS", color: .brandYellow)
+            Badge(text: module.philosopher.uppercased(), color: .brandBlue)
+            if module.isPremium {
               Badge(text: "PRO", color: .brandBlue)
             }
           }
 
-          // Title + description
-          VStack(alignment: .leading, spacing: 12) {
-            Text(program.title)
+          // Title + tagline
+          VStack(alignment: .leading, spacing: 8) {
+            Text(module.title)
               .font(Typography.largeTitle)
               .foregroundColor(.white)
-
-            Text(program.description)
+            Text(module.tagline)
               .font(Typography.body)
-              .foregroundColor(.white.opacity(0.6))
-              .lineSpacing(4)
+              .foregroundColor(.white.opacity(0.5))
+              .lineSpacing(3)
           }
 
-          // Phase breakdown
+          // Day breakdown
           VStack(alignment: .leading, spacing: 12) {
-            Text("How it works")
-              .font(Typography.headline)
-              .foregroundColor(.white)
+            Text("7 DAYS")
+              .font(Typography.caption2)
+              .fontWeight(.semibold)
+              .foregroundColor(.brandYellow.opacity(0.7))
+              .tracking(1.5)
 
-            ForEach([ProgramPhase.wakeUp, .armorUp, .sharpen, .operate], id: \.self) { phase in
-              PhaseRow(phase: phase, program: program)
+            VStack(spacing: 0) {
+              ForEach(module.days) { day in
+                HStack(spacing: 14) {
+                  Text("\(day.dayNumber)")
+                    .font(.system(size: 13, weight: .bold, design: .monospaced))
+                    .foregroundColor(.brandYellow.opacity(0.5))
+                    .frame(width: 20, alignment: .center)
+
+                  Text(day.challengeTitle)
+                    .font(Typography.subheadline)
+                    .foregroundColor(.white.opacity(0.75))
+
+                  Spacer()
+                }
+                .padding(.vertical, 10)
+
+                if day.dayNumber < module.days.count {
+                  Divider().background(Color.white.opacity(0.06))
+                }
+              }
             }
+            .padding(.horizontal, 16)
+            .background(Color.brandGray)
+            .cornerRadius(12)
           }
 
           // XP info
@@ -170,16 +276,16 @@ struct ProgramDetailSheet: View {
               Text("Total XP")
                 .font(Typography.caption)
                 .foregroundColor(.white.opacity(0.4))
-              Text("\(program.totalXP) XP")
+              Text("\(module.totalXP) XP")
                 .font(Typography.title3)
                 .foregroundColor(.brandYellow)
             }
             Spacer()
             VStack(alignment: .trailing, spacing: 4) {
-              Text("Challenges")
+              Text("Duration")
                 .font(Typography.caption)
                 .foregroundColor(.white.opacity(0.4))
-              Text("\(program.days.count)")
+              Text("7 days")
                 .font(Typography.title3)
                 .foregroundColor(.white)
             }
@@ -195,26 +301,43 @@ struct ProgramDetailSheet: View {
           }
 
           // CTA
-          Button {
-            Task { await enroll() }
-          } label: {
-            HStack {
-              if isEnrolling {
-                ProgressView()
-                  .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
-              } else {
-                Text("I'm ready. Start program.")
-                  .font(Typography.headline)
-                  .foregroundColor(.brandInk)
-              }
+          if isCompleted {
+            HStack(spacing: 10) {
+              Image(systemName: "checkmark.circle.fill")
+                .foregroundColor(.brandGreen)
+              Text("Module completed")
+                .font(Typography.headline)
+                .foregroundColor(.brandGreen)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
-            .background(Color.brandYellow)
+            .background(Color.brandGreen.opacity(0.1))
             .cornerRadius(12)
+            .overlay(
+              RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.brandGreen.opacity(0.3), lineWidth: 1)
+            )
+          } else {
+            Button {
+              Task { await enroll() }
+            } label: {
+              HStack {
+                if isEnrolling {
+                  ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .brandInk))
+                } else {
+                  Text("Start \(module.title)")
+                    .font(Typography.headline)
+                    .foregroundColor(.brandInk)
+                }
+              }
+              .frame(maxWidth: .infinity)
+              .padding(.vertical, 16)
+              .background(Color.brandYellow)
+              .cornerRadius(12)
+            }
+            .disabled(isEnrolling)
           }
-          .disabled(isEnrolling)
-          .padding(.top, 8)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 28)
@@ -222,56 +345,20 @@ struct ProgramDetailSheet: View {
     }
     .presentationDetents([.large])
     .presentationDragIndicator(.visible)
-  }
-
-  private var difficultyColor: Color {
-    switch program.difficulty {
-    case .beginner: return .brandGreen
-    case .intermediate: return .brandYellow
-    case .hard: return .brandRed
-    }
+    .preferredColorScheme(.dark)
   }
 
   private func enroll() async {
     isEnrolling = true
     errorMessage = nil
     do {
-      try await programService.enrollInProgram(program)
+      let pathId = moduleService.currentPath?.id
+      try await moduleService.enrollInModule(module, pathId: pathId)
       dismiss()
     } catch {
-      errorMessage = "Failed to start program. Try again."
+      errorMessage = "Failed to start module. Try again."
     }
     isEnrolling = false
-  }
-}
-
-// MARK: - Phase Row
-
-struct PhaseRow: View {
-  let phase: ProgramPhase
-  let program: Program
-
-  var body: some View {
-    let daysInPhase = program.days.filter { $0.phase == phase }
-
-    HStack(alignment: .top, spacing: 12) {
-      Circle()
-        .fill(Color.brandYellow.opacity(0.2))
-        .frame(width: 8, height: 8)
-        .padding(.top, 6)
-
-      VStack(alignment: .leading, spacing: 2) {
-        Text(phase.displayName)
-          .font(Typography.subheadline)
-          .foregroundColor(.white)
-        Text(phase.tagline)
-          .font(Typography.caption)
-          .foregroundColor(.white.opacity(0.45))
-        Text("\(daysInPhase.count) days")
-          .font(Typography.caption2)
-          .foregroundColor(.white.opacity(0.3))
-      }
-    }
   }
 }
 
@@ -296,5 +383,5 @@ struct Badge: View {
 #Preview {
   let auth = AuthService()
   ProgramSelectionView()
-    .environmentObject(ProgramService(auth: auth))
+    .environmentObject(ModuleService(auth: auth))
 }

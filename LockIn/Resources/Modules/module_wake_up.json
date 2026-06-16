@@ -1,0 +1,108 @@
+{
+  "id": "wake_up",
+  "title": "Wake Up",
+  "tagline": "See what's been happening to you",
+  "philosopher": "Machiavelli",
+  "order": 1,
+  "isPremium": false,
+  "days": [
+    {
+      "dayNumber": 1,
+      "challengeTitle": "Name It",
+      "challengeDescription": "You already know. You've known for a while. There's someone in your life who treats you as optional, as a resource, as someone whose time and respect don't really matter. Today you write their name down. Not to obsess. To stop pretending.",
+      "dailyAction": "Write one name. One person who has consistently disrespected, manipulated, or taken advantage of you. You don't need to show anyone. Just make it real by putting it on paper.",
+      "nightlyReflection": "Did writing the name feel uncomfortable? Why? What have you been telling yourself to justify their behavior?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"Men are so simple and so ready to obey present necessities, that one who deceives will always find those who allow themselves to be deceived.\" Machiavelli wasn't cynical — he was accurate. The people who have walked over you were not evil geniuses. They simply found that you allowed it. That ends here. The first move is not anger. It is clarity."
+      },
+      "xpReward": 10
+    },
+    {
+      "dayNumber": 2,
+      "challengeTitle": "Map the Battlefield",
+      "challengeDescription": "You don't fight a war you haven't mapped. Most men who feel pushed around have never actually sat down and identified the specific patterns being used against them. Today you do that. No drama. Just data.",
+      "dailyAction": "Write down 3 recurring situations where you feel diminished, ignored, or manipulated. Be specific: who, what, where. Not feelings — patterns.",
+      "nightlyReflection": "Looking at your list — is there a common theme? Is it the same person in different situations, or different people using the same tactic?",
+      "mentalEdge": {
+        "figure": "Schopenhauer",
+        "sourceWork": "The Art of Always Being Right",
+        "year": "1831",
+        "content": "Schopenhauer identified 38 rhetorical stratagems — manipulation tactics disguised as argument. His most important insight: most people don't argue to find truth, they argue to win. When someone talks over you, changes the subject, or makes you feel stupid for disagreeing — that's not a personality clash. That's a strategy. And now you know it."
+      },
+      "xpReward": 10
+    },
+    {
+      "dayNumber": 3,
+      "challengeTitle": "Kill the Noise",
+      "challengeDescription": "You cannot think clearly when you are constantly reactive. Social media is engineered to make you compare, perform, and stay anxious. For the next 25 days, you are not on it. Delete the apps. Not mute. Delete.",
+      "dailyAction": "Delete or log out of every social media app on your phone. Instagram, TikTok, X, Reddit — all of it. Keep messaging apps if needed for work. Set a screen time limit on your browser for social sites: 0 minutes.",
+      "nightlyReflection": "What was the first moment today you reached for your phone out of habit? What were you feeling in that moment?",
+      "mentalEdge": {
+        "figure": "Pascal",
+        "sourceWork": "Pensées",
+        "year": "1670",
+        "content": "\"All of humanity's problems stem from man's inability to sit quietly in a room alone.\" Pascal wrote this 350 years ago. The men who manipulate you know you are distracted. They operate in the gap between your stimulus and your response. Today you start closing that gap."
+      },
+      "xpReward": 10
+    },
+    {
+      "dayNumber": 4,
+      "challengeTitle": "Stand Like You Mean It",
+      "challengeDescription": "Before you change your mind, change your body. Research on posture and cortisol is clear — how you hold your body changes your hormone levels, which changes how you think, which changes how others respond to you. This is not motivational poster material. This is physiology.",
+      "dailyAction": "Every time you enter a room today, pause for one second before you speak. Feet shoulder-width apart. Shoulders back. Chin level. Hold eye contact two seconds longer than feels comfortable in every conversation.",
+      "nightlyReflection": "Did anyone respond differently to you today? Did you feel different in your own body? When did you slip back into old patterns?",
+      "mentalEdge": {
+        "figure": "Nietzsche",
+        "sourceWork": "Thus Spoke Zarathustra",
+        "year": "1883",
+        "content": "Nietzsche's concept of the will to power is misunderstood. It was not about dominating others — it was about self-mastery. \"Become who you are.\" The man who slouches is broadcasting subordination before he speaks a word. The man who carries himself with controlled physical presence is broadcasting something else entirely. Bodies speak first."
+      },
+      "xpReward": 10
+    },
+    {
+      "dayNumber": 5,
+      "challengeTitle": "You Don't Owe Anyone a Reason",
+      "challengeDescription": "\"No\" is a complete sentence. You have been trained — by parents, by social pressure, by wanting to be liked — to justify every decision you make. Manipulators exploit that. They ask \"why\" not to understand you, but to find the hole in your reasoning they can push through.",
+      "dailyAction": "Today, whenever you decline something or make a decision for yourself, do not explain it. \"I can't make it.\" Full stop. \"That doesn't work for me.\" Full stop. If someone pushes for a reason, say: \"I've made my decision.\" Once. Then silence.",
+      "nightlyReflection": "Where did you feel the pull to over-explain today? Who triggers that in you most — and why do you think that is?",
+      "mentalEdge": {
+        "figure": "Epictetus",
+        "sourceWork": "Enchiridion",
+        "year": "125 AD",
+        "content": "Epictetus was a slave who became one of the most powerful thinkers of his era. His core insight: the only thing you ever truly own is your response. When you over-explain, you are handing someone else your internal state to examine and attack. Your choices don't require a defense. This is not arrogance — it is sovereignty."
+      },
+      "xpReward": 10
+    },
+    {
+      "dayNumber": 6,
+      "challengeTitle": "No",
+      "challengeDescription": "You have said yes to things that cost you time, energy, and self-respect because saying no felt too dangerous. Today you say no to something you would normally say yes to — not because it's useful, but because the muscle needs to be trained.",
+      "dailyAction": "Find one request today — from anyone — that you would normally accept out of obligation, guilt, or conflict avoidance. Decline it. No explanation required. If no opportunity arises naturally, manufacture one: cancel a low-value commitment on your calendar.",
+      "nightlyReflection": "What was the actual consequence of saying no? How did it compare to what you feared?",
+      "mentalEdge": {
+        "figure": "Machiavelli",
+        "sourceWork": "The Prince",
+        "year": "1532",
+        "content": "\"It is better to be feared than loved, if you cannot be both.\" This line is always quoted out of context. Machiavelli's actual point was about dependency: the man who is universally loved is loved because he gives freely and never pushes back. That kind of love is conditional and fragile. Respect — the kind built by clear limits — is durable. The word \"no\" is not rejection. It is the foundation of respect."
+      },
+      "xpReward": 10
+    },
+    {
+      "dayNumber": 7,
+      "challengeTitle": "Take Stock",
+      "challengeDescription": "One week in. You have named the problem, mapped the patterns, cut the noise, adjusted your physical presence, stopped over-explaining, and said no. That is more change in seven days than most men make in a year. Now you audit.",
+      "dailyAction": "Re-read your Day 1 and Day 2 notes. Write three sentences: What has shifted? What hasn't? What is the hardest thing you're facing going into the next module?",
+      "nightlyReflection": "Are you doing this for yourself, or to impress someone? Be honest. The answer matters for what comes next.",
+      "mentalEdge": {
+        "figure": "Marcus Aurelius",
+        "sourceWork": "Meditations",
+        "year": "180 AD",
+        "content": "\"Confine yourself to the present.\" Aurelius wrote this as the emperor of Rome — the most powerful man on earth — who still had to remind himself not to be consumed by what was behind him or ahead of him. Week 1 is behind you. You are not the same man who opened this app seven days ago. That is enough. Now continue."
+      },
+      "xpReward": 10
+    }
+  ]
+}

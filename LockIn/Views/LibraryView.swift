@@ -7,9 +7,12 @@ struct LibraryView: View {
   @ObservedObject private var advisor = AdvisorService.shared
 
   @State private var selectedTab: LibraryTab = .mentalEdge
+  @State private var scenarios: [Scenario] = []
+  @State private var selectedScenario: Scenario?
 
   enum LibraryTab: String, CaseIterable {
     case mentalEdge = "Mental Edge"
+    case scenarios = "Scenarios"
     case saved = "Saved"
   }
 
@@ -29,6 +32,8 @@ struct LibraryView: View {
                 switch selectedTab {
                 case .mentalEdge:
                   mentalEdgeSection
+                case .scenarios:
+                  scenariosSection
                 case .saved:
                   savedSection
                 }
@@ -51,10 +56,18 @@ struct LibraryView: View {
         }
       }
       .preferredColorScheme(.dark)
+      .onAppear {
+        scenarios = Scenario.loadAll()
+      }
       .task {
         if paywallService.isPro, let uid = authService.uid {
           await advisor.loadSavedSessions(userId: uid)
         }
+      }
+      .sheet(item: $selectedScenario) { scenario in
+        ScenarioDetailSheet(scenario: scenario)
+          .environmentObject(authService)
+          .environmentObject(paywallService)
       }
       .fullScreenCover(isPresented: $paywallService.shouldShowPaywall) {
         PaywallView()
@@ -175,6 +188,63 @@ struct LibraryView: View {
     .frame(maxWidth: .infinity, minHeight: 200)
   }
 
+  // MARK: - Scenarios Section
+
+  private var scenariosSection: some View {
+    Group {
+      if scenarios.isEmpty {
+        emptyScenarios
+      } else {
+        VStack(alignment: .leading, spacing: 20) {
+          Text("\(scenarios.count) situations. Pick one. Get clarity.")
+            .font(Typography.caption)
+            .foregroundColor(.white.opacity(0.35))
+
+          ForEach(ScenarioCategory.allCases, id: \.self) { category in
+            let categoryScenarios = scenarios.filter { $0.category == category }
+            if !categoryScenarios.isEmpty {
+              scenarioCategorySection(category: category, scenarios: categoryScenarios)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private func scenarioCategorySection(category: ScenarioCategory, scenarios: [Scenario]) -> some View {
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(spacing: 8) {
+        Text(category.rawValue.uppercased())
+          .font(Typography.caption2)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow.opacity(0.7))
+          .tracking(1.5)
+        Rectangle()
+          .fill(Color.white.opacity(0.08))
+          .frame(height: 1)
+      }
+
+      VStack(spacing: 10) {
+        ForEach(scenarios) { scenario in
+          ScenarioCard(scenario: scenario)
+            .onTapGesture { selectedScenario = scenario }
+        }
+      }
+    }
+  }
+
+  private var emptyScenarios: some View {
+    VStack(spacing: 12) {
+      Image(systemName: "text.bubble")
+        .font(.largeTitle)
+        .foregroundColor(.white.opacity(0.15))
+      Text("No scenarios loaded")
+        .font(Typography.headline)
+        .foregroundColor(.white.opacity(0.4))
+    }
+    .frame(maxWidth: .infinity, minHeight: 200)
+  }
+
   // MARK: - Saved Section
 
   private var savedSection: some View {
@@ -223,7 +293,7 @@ struct LibraryView: View {
           .font(Typography.title2)
           .foregroundColor(.white)
 
-        Text("Every Mental Edge insight you unlock, plus your saved Advisor sessions — all in one place.")
+        Text("Mental Edge insights, pre-built scenarios with your philosopher of choice, and all your saved Advisor sessions — in one place.")
           .font(Typography.body)
           .foregroundColor(.white.opacity(0.5))
           .multilineTextAlignment(.center)
@@ -245,6 +315,154 @@ struct LibraryView: View {
       .padding(.horizontal, 24)
 
       Spacer()
+    }
+  }
+}
+
+// MARK: - Scenario Card
+
+struct ScenarioCard: View {
+  let scenario: Scenario
+
+  var body: some View {
+    HStack(alignment: .top, spacing: 14) {
+      VStack(alignment: .leading, spacing: 6) {
+        Text(scenario.philosopher.displayName.uppercased())
+          .font(Typography.caption2)
+          .fontWeight(.semibold)
+          .foregroundColor(.brandYellow.opacity(0.7))
+          .tracking(1)
+
+        Text(scenario.title)
+          .font(Typography.subheadline)
+          .fontWeight(.semibold)
+          .foregroundColor(.white)
+
+        Text(scenario.hook)
+          .font(Typography.caption)
+          .foregroundColor(.white.opacity(0.45))
+          .lineSpacing(2)
+          .lineLimit(2)
+      }
+
+      Spacer()
+
+      Image(systemName: "chevron.right")
+        .font(.caption)
+        .foregroundColor(.white.opacity(0.25))
+        .padding(.top, 4)
+    }
+    .padding(16)
+    .background(Color.brandGray)
+    .cornerRadius(14)
+    .overlay(
+      RoundedRectangle(cornerRadius: 14)
+        .stroke(Color.white.opacity(0.07), lineWidth: 1)
+    )
+  }
+}
+
+// MARK: - Scenario Detail Sheet
+
+struct ScenarioDetailSheet: View {
+  let scenario: Scenario
+  @EnvironmentObject var authService: AuthService
+  @EnvironmentObject var paywallService: PaywallService
+  @Environment(\.dismiss) private var dismiss
+  @State private var showingAdvisor = false
+
+  var body: some View {
+    ZStack {
+      Color.brandInk.ignoresSafeArea()
+
+      ScrollView {
+        VStack(alignment: .leading, spacing: 24) {
+          // Badges
+          HStack(spacing: 8) {
+            Badge(text: scenario.category.rawValue.uppercased(), color: .brandYellow)
+            Badge(text: scenario.philosopher.displayName.uppercased(), color: .brandBlue)
+          }
+
+          // Title + hook
+          VStack(alignment: .leading, spacing: 8) {
+            Text(scenario.title)
+              .font(Typography.largeTitle)
+              .foregroundColor(.white)
+            Text(scenario.hook)
+              .font(Typography.body)
+              .foregroundColor(.white.opacity(0.5))
+              .lineSpacing(3)
+          }
+
+          // Philosopher context
+          HStack(spacing: 14) {
+            VStack(alignment: .leading, spacing: 4) {
+              Text(scenario.philosopher.displayName)
+                .font(Typography.headline)
+                .foregroundColor(.white)
+              Text(scenario.philosopher.tagline)
+                .font(Typography.caption)
+                .foregroundColor(.brandYellow.opacity(0.7))
+            }
+            Spacer()
+            Text(scenario.philosopher.era)
+              .font(Typography.caption2)
+              .foregroundColor(.white.opacity(0.3))
+          }
+          .padding(16)
+          .background(Color.brandGray)
+          .cornerRadius(12)
+
+          // Opening prompt preview
+          VStack(alignment: .leading, spacing: 10) {
+            Text("YOUR OPENING SITUATION")
+              .font(Typography.caption2)
+              .fontWeight(.semibold)
+              .foregroundColor(.white.opacity(0.4))
+              .tracking(1.5)
+
+            Text(scenario.openingPrompt)
+              .font(Typography.subheadline)
+              .foregroundColor(.white.opacity(0.6))
+              .lineSpacing(4)
+              .fixedSize(horizontal: false, vertical: true)
+          }
+          .padding(16)
+          .background(Color.brandGray)
+          .cornerRadius(12)
+          .overlay(
+            RoundedRectangle(cornerRadius: 12)
+              .stroke(Color.white.opacity(0.06), lineWidth: 1)
+          )
+
+          Text("You can edit the situation before sending.")
+            .font(Typography.caption)
+            .foregroundColor(.white.opacity(0.25))
+
+          // CTA
+          Button {
+            showingAdvisor = true
+          } label: {
+            Text("Ask \(scenario.philosopher.displayName)")
+              .font(Typography.headline)
+              .foregroundColor(.brandInk)
+              .frame(maxWidth: .infinity)
+              .padding(.vertical, 16)
+              .background(Color.brandYellow)
+              .cornerRadius(12)
+          }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 28)
+      }
+    }
+    .presentationDetents([.large])
+    .presentationDragIndicator(.visible)
+    .preferredColorScheme(.dark)
+    .fullScreenCover(isPresented: $showingAdvisor) {
+      AdvisorView(initialFigure: scenario.philosopher, initialSituation: scenario.openingPrompt)
+        .environmentObject(authService)
+        .environmentObject(paywallService)
     }
   }
 }

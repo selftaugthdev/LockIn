@@ -66,6 +66,8 @@
 		AA3333022F000000000001 /* Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3333012F000000000001 /* Module.swift */; };
 		AA3333042F000000000001 /* UserModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3333032F000000000001 /* UserModule.swift */; };
 		AA3333062F000000000001 /* ModuleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA3333052F000000000001 /* ModuleService.swift */; };
+		AA4444022F000000000001 /* Scenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4444012F000000000001 /* Scenario.swift */; };
+		AA4444042F000000000001 /* scenarios.json in Resources */ = {isa = PBXBuildFile; fileRef = AA4444032F000000000001 /* scenarios.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +87,8 @@
 		AA3333012F000000000001 /* Module.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Module.swift; sourceTree = "<group>"; };
 		AA3333032F000000000001 /* UserModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModule.swift; sourceTree = "<group>"; };
 		AA3333052F000000000001 /* ModuleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleService.swift; sourceTree = "<group>"; };
+		AA4444012F000000000001 /* Scenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scenario.swift; sourceTree = "<group>"; };
+		AA4444032F000000000001 /* scenarios.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = scenarios.json; sourceTree = "<group>"; };
 		E45D7D972E7ABE6E00553764 /* LockIn.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LockIn.entitlements; sourceTree = "<group>"; };
 		E45D7D982E7AC08200553764 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E4689B762E6EE26B00A89328 /* LockIn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LockIn.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +155,7 @@
 			children = (
 				AA11111A2E6F000000000001 /* Programs */,
 				3169CE002FE1DDB00085417E /* Modules */,
+				AA4444032F000000000001 /* scenarios.json */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -237,6 +242,7 @@
 				E4AB291D2E6F092A0024607D /* UserRow.swift */,
 				AA3333012F000000000001 /* Module.swift */,
 				AA3333032F000000000001 /* UserModule.swift */,
+				AA4444012F000000000001 /* Scenario.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -405,6 +411,7 @@
 				3169CDF22FE1DDB00085417E /* path_foundation.json in Resources */,
 				3169CDF32FE1DDB00085417E /* module_sharpen.json in Resources */,
 				3138932B2F65910A003DCD43 /* GoogleService-Info.plist in Resources */,
+				AA4444042F000000000001 /* scenarios.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +462,7 @@
 				AA3333022F000000000001 /* Module.swift in Sources */,
 				AA3333042F000000000001 /* UserModule.swift in Sources */,
 				AA3333062F000000000001 /* ModuleService.swift in Sources */,
+				AA4444022F000000000001 /* Scenario.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

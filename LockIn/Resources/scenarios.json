@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fired",
+    "title": "I just got fired",
+    "hook": "It came without warning. Your boss called you in and ended it.",
+    "category": "Work",
+    "philosopherId": "Machiavelli",
+    "openingPrompt": "I was just let go. It came without warning — or at least it felt that way. My boss called me in and told me my position was being eliminated. I don't know if it was performance, office politics, or something I can't see. I'm angry, I'm embarrassed, and I don't know what my next move should be. How do I handle this?"
+  },
+  {
+    "id": "difficult_colleague",
+    "title": "A colleague is working against me",
+    "hook": "They undermine you in meetings, take credit for shared work, and have the ear of your manager.",
+    "category": "Work",
+    "philosopherId": "Sun Tzu",
+    "openingPrompt": "There's someone at work who seems to be working against me. They undermine me in meetings, take credit for shared work, and have the ear of our manager. I'm not sure if this is deliberate or just how they operate. I can't go to war openly without risking my position. I need a strategy."
+  },
+  {
+    "id": "passed_over",
+    "title": "I was passed over for a promotion",
+    "hook": "Someone with less output got the role. The feedback you received was vague and useless.",
+    "category": "Work",
+    "philosopherId": "Nietzsche",
+    "openingPrompt": "I was passed over for a promotion I deserved. Someone with less experience and less output got it instead. I'm being told to 'keep developing' but the feedback is vague. I've been playing by the rules and it hasn't worked. I'm starting to wonder if I'm playing the wrong game entirely."
+  },
+  {
+    "id": "managed_out",
+    "title": "I think my boss is pushing me out",
+    "hook": "Smaller assignments, excluded from meetings, feedback gone cold. Nothing is said directly.",
+    "category": "Work",
+    "philosopherId": "Machiavelli",
+    "openingPrompt": "I think my boss is trying to push me out without actually firing me. The assignments are getting smaller, I'm being left out of important meetings, and feedback has gone cold. Nothing is ever said directly — it's all signals. How do I read this situation accurately and decide what to do next?"
+  },
+  {
+    "id": "friend_betrayal",
+    "title": "A close friend betrayed my trust",
+    "hook": "They told people something you shared in confidence. They say it wasn't malicious.",
+    "category": "Relationships",
+    "philosopherId": "Schopenhauer",
+    "openingPrompt": "A close friend told other people something I shared with them in confidence. It wasn't malicious — or at least that's what they say. But the damage is done. I'm not sure whether to confront it, pull back, or let it go. I don't know what this says about the friendship, or about me for trusting them."
+  },
+  {
+    "id": "relationship_fading",
+    "title": "My relationship is quietly falling apart",
+    "hook": "You're not fighting. You've gone quiet. You don't know if this is temporary or permanent.",
+    "category": "Relationships",
+    "philosopherId": "Jung",
+    "openingPrompt": "My relationship has been deteriorating for months. We're not fighting — we've gone quiet. I don't know if we've grown apart, if something in me has changed, or if this is just what long-term relationships become. I'm not sure whether to push through, bring it up directly, or start accepting that it might be over."
+  },
+  {
+    "id": "being_manipulated",
+    "title": "Someone is manipulating me",
+    "hook": "You can see the pattern now — obligation, guilt, saying what you want to hear. You just don't know how to get out.",
+    "category": "Relationships",
+    "philosopherId": "Schopenhauer",
+    "openingPrompt": "I've realized that someone I'm close to has been manipulating me — saying what I want to hear, creating situations where I feel obligated, making me feel guilty when I don't comply. I can see the pattern clearly now. But I don't know how to exit it without blowing everything up."
+  },
+  {
+    "id": "lost_direction",
+    "title": "My life looks right but feels empty",
+    "hook": "Good job, stable life, nothing to complain about. But you're performing someone else's version of success.",
+    "category": "Identity",
+    "philosopherId": "Nietzsche",
+    "openingPrompt": "I've built a life that looks right on paper but feels completely empty. Good job, stable income, nothing obvious to complain about. But I feel like I'm performing a version of success that was never really mine. I don't know what I actually want anymore, or if I ever did. How do I find out?"
+  },
+  {
+    "id": "chronic_delay",
+    "title": "I keep waiting to make my move",
+    "hook": "You've been meaning to make a change for over a year. The months keep passing.",
+    "category": "Identity",
+    "philosopherId": "Seneca",
+    "openingPrompt": "I've been meaning to make a significant change — new direction, different work, something that actually matters to me — for over a year. But I keep finding reasons to wait. Not ready, wrong timing, after this next thing. I can't tell anymore if I'm being genuinely cautious or just a coward. The months keep passing."
+  },
+  {
+    "id": "self_sabotage",
+    "title": "I keep getting in my own way",
+    "hook": "Every time something goes well, you find a way to undermine it. You know the pattern but can't stop it.",
+    "category": "Identity",
+    "philosopherId": "Jung",
+    "openingPrompt": "I keep getting in my own way. Every time something is going well, I find a way to undermine it — procrastinating on what matters, pulling back when I should push forward, avoiding situations where I might succeed and then fail. I can see the pattern clearly. But knowing it doesn't seem to stop it."
+  },
+  {
+    "id": "big_decision",
+    "title": "I'm paralyzed by a decision",
+    "hook": "Both paths have real costs. You've been weighing it for weeks and getting nowhere.",
+    "category": "Pressure",
+    "philosopherId": "Marcus Aurelius",
+    "openingPrompt": "I have a major decision in front of me — one that genuinely changes the trajectory of what comes next. I've been weighing it for weeks and keep going in circles. Both paths have real costs and real risks. The longer I wait, the worse I feel. I need a framework to think through this clearly."
+  },
+  {
+    "id": "overwhelmed",
+    "title": "Everything is piling up at once",
+    "hook": "Work, personal life, all of it demanding attention at once. You can't focus on any one thing.",
+    "category": "Pressure",
+    "philosopherId": "Epictetus",
+    "openingPrompt": "Everything is piling up at once. Work is demanding, my personal life is complicated, and I feel like I'm failing at all of it. I can't focus on any one thing without the others pulling at me. I'm exhausted and I've started to spiral. I need to know how to think about this."
+  },
+  {
+    "id": "high_stakes_meeting",
+    "title": "I have a high-stakes meeting coming up",
+    "hook": "The outcome matters. There are people in the room who don't want you to succeed.",
+    "category": "Pressure",
+    "philosopherId": "Sun Tzu",
+    "openingPrompt": "I have a critical meeting coming up — one where the outcome genuinely matters to my career or my situation. The terrain won't be neutral. There are people in the room with interests that conflict with mine. I need to go in prepared for how the game will actually be played, not just what I'll say."
+  },
+  {
+    "id": "credit_stolen",
+    "title": "Someone keeps taking credit for my work",
+    "hook": "It's happening in front of leadership. Your contributions are becoming invisible.",
+    "category": "Power",
+    "philosopherId": "Aristotle",
+    "openingPrompt": "A colleague consistently presents work I've contributed to — sometimes work I've done almost entirely — as primarily theirs. It's happening in front of leadership and my contributions are becoming invisible. I don't want to look like I'm playing politics or being petty. But I also can't keep letting this happen."
+  },
+  {
+    "id": "new_environment",
+    "title": "I'm new and need to establish myself fast",
+    "hook": "People are watching to see what you are. The early moves matter more than you think.",
+    "category": "Power",
+    "philosopherId": "Machiavelli",
+    "openingPrompt": "I've just joined a new team or moved into a new role where I don't have established credibility. People are still figuring out what I am. I want to build respect quickly without being aggressive or obvious about it. I know the early signals I send will set the terms for a long time."
+  }
+]

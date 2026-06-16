@@ -5,8 +5,13 @@ struct AdvisorView: View {
   @EnvironmentObject var paywallService: PaywallService
   @StateObject private var advisor = AdvisorService.shared
 
-  @State private var selectedFigure: AdvisorFigure = .machiavelli
-  @State private var situation: String = ""
+  @State private var selectedFigure: AdvisorFigure
+  @State private var situation: String
+
+  init(initialFigure: AdvisorFigure = .machiavelli, initialSituation: String = "") {
+    _selectedFigure = State(initialValue: initialFigure)
+    _situation = State(initialValue: initialSituation)
+  }
   @State private var currentResponse: String = ""
   @State private var currentSession: AdvisorSession?
   @State private var showingSavedSessions = false
